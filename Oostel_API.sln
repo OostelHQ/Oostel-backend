@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oostel.API", "valuegateAPI\Oostel.API.csproj", "{D48D6487-3B67-46EF-8BA0-BA2FD8EBF581}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oostel.API", "oostel.API\Oostel.API.csproj", "{D48D6487-3B67-46EF-8BA0-BA2FD8EBF581}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oostel.Application", "valuegate.Application\Oostel.Application.csproj", "{3C87133E-AA38-4C3D-B773-E0481B5475A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oostel.Application", "oostel.Application\Oostel.Application.csproj", "{3C87133E-AA38-4C3D-B773-E0481B5475A0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oostel.Domain", "valuegate.Domain\Oostel.Domain.csproj", "{89E684D8-38A2-4739-A9C9-93ABD30EBC60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oostel.Domain", "oostel.Domain\Oostel.Domain.csproj", "{89E684D8-38A2-4739-A9C9-93ABD30EBC60}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oostel.Infrastructure", "valuegate.Infrastructure\Oostel.Infrastructure.csproj", "{D7BE8DD8-5E90-4358-9B22-B104E60310DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oostel.Infrastructure", "oostel.Infrastructure\Oostel.Infrastructure.csproj", "{D7BE8DD8-5E90-4358-9B22-B104E60310DD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oostel.Common", "valuegate.Common\Oostel.Common.csproj", "{A235B452-3254-4D7A-AD4D-A438546622F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oostel.Common", "oostel.Common\Oostel.Common.csproj", "{A235B452-3254-4D7A-AD4D-A438546622F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oostel.Tests.Integration", "Valuegate.Tests.Integration\Oostel.Tests.Integration.csproj", "{A116BDB6-121B-46EF-8A83-FF240BBE0170}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oostel.Tests.Integration", "oostel.Tests.Integration\Oostel.Tests.Integration.csproj", "{A116BDB6-121B-46EF-8A83-FF240BBE0170}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oostel.Tests.UnitTests", "Valuegate.Tests.UnitTests\Oostel.Tests.UnitTests.csproj", "{F89DFBF7-96AC-4CCC-BE74-06A26850A650}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oostel.Tests.UnitTests", "oostel.Tests.UnitTests\Oostel.Tests.UnitTests.csproj", "{F89DFBF7-96AC-4CCC-BE74-06A26850A650}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
