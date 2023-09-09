@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\valuegate.Domain\Valuegate.Domain.csproj" />
-    <ProjectReference Include="..\valuegate.Infrastructure\Valuegate.Infrastructure.csproj" />
+    <ProjectReference Include="..\valuegate.Domain\Oostel.Domain.csproj" />
+    <ProjectReference Include="..\valuegate.Infrastructure\Oostel.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\valuegate.Application\Valuegate.Application.csproj" />
+    <ProjectReference Include="..\valuegate.Application\Oostel.Application.csproj" />
   </ItemGroup>
 
 </Project>

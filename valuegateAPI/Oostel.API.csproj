@@ -26,9 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\valuegate.Application\Valuegate.Application.csproj" />
-    <ProjectReference Include="..\valuegate.Common\Valuegate.Common.csproj" />
-    <ProjectReference Include="..\valuegate.Infrastructure\Valuegate.Infrastructure.csproj" />
+    <ProjectReference Include="..\valuegate.Application\Oostel.Application.csproj" />
+    <ProjectReference Include="..\valuegate.Common\Oostel.Common.csproj" />
+    <ProjectReference Include="..\valuegate.Infrastructure\Oostel.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
