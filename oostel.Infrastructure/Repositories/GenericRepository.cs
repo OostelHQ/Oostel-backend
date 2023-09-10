@@ -25,18 +25,13 @@ namespace Oostel.Infrastructure.Repositories
         {
             await _dbContext.AddAsync(entity);
 
-            SaveChanges();
-
             return entity;
         }
 
 
-        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression) =>
-
+        public async Task<IQueryable<T>> FindByCondition(Expression<Func<T, bool>> expression) =>
             _dbContext.Set<T>()
             .Where(expression);
-
-
 
 
         public void AddRange(IEnumerable<T> entities)
@@ -45,14 +40,12 @@ namespace Oostel.Infrastructure.Repositories
             SaveChanges();
 
         }
-
-
-        public IEnumerable<T> Find(Expression<Func<T, bool>> expression)
+        public async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> expression)
         {
             return _dbContext.Set<T>().Where(expression);
         }
 
-        public IEnumerable<T> FindandInclude(Expression<Func<T, bool>> expression, bool eager)
+        public async Task<IEnumerable<T>> FindandInclude(Expression<Func<T, bool>> expression, bool eager)
         {
             var query = _dbContext.Set<T>().Where(expression);
             if (eager)
@@ -68,7 +61,7 @@ namespace Oostel.Infrastructure.Repositories
             return query;
         }
 
-        public IEnumerable<T> GetAll(bool eager)
+        public async Task<IEnumerable<T>> GetAll(bool eager)
         {
             var query = _dbContext.Set<T>().AsQueryable();
             if (eager)
@@ -89,10 +82,15 @@ namespace Oostel.Infrastructure.Repositories
             return await _dbContext.Set<T>().FindAsync(id);
         }
 
-        public async Task Remove(T entity)
+        public async Task<int> Remove(T entity)
         {
-            _dbContext.Set<T>().Remove(entity);
-            await _dbContext.SaveChangesAsync();
+            _dbSet.Remove(entity);
+            if (_dbContext.Entry(entity).State == EntityState.Detached)
+            {
+                _dbSet.Attach(entity);
+            }
+            _dbSet.Remove(entity);
+            return 1;
         }
 
         public void RemoveRange(IEnumerable<T> entities)
@@ -102,10 +100,15 @@ namespace Oostel.Infrastructure.Repositories
 
         }
 
-        public void Update(T entity)
+        public async Task UpdateAsync(T entity)
         {
-            _dbContext.Set<T>().Update(entity);
-            SaveChanges();
+            _dbSet.Attach(entity);
+            _dbContext.Entry(entity).State = EntityState.Modified;
+        }
+
+        public async Task<int> Count(Expression<Func<T, bool>> expression)
+        {
+            return await _dbSet.CountAsync(expression);
         }
 
         public bool SaveChanges()
