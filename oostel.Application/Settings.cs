@@ -24,7 +24,7 @@ namespace Oostel.Application
 
             services.AddFluentValidation(s =>
             {
-                s.RegisterValidatorsFromAssemblyContaining<UserAuthValidator>();
+                s.RegisterValidatorsFromAssemblyContaining<UserAuthCommandValidator>();
             });
 
             services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
