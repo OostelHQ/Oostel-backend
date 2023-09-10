@@ -11,7 +11,7 @@ namespace Oostel.Infrastructure.Repositories
     {
         Task<T> GetById(int id);
         Task<IEnumerable<T>> GetAll(bool eager);
-        Task<IEnumerable<T>> Find(Expression<Func<T, bool>> expression);
+        Task<T> Find(Expression<Func<T, bool>> expression);
         Task<IEnumerable<T>> FindandInclude(Expression<Func<T, bool>> expression, bool eager);
         Task<T> Add(T entity);
         void AddRange(IEnumerable<T> entities);

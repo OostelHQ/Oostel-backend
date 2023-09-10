@@ -39,9 +39,16 @@ namespace Oostel.Infrastructure.Repositories
             _dbContext.Set<T>().AddRange(entities);
 
         }
-        public async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> expression)
+        public async Task<T> Find(Expression<Func<T, bool>> expression)
         {
-            return _dbContext.Set<T>().Where(expression);
+            if (expression != null)
+            {
+                return await _dbSet.FirstOrDefaultAsync(expression);
+            }
+            else
+            {
+                return await _dbSet.FirstOrDefaultAsync();
+            }
         }
 
         public async Task<IEnumerable<T>> FindandInclude(Expression<Func<T, bool>> expression, bool eager)
