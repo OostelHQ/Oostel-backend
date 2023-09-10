@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Oostel.Domain.Sample
+namespace Oostel.Application.Modules.UserProfiles.Services
 {
-    internal class Sample
+    public class UserProfilesService : IUserProfilesService
     {
     }
 }

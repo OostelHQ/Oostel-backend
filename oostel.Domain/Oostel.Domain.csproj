@@ -10,4 +10,9 @@
     <ProjectReference Include="..\oostel.Common\Oostel.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Hostel\Entities\" />
+    <Folder Include="UserAuthentication\Enum\" />
+  </ItemGroup>
+
 </Project>

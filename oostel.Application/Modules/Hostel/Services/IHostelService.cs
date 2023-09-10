@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Oostel.Domain.Enums
+namespace Oostel.Application.Modules.Hostel.Services
 {
-    public enum Sample
+    public interface IHostelService
     {
     }
 }

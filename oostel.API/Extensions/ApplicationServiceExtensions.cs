@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using Oostel.Infrastructure.Data;
+using Oostel.Application;
 
 namespace Oostel.API.Extensions
 {
@@ -8,6 +9,8 @@ namespace Oostel.API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration _config)
         {
+
+            services.AddServicesConfiguration();
 
             services.AddDbContext<ApplicationDbContext>(Options =>
             {
@@ -22,6 +25,7 @@ namespace Oostel.API.Extensions
                 .AllowAnyHeader()
                 .WithExposedHeaders("X-Pagination"));
             });
+
 
 
             return services;

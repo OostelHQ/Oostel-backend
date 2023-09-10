@@ -7,7 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Samples\Handlers\Queries\SampleRequestHandler\" />
+    <Folder Include="Mappers\HostelMapping\" />
+    <Folder Include="Mappers\UserProfilesMapping\" />
+    <Folder Include="Mappers\UserAuthenticationsMapping\" />
+    <Folder Include="Modules\Hostel\DTOs\" />
+    <Folder Include="Modules\Hostel\Features\Commands\" />
+    <Folder Include="Modules\Hostel\Features\Queries\" />
+    <Folder Include="Modules\UserAuthentication\Features\Commands\" />
+    <Folder Include="Modules\UserAuthentication\Features\Queries\" />
+    <Folder Include="Modules\UserProfiles\DTOs\" />
+    <Folder Include="Modules\UserProfiles\Features\Commands\" />
+    <Folder Include="Modules\UserProfiles\Features\Queries\" />
+    <Folder Include="Validators\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Oostel.Application.Features.Samples.Requests.Commands
+namespace Oostel.Application.Modules.UserAuthentication.Services
 {
-    internal class SampleCommand
+    internal interface IUserAuthenticationService
     {
     }
 }

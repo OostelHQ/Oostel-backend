@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Oostel.Domain
+namespace Oostel.Domain.UserAuthentication.Entities
 {
     public class ApplicationRole : IdentityRole<string>
     {

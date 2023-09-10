@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Oostel.Application.Services.Abstractions
+namespace Oostel.Application.Modules.UserProfiles.Services
 {
-    internal class ISampleService
+    public interface IUserProfilesService
     {
     }
 }
