@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Oostel.Domain;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserProfiles.Entities;
+using Oostel.Infrastructure.Data.Configurations;
 
 namespace Oostel.Infrastructure.Data
 {
@@ -15,6 +16,9 @@ namespace Oostel.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.ConfigureApplicationUser();
+            builder.ConfigureUserProfile();
         }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
