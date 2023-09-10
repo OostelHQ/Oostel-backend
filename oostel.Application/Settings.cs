@@ -1,12 +1,14 @@
 ﻿using FluentValidation.AspNetCore;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Oostel.Application.Modules.Hostel.Services;
 using Oostel.Application.Modules.UserAuthentication.Services;
 using Oostel.Application.Modules.UserProfiles.Services;
 using Oostel.Application.Validators.UserAuthentication;
+using Oostel.Infrastructure.EmailService;
 using System.Reflection;
 
 
@@ -26,6 +28,9 @@ namespace Oostel.Application
             {
                 s.RegisterValidatorsFromAssemblyContaining<UserAuthCommandValidator>();
             });
+
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<ITokenService, TokenService>();
 
             services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
 
