@@ -21,5 +21,6 @@ namespace Oostel.Infrastructure.Repositories
         Task<IQueryable<T>> FindByCondition(Expression<Func<T, bool>> expression);
 
         Task<int> Count(Expression<Func<T, bool>> expression);
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

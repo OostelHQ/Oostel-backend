@@ -37,7 +37,6 @@ namespace Oostel.Infrastructure.Repositories
         public void AddRange(IEnumerable<T> entities)
         {
             _dbContext.Set<T>().AddRange(entities);
-            SaveChanges();
 
         }
         public async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> expression)
@@ -96,8 +95,6 @@ namespace Oostel.Infrastructure.Repositories
         public void RemoveRange(IEnumerable<T> entities)
         {
             _dbContext.Set<T>().RemoveRange(entities);
-            SaveChanges();
-
         }
 
         public async Task UpdateAsync(T entity)
@@ -111,9 +108,9 @@ namespace Oostel.Infrastructure.Repositories
             return await _dbSet.CountAsync(expression);
         }
 
-        public bool SaveChanges()
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
-            return _dbContext.SaveChanges() > 0;
+            return await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
 
