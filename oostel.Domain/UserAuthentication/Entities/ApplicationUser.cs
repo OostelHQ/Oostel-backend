@@ -17,6 +17,7 @@ namespace Oostel.Domain.UserAuthentication.Entities
         public DateTime? LastSeenDate { get; set; }
         public bool IsBlocked { get; set; } = false;
 
+        public ICollection<UserOTP> UserOTPs { get; set; }
         public virtual UserProfile UserProfile { get; set; }
 
         public ApplicationUser()

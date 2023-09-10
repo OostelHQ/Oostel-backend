@@ -6,16 +6,19 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Oostel.Infrastructure.Data;
+using Oostel.Common.Types;
 
 namespace Oostel.Infrastructure.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T, TKey> : IGenericRepository<T, TKey> where T : BaseEntity<TKey>
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly DbSet<T> _dbSet;
 
         public GenericRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
+            _dbSet = _dbContext.Set<T>();
         }
 
         public async Task<T> Add(T entity)
