@@ -27,6 +27,8 @@ namespace Oostel.Common.Constants
         public const string ConfirmPasswordResponse = "Password doesn't match its confirmation";
         public const string ResendEmailVerificationLink = "Email verification resent!";
         public const string DeleteUserAccountErrorMessage = "User deleted permanently!";
+        public const string UserBlockedErrorMessage = "User account is blocked!";
+        public const string InvalidOTPRequest = "Invalid OTP";
 
     }
 }

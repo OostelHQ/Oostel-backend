@@ -196,7 +196,6 @@ namespace Oostel.Infrastructure.Migrations
                     ProfilePhotoURL = table.Column<string>(type: "text", nullable: true),
                     Religion = table.Column<string>(type: "text", nullable: false),
                     Age = table.Column<int>(type: "integer", nullable: false),
-                    Denomination = table.Column<string>(type: "text", nullable: false),
                     Hobby = table.Column<string>(type: "text", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)

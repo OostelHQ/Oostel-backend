@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Oostel.Application.Modules.UserAuthentication.DTOs;
 using Oostel.Application.Modules.UserAuthentication.Services;
 using Oostel.Common.Constants;
+using Oostel.Common.Enums;
 using Oostel.Common.Helpers;
 using Oostel.Common.Types;
 using Oostel.Domain.UserAuthentication.Entities;
@@ -14,7 +15,11 @@ namespace Oostel.Application.Modules.UserAuthentication.Features.Commands
 {
     public class RegisterUserCommand : IRequest<APIResponse>
     {
-        public UserRegisterDTO userRegisterDTO { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string EmailAddress { get; set; }
+        public string Password { get; set; }
+        public RoleType RoleType { get; set; }
         public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, APIResponse>
         {
             private readonly UserManager<ApplicationUser> _userManager;
@@ -33,20 +38,20 @@ namespace Oostel.Application.Modules.UserAuthentication.Features.Commands
 
                 var newUser = new ApplicationUser()
                 {
-                    FirstName = request.userRegisterDTO.FirstName,
-                    LastName = request.userRegisterDTO.LastName,
-                    UserName = request.userRegisterDTO.EmailAddress,
-                    Email = request.userRegisterDTO.EmailAddress,                   
-                    RolesCSV = request.userRegisterDTO.RoleType.GetEnumDescription()
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    UserName = request.EmailAddress,
+                    Email = request.EmailAddress,                   
+                    RolesCSV = request.RoleType.GetEnumDescription()
                 };
 
-                if (await _userManager.Users.AnyAsync(x => x.Email == request.userRegisterDTO.EmailAddress))
+                if (await _userManager.Users.AnyAsync(x => x.Email == request.EmailAddress))
                 {
                     failedResponse.Data = new { message = ResponseMessages.UserExists, StatusCode = "400" };
                     return failedResponse;
                 }
 
-                var result = await _userManager.CreateAsync(newUser, request.userRegisterDTO.Password);
+                var result = await _userManager.CreateAsync(newUser, request.Password);
 
                 if (!result.Succeeded)
                 {
@@ -54,15 +59,15 @@ namespace Oostel.Application.Modules.UserAuthentication.Features.Commands
                     return failedResponse;
                 }
 
-                var addUserRole = await _userManager.AddToRoleAsync(newUser, request.userRegisterDTO.RoleType.GetEnumDescription());
+                var addUserRole = await _userManager.AddToRoleAsync(newUser, request.RoleType.GetEnumDescription());
                 if (!addUserRole.Succeeded)
                 {
                     failedResponse.Data = addUserRole.Errors.Select(x => x.Code + " : " + x.Description);
                     return failedResponse;
                 }
 
-                var user = await _userManager.FindByEmailAsync(request.userRegisterDTO.EmailAddress);
-                if (user != null)
+                var user = await _userManager.FindByEmailAsync(request.EmailAddress);
+                if (user != null)   
                 {
                     var emailVerificationResult = await _userAuthenticationService.SendVerifyOTPToUserEmail(user, cancellationToken);
                     if(emailVerificationResult)

@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Mappers\HostelMapping\" />
     <Folder Include="Mappers\UserProfilesMapping\" />
-    <Folder Include="Mappers\UserAuthenticationsMapping\" />
     <Folder Include="Modules\Hostel\DTOs\" />
     <Folder Include="Modules\Hostel\Features\Commands\" />
     <Folder Include="Modules\Hostel\Features\Queries\" />

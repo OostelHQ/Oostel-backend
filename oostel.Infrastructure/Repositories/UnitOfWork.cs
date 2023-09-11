@@ -12,7 +12,7 @@ namespace Oostel.Infrastructure.Repositories
     {
 
         ApplicationDbContext _context;
-        public void Dispose(ApplicationDbContext context)
+        public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
         }

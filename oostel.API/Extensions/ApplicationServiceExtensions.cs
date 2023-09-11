@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Oostel.Application.Modules.UserAuthentication.Services;
 using Oostel.Infrastructure.EmailService;
 using Oostel.Infrastructure.Repositories;
+using Oostel.Application.Modules.UserAuthentication.Features.Commands;
+using System.Reflection;
 
 namespace Oostel.API.Extensions
 {
@@ -18,10 +20,14 @@ namespace Oostel.API.Extensions
 
             services.AddScoped<UnitOfWork>();
 
+            services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
+
             services.AddDbContext<ApplicationDbContext>(Options =>
             {
                 Options.UseNpgsql(_config.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(RegisterUserCommand).GetTypeInfo().Assembly));
 
             services.AddCors(options =>
             {

@@ -26,11 +26,12 @@ namespace Oostel.Application
 
             services.AddFluentValidation(s =>
             {
-                s.RegisterValidatorsFromAssemblyContaining<UserAuthCommandValidator>();
+                s.RegisterValidatorsFromAssemblyContaining<RegisterUserCommandValidator>();
             });
 
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<ITokenService, TokenService>();
+
 
             services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
 

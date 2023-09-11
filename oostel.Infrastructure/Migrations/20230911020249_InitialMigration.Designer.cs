@@ -12,7 +12,7 @@ using Oostel.Infrastructure.Data;
 namespace Oostel.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230910115015_InitialMigration")]
+    [Migration("20230911020249_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -284,10 +284,6 @@ namespace Oostel.Infrastructure.Migrations
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Denomination")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<string>("Gender")
                         .IsRequired()

@@ -1,7 +1,9 @@
 ﻿using Mailjet.Client.Resources;
+using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
+using Oostel.Application.Modules.UserAuthentication.DTOs;
 using Oostel.Common.Helpers;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Infrastructure.Repositories;
@@ -51,6 +53,37 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
 
             return saveState > 0 ? await SendRegisterVerifyEmail(user.Email, generatedCode, user.LastName) : false;
 
+        }
+
+        public async Task<bool> VerifyUserOTPFromEmail(string codeReceived, string userId)
+        {
+            var OtpFromDB = await _unitOfWork.UserOTPRepository.Find(x => x.UserId == userId);
+
+            if (OtpFromDB != null)
+            {
+                if (OtpFromDB.Otp == codeReceived)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public async Task<OtpVerificationResponse> VerifyResetPasswordOTPEmail(ApplicationUser user, string Otp)
+        {
+            //get the otp
+            var userOtpFromDB = (await _unitOfWork.UserOTPRepository.Find(x => x.UserId == user.Id));
+            if (userOtpFromDB == null)
+                return new OtpVerificationResponse { Message = "Invalid OTP", Success = false };
+
+            //if otp is expired return false
+            var machineDate = DateTime.UtcNow;
+            if (machineDate > userOtpFromDB.LastModifiedDate.Value.AddHours(1))
+                return new OtpVerificationResponse { Message = "OTP Expired", Success = false }; ;
+
+            if (userOtpFromDB.Otp == Otp)
+                return new OtpVerificationResponse { Message = "OTP Validated", Success = true }; ;
+            return new OtpVerificationResponse { Message = "Invalid OTP", Success = false }; ;
         }
 
         private async Task<bool> SendRegisterVerifyEmail(string email, string generatedCode, string lastname)

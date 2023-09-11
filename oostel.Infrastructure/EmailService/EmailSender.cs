@@ -18,7 +18,7 @@ namespace Oostel.Infrastructure.EmailService
 
         public async Task SendEmailAsync(string email, string subject, string body)
         {
-            MailjetClient client = new MailjetClient("a5c40e5c36c8db1f9fd9e82cafb12b41", "a27259756955ea0d61d4cf12005391e6")//_config["Mailjet : APIKey"], _config["Mailjet : SecretKey"])
+            MailjetClient client = new MailjetClient("61ad72cb57d19e529e18f9340ea6730b", "ded532f83c336c0cf6a6273cfbaa38d4")//_config["Mailjet : APIKey"], _config["Mailjet : SecretKey"])
             {
 
             };
@@ -28,7 +28,7 @@ namespace Oostel.Infrastructure.EmailService
             }
 
 
-            .Property(Send.FromEmail, "ajeigbekehindeowooluwa@gmail.com")
+            .Property(Send.FromEmail, "ajeigbekehinde160@gmail.com")
             .Property(Send.FromName, "Oostel Management")
             .Property(Send.Subject, subject)
             .Property(Send.HtmlPart, body)

@@ -19,7 +19,7 @@ namespace Oostel.Common.Helpers
                 strrandom += temp;
             }
 
-            return strrandom[..6];
+            return strrandom[..4];
         }
     }
 }
