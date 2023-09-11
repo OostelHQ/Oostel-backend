@@ -59,7 +59,7 @@ namespace Oostel.Application.Modules.UserAuthentication.Features.Commands
                 //TODO: Fix Update User Issue
                 await _userManager.UpdateAsync(user);
 
-                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: _tokenService.CreateUserObject(user), ResponseMessages.LoginMessage);
+                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: await _tokenService.CreateUserObject(user), ResponseMessages.LoginMessage);
             }
         }
     }

@@ -55,6 +55,30 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
 
         }
 
+
+        public async Task<bool> SendVerifyResetPasswordOTPToUserEmail(ApplicationUser user, CancellationToken cancellationToken)
+        {
+            var userOtpFromDb = await _unitOfWork.UserOTPRepository.Find(x => x.UserId == user.Id);
+
+            var generatedCode = RandomCodeGenerator.GenerateNumbers();
+            if (userOtpFromDb == null)
+            {
+                userOtpFromDb = new UserOTP(user.Id, generatedCode);
+                await _unitOfWork.UserOTPRepository.Add(userOtpFromDb);
+            }
+            else
+            {
+                userOtpFromDb.LastModifiedDate = DateTime.UtcNow;
+                userOtpFromDb.Otp = generatedCode;
+                await _unitOfWork.UserOTPRepository.UpdateAsync(userOtpFromDb);
+            }
+
+            var saveState = await _unitOfWork.SaveAsync(cancellationToken);
+
+            return saveState > 0 ? await SendResetPasswordVerifyEmail(user.Email, generatedCode, user.LastName) : false;
+
+        }
+
         public async Task<bool> VerifyUserOTPFromEmail(string codeReceived, string userId)
         {
             var OtpFromDB = await _unitOfWork.UserOTPRepository.Find(x => x.UserId == userId);
@@ -94,6 +118,18 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
              $"<p><b>{generatedCode}</b></p>";
 
             await _emailSender.SendEmailAsync(email, $"Please Verify Your Email", message);
+
+            return true;
+        }
+
+        private async Task<bool> SendResetPasswordVerifyEmail(string email, string generatedCode, string lastname)
+        {
+
+            var message = $"<p><b>Hello, {lastname}!</b></p>" +
+             $"<p>Kindly reset your password with verified OTP below</p><p>" +
+             $"<p><b>{generatedCode}</b></p>";
+
+            await _emailSender.SendEmailAsync(email, $"Reset Your Password", message);
 
             return true;
         }

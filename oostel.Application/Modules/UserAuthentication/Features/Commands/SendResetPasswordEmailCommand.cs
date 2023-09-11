@@ -33,7 +33,7 @@ namespace Oostel.Application.Modules.UserAuthentication.Features.Commands
                     return APIResponse.GetFailureMessage(HttpStatusCode.NotFound, null, ResponseMessages.NotFound);
                 }
                 //send the reset OTP to the user
-                await _userAuthenticationService.SendVerifyOTPToUserEmail(user, cancellationToken);
+                await _userAuthenticationService.SendVerifyResetPasswordOTPToUserEmail(user, cancellationToken);
 
                 return APIResponse.GetSuccessMessage(HttpStatusCode.Created, null, ResponseMessages.SuccessfulCreation);
             }

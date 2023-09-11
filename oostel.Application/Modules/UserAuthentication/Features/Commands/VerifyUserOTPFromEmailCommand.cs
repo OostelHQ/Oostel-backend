@@ -48,7 +48,7 @@ namespace Oostel.Application.Modules.UserAuthentication.Features.Commands
                     {
                         return APIResponse.GetFailureMessage(HttpStatusCode.NotFound, null, ResponseMessages.EmailNotConfirmed);
                     }
-                    return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: user.Id, ResponseMessages.SuccessfulCreation);
+                    return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: null, ResponseMessages.SuccessfulCreation);
                 }
                 return APIResponse.GetFailureMessage(HttpStatusCode.NotFound, null, ResponseMessages.InvalidOTPRequest);
             }

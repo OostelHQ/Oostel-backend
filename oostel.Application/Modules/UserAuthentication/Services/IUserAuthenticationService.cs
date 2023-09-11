@@ -13,6 +13,7 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
         Task<bool> SendVerifyOTPToUserEmail(ApplicationUser user, CancellationToken cancellationToken);
         Task<bool> VerifyUserOTPFromEmail(string codeReceived, string userId);
         Task<OtpVerificationResponse> VerifyResetPasswordOTPEmail(ApplicationUser user, string Otp);
+        Task<bool> SendVerifyResetPasswordOTPToUserEmail(ApplicationUser user, CancellationToken cancellationToken);
 
     }
 }
