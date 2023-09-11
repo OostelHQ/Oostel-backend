@@ -19,5 +19,39 @@ namespace Oostel.API.Controllers
             var registerRequest = _mapper.Map<RegisterUserCommand>(request);
             return HandleResult(await Mediator.Send(registerRequest));
         }
+
+        [HttpPost()]
+        [Route(UserAuthenticationRoute.LoginUser)]
+        public async Task<ActionResult<APIResponse>> LoginUser(LoginUserRequest request)
+        {
+            var loginRequest = _mapper.Map<LoginUserCommand>(request);
+            return HandleResult(await Mediator.Send(loginRequest));
+        }
+
+
+        [HttpPost()]
+        [Route(UserAuthenticationRoute.VerifyOTPEmail)]
+        public async Task<ActionResult<APIResponse>> VerifyUserOTPEmail(VerifyOTPRequest request)
+        {
+            var verifyUserOTP = _mapper.Map<VerifyUserOTPFromEmailCommand>(request);
+            return HandleResult(await Mediator.Send(verifyUserOTP));
+        }
+
+        [HttpPost()]
+        [Route(UserAuthenticationRoute.SendResetPasswordOTP)]
+        public async Task<ActionResult<APIResponse>> SendResetPasswordOTP(SendResetPasswordRequest request)
+        {
+            var sendResetPasswordOTP = _mapper.Map<SendResetPasswordEmailCommand>(request);
+            return HandleResult(await Mediator.Send(sendResetPasswordOTP));
+        }
+
+        [HttpPost()]
+        [Route(UserAuthenticationRoute.ResetPassword)]
+        public async Task<ActionResult<APIResponse>> ResetPassword(ResetPasswordRequest request)
+        {
+            var resetPasswordOTP = _mapper.Map<ResetPasswordCommand>(request);
+            return HandleResult(await Mediator.Send(resetPasswordOTP));
+        }
+
     }
 }

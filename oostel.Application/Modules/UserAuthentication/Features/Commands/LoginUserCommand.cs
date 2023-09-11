@@ -32,15 +32,16 @@ namespace Oostel.Application.Modules.UserAuthentication.Features.Commands
             {
                 var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == request.EmailAddress);
 
+                if (user is null)
+                {
+                    return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.NotFound);
+                }
+
                 if (user.IsBlocked)
                 {
                     return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.UserBlockedErrorMessage);
                 }
 
-                if (user is null)
-                {
-                    return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.NotFound);
-                }
 
                 if (!await _userManager.IsEmailConfirmedAsync(user))
                 {
