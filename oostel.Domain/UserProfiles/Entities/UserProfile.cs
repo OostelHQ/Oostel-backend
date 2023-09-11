@@ -17,8 +17,19 @@ namespace Oostel.Domain.UserProfiles.Entities
         public string? ProfilePhotoURL { get; set; }
         public string Religion { get; set; }
         public int Age { get; set; }
-        public string Denomination { get; set; }
         public string Hobby { get; set; }
         public virtual ApplicationUser User { get; set; }
+
+        public UserProfile()
+        {
+            LastModifiedDate = DateTime.UtcNow;
+            CreatedDate = DateTime.UtcNow;
+        }
+
+        public UserProfile(string userId) : base(userId)
+        {
+            LastModifiedDate = DateTime.UtcNow;
+            CreatedDate = DateTime.UtcNow;
+        }
     }
 }

@@ -2,6 +2,10 @@
 using System.Text.Json;
 using Oostel.Infrastructure.Data;
 using Oostel.Application;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Oostel.Application.Modules.UserAuthentication.Services;
+using Oostel.Infrastructure.EmailService;
+using Oostel.Infrastructure.Repositories;
 
 namespace Oostel.API.Extensions
 {
@@ -11,6 +15,8 @@ namespace Oostel.API.Extensions
         {
 
             services.AddServicesConfiguration(_config);
+
+            services.AddScoped<UnitOfWork>();
 
             services.AddDbContext<ApplicationDbContext>(Options =>
             {
@@ -26,7 +32,7 @@ namespace Oostel.API.Extensions
                 .WithExposedHeaders("X-Pagination"));
             });
 
-
+            services.AddIdentityServices(_config);
 
             return services;
         }

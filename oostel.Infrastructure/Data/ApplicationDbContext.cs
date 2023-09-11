@@ -13,6 +13,7 @@ namespace Oostel.Infrastructure.Data
         {
 
         }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

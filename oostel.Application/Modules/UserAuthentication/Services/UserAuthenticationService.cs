@@ -19,13 +19,15 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
         private readonly IEmailSender _emailSender;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly UnitOfWork _unitOfWork;
-        public UserAuthenticationService(IConfiguration configuration, IEmailSender emailSender, UserManager<ApplicationUser> userManager,
+        private readonly ITokenService _tokenService;
+        public UserAuthenticationService(IConfiguration configuration, ITokenService tokenService, IEmailSender emailSender, UserManager<ApplicationUser> userManager,
             UnitOfWork unitOfWork)
         {
             _configuration = configuration;
             _emailSender = emailSender;
             _userManager = userManager;
             _unitOfWork = unitOfWork;
+            _tokenService = tokenService;
         }
 
         public async Task<bool> SendVerifyOTPToUserEmail(ApplicationUser user, CancellationToken cancellationToken)
