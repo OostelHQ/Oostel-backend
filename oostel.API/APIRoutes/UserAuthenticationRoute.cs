@@ -4,5 +4,8 @@
     {
         public const string RegisterUser = "authenticateuser/register-user";
         public const string LoginUser = "authenticateuser/login-user";
+        public const string VerifyOTPEmail = "authenticateuser/verify-otp-email";
+        public const string SendResetPasswordOTP = "authenticateuser/Send-reset-password-otp";
+        public const string ResetPassword = "authenticateuser/reset-password";
     }
 }
