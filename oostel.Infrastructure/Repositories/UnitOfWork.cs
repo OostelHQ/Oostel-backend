@@ -1,4 +1,5 @@
 ﻿using Oostel.Domain.UserAuthentication.Entities;
+using Oostel.Domain.UserProfiles.Entities;
 using Oostel.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace Oostel.Infrastructure.Repositories
         }
 
         private GenericRepository<UserOTP, string> userOTPRepository;
+        private GenericRepository<UserProfile, string> userProfileRepository;
 
         public GenericRepository<UserOTP, string> UserOTPRepository
         {
@@ -31,6 +33,19 @@ namespace Oostel.Infrastructure.Repositories
                 return userOTPRepository;
             }
         }
+
+        public GenericRepository<UserProfile, string> UserProfileRepository
+        {
+            get
+            {
+                if (userProfileRepository == null)
+                {
+                    userProfileRepository = new GenericRepository<UserProfile, string>(_context);
+                }
+                return userProfileRepository;
+            }
+        }
+
         public async Task<int> SaveAsync(CancellationToken cancellationToken)
         {
             return await _context.SaveChangesAsync(cancellationToken);

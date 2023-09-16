@@ -26,8 +26,6 @@
   <ItemGroup>
     <Folder Include="ActionFilters\" />
     <Folder Include="Controllers\HostelsController\" />
-    <Folder Include="Controllers\UserProfilesController\" />
-    <Folder Include="ViewModels\UserProfilesVM\" />
   </ItemGroup>
 
   <ItemGroup>

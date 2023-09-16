@@ -9,7 +9,7 @@ namespace Oostel.Infrastructure.Repositories
 {
     public interface IGenericRepository<T, TKey> where T : class
     {
-        Task<T> GetById(int id);
+        Task<T> GetById(string id);
         Task<IEnumerable<T>> GetAll(bool eager);
         Task<T> Find(Expression<Func<T, bool>> expression);
         Task<IEnumerable<T>> FindandInclude(Expression<Func<T, bool>> expression, bool eager);

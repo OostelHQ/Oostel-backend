@@ -8,14 +8,10 @@
 
   <ItemGroup>
     <Folder Include="Mappers\HostelMapping\" />
-    <Folder Include="Mappers\UserProfilesMapping\" />
     <Folder Include="Modules\Hostel\DTOs\" />
     <Folder Include="Modules\Hostel\Features\Commands\" />
     <Folder Include="Modules\Hostel\Features\Queries\" />
     <Folder Include="Modules\UserAuthentication\Features\Queries\" />
-    <Folder Include="Modules\UserProfiles\DTOs\" />
-    <Folder Include="Modules\UserProfiles\Features\Commands\" />
-    <Folder Include="Modules\UserProfiles\Features\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

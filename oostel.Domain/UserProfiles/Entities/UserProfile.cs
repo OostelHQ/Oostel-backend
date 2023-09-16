@@ -10,7 +10,6 @@ namespace Oostel.Domain.UserProfiles.Entities
 {
     public class UserProfile : BaseEntity<string>
     {
-        public string PhoneNumber { get; set; }
         public string StateOfOrigin { get; set; }
         public string Gender { get; set; }
         public string SchoolLevel { get; set; }
