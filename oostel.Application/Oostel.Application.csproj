@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Mappers\HostelMapping\" />
-    <Folder Include="Modules\Hostel\DTOs\" />
     <Folder Include="Modules\Hostel\Features\Commands\" />
     <Folder Include="Modules\Hostel\Features\Queries\" />
     <Folder Include="Modules\UserAuthentication\Features\Queries\" />
