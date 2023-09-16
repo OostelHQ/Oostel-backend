@@ -10,6 +10,7 @@ namespace Oostel.Domain.Hostel.Entities
 {
     public class Hostel: BaseEntity<string>
     {
+        public string UserId { get; set; }
         public string HostelName { get; set; }
         public string HostelDescription { get; set; }
         public int TotalRoom { get; set; }
@@ -24,5 +25,38 @@ namespace Oostel.Domain.Hostel.Entities
         public bool IsAnyRoomVacant { get; set; }
         public ICollection<Room> Rooms { get; set; }
         public UserProfile User { get; set; }
+
+
+        public Hostel()
+        {
+            LastModifiedDate = DateTime.UtcNow;
+            CreatedDate = DateTime.UtcNow;
+        }
+
+        private Hostel(string userId, string hostelName, string hostelDescription, int totalRoom, decimal homeSize,
+            string street, string junction, string state, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
+            bool isAnyRoomVacant) : base(Guid.NewGuid().ToString())
+        {
+            UserId = userId;
+            HostelName = hostelName;
+            HostelDescription = hostelDescription;
+            TotalRoom = totalRoom;
+            HomeSize= homeSize;
+            Street = street;
+            Junction = junction;
+            State = state;
+            Country = country;
+            RulesAndRegulation = rulesAndRegulation;
+            HostelFacilities = hostelFacilities;
+            IsAnyRoomVacant= isAnyRoomVacant;
+        }
+
+        public static Hostel CreateHostelFactory(string userId, string hostelName, string hostelDescription, int totalRoom, decimal homeSize,
+            string street, string junction, string state, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
+            bool isAnyRoomVacant)
+        {
+            return new Hostel(userId, hostelName, hostelDescription, totalRoom, homeSize, street, junction, state, country,
+                rulesAndRegulation, hostelFacilities, isAnyRoomVacant);
+        }
     }
 }
