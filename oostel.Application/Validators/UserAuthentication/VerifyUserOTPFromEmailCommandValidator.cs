@@ -11,8 +11,8 @@ namespace Oostel.Application.Validators.UserAuthentication
     {
         public VerifyUserOTPFromEmailCommandValidator()
         {
-            RuleFor(x => x.Email).EmailAddress().NotEmpty().MaximumLength(100);
-            RuleFor(x => x.Otp).NotEmpty().Length(4);
+            RuleFor(x => x.Email).EmailAddress().NotEmpty().MaximumLength(100).WithMessage("Email Address is required"); ;
+            RuleFor(x => x.Otp).NotEmpty().Length(4).WithMessage("OTP is required"); ;
         }
     }
 }

@@ -17,8 +17,7 @@ namespace Oostel.Application.Validators.UserProfile
             RuleFor(w => w.SchoolLevel).MaximumLength(100); 
             RuleFor(p => p.StateOfOrigin).MaximumLength(100);
             RuleFor(p => p.Hobby).MaximumLength(100);
-            RuleFor(p => p.Age).NotEmpty();
-            RuleFor(p => p.Gender).NotEmpty();
+
         }
     }
 }

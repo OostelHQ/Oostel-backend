@@ -1,8 +1,11 @@
 ﻿using MapsterMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserProfiles.Entities;
+using Oostel.Infrastructure.Media;
 using Oostel.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
@@ -17,27 +20,29 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public UserProfilesService(UserManager<ApplicationUser> userManager, UnitOfWork unitOfWork, IMapper mapper)
+        private readonly IMediaUpload _mediaUpload;
+        public UserProfilesService(UserManager<ApplicationUser> userManager, UnitOfWork unitOfWork, IMediaUpload mediaUpload, IMapper mapper)
         {
             _unitOfWork= unitOfWork;
             _userManager= userManager;
             _mapper= mapper;
+            _mediaUpload = mediaUpload;
         }
 
-        public async Task<List<UserProfileDTO>> GetAllUserProfile()
+        public async Task<List<GetUserProfileDTO>> GetAllUserProfile()
         {
             var userProfile = await _unitOfWork.UserProfileRepository.GetAll(true);
-            var userProfileMapping = _mapper.Map<List<UserProfileDTO>>(userProfile);
+            var userProfileMapping = _mapper.Map<List<GetUserProfileDTO>>(userProfile);
 
             return userProfileMapping;
         }
 
-        public async Task<UserProfileDTO> GetUserProfileById(string id)
+        public async Task<GetUserProfileDTO> GetUserProfileById(string userId)
         {
-            var userProfile = await _unitOfWork.UserProfileRepository.GetById(id);
+            var userProfile = await _unitOfWork.UserProfileRepository.GetById(userId);
             if (userProfile is null) return null;
 
-            var userProfileMapping = _mapper.Map<UserProfileDTO>(userProfile);
+            var userProfileMapping = _mapper.Map<GetUserProfileDTO>(userProfile);
             return userProfileMapping;
         }
         public async Task<bool> UpdateUserProfile(UserProfileDTO userProfileDTO)
@@ -90,6 +95,19 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             {
                 return false;
             }
+
+            return true;
+        }
+
+        public async Task<bool> UploadDisplayPictureAsync(IFormFile file, string userId)
+        {
+            var user = await _unitOfWork.UserProfileRepository.GetById(userId);
+            if (user == null) return false;
+
+            var photoUploadResult = await _mediaUpload.UploadPhoto(file);
+            user.ProfilePhotoURL = photoUploadResult.Url;
+
+            await _unitOfWork.UserProfileRepository.UpdateAsync(user);
 
             return true;
         }

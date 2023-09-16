@@ -1,4 +1,5 @@
-﻿using Oostel.Application.Modules.UserProfiles.DTOs;
+﻿using Microsoft.AspNetCore.Http;
+using Oostel.Application.Modules.UserProfiles.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 {
     public interface IUserProfilesService
     {
-        Task<List<UserProfileDTO>> GetAllUserProfile();
-        Task<UserProfileDTO> GetUserProfileById(string id);
+        Task<List<GetUserProfileDTO>> GetAllUserProfile();
+        Task<GetUserProfileDTO> GetUserProfileById(string id);
         Task<bool> UpdateUserProfile(UserProfileDTO userProfileDTO);
         Task<bool> CreateUserProfile(UserProfileDTO userProfileDTO);
-
+        Task<bool> UploadDisplayPictureAsync(IFormFile file, string userId);
     }
 }

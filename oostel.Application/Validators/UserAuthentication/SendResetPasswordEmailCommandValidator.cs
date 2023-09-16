@@ -11,7 +11,7 @@ namespace Oostel.Application.Validators.UserAuthentication
     {
         public SendResetPasswordEmailCommandValidator()
         {
-            RuleFor(x => x.Email).EmailAddress().NotEmpty().MaximumLength(100);
+            RuleFor(x => x.Email).EmailAddress().NotEmpty().MaximumLength(100).WithMessage("Email is required"); ;
         }
     }
 }

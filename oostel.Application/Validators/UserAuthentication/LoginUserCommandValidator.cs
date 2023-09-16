@@ -11,8 +11,8 @@ namespace Oostel.Application.Validators.UserAuthentication
     {
         public LoginUserCommandValidator()
         {
-            RuleFor(x => x.EmailAddress).EmailAddress().NotEmpty().MaximumLength(100);
-            RuleFor(x => x.Password).NotEmpty().MaximumLength(100);
+            RuleFor(x => x.EmailAddress).EmailAddress().NotEmpty().MaximumLength(100).WithMessage("Email Address is required"); ;
+            RuleFor(x => x.Password).NotEmpty().MaximumLength(100).WithMessage("Password is required"); ;
         }
     }
 }

@@ -9,6 +9,7 @@ using Oostel.Application.Modules.UserAuthentication.Services;
 using Oostel.Application.Modules.UserProfiles.Services;
 using Oostel.Application.Validators.UserAuthentication;
 using Oostel.Infrastructure.EmailService;
+using Oostel.Infrastructure.Media;
 using System.Reflection;
 
 
@@ -32,6 +33,8 @@ namespace Oostel.Application
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<ITokenService, TokenService>();
 
+            services.Configure<CloudinarySettings>(_configuration.GetSection("CloudinarySettings"));
+            services.AddScoped<IMediaUpload, MediaUpload>();
 
             services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
 
