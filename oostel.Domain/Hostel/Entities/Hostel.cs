@@ -21,7 +21,7 @@ namespace Oostel.Domain.Hostel.Entities
         public string Country { get; set; }
         public List<string> RulesAndRegulation { get; set; }
         public List<string> HostelFacilities { get; set; }
-        public string HostelFrontViewPicture { get; set; }
+        public string? HostelFrontViewPicture { get; set; }
         public bool IsAnyRoomVacant { get; set; }
         public ICollection<Room> Rooms { get; set; }
         public UserProfile User { get; set; }
@@ -48,6 +48,8 @@ namespace Oostel.Domain.Hostel.Entities
             RulesAndRegulation = rulesAndRegulation;
             HostelFacilities = hostelFacilities;
             IsAnyRoomVacant= isAnyRoomVacant;
+            LastModifiedDate = DateTime.UtcNow;
+            CreatedDate = DateTime.UtcNow;
         }
 
         public static Hostel CreateHostelFactory(string userId, string hostelName, string hostelDescription, int totalRoom, decimal homeSize,

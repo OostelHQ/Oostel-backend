@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Oostel.Application.Modules.Hostel.Services;
 using Oostel.Application.Modules.UserAuthentication.Services;
 using Oostel.Application.Modules.UserProfiles.Services;
+using Oostel.Application.UserAccessors;
 using Oostel.Application.Validators.UserAuthentication;
 using Oostel.Infrastructure.EmailService;
 using Oostel.Infrastructure.Media;
@@ -35,6 +36,7 @@ namespace Oostel.Application
 
             services.Configure<CloudinarySettings>(_configuration.GetSection("CloudinarySettings"));
             services.AddScoped<IMediaUpload, MediaUpload>();
+            services.AddScoped<UserAccessor>();
 
             services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
 

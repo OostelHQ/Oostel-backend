@@ -18,7 +18,7 @@ namespace Oostel.API.Controllers
 
         [HttpPost]
         [Route(HostelRoute.CreateHostel)]
-        public async Task<ActionResult<APIResponse>> CreateHostel(HostelRequest request)
+        public async Task<ActionResult<APIResponse>> CreateHostel([FromForm]HostelRequest request)
         {
             var hostelRequest = _mapper.Map<CreateHostelCommand>(request);
             return HandleResult(await Mediator.Send(hostelRequest));

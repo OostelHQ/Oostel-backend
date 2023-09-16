@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserProfiles.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Oostel.Infrastructure.Data.Configurations
             modelBuilder.Entity<UserProfile>()
                 .HasMany(h => h.Hostels)
                 .WithOne(u => u.User)
-                .HasForeignKey(u => u.Id)
+                .HasForeignKey(u => u.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

@@ -18,7 +18,7 @@ namespace Oostel.Application.UserAccessors
 
         public async Task<ApplicationUser> CheckIfTheUserExist(string userId)
         {
-            var user = await _userManager.FindByNameAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);
             return user;
         }
     }
