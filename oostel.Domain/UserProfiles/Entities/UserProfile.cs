@@ -18,6 +18,7 @@ namespace Oostel.Domain.UserProfiles.Entities
         public int Age { get; set; }
         public string Hobby { get; set; }
         public virtual ApplicationUser User { get; set; }
+        public ICollection<Domain.Hostel.Entities.Hostel> Hostels { get; set; }
 
         public UserProfile()
         {

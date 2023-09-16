@@ -13,6 +13,12 @@ namespace Oostel.Infrastructure.Data.Configurations
         public static void ConfigureUserProfile(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserProfile>().HasKey(u => u.Id);
+
+            modelBuilder.Entity<UserProfile>()
+                .HasMany(h => h.Hostels)
+                .WithOne(u => u.User)
+                .HasForeignKey(u => u.Id)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
