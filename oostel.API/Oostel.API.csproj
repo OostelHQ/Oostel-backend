@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="ActionFilters\" />
-    <Folder Include="Controllers\HostelsController\" />
   </ItemGroup>
 
   <ItemGroup>
