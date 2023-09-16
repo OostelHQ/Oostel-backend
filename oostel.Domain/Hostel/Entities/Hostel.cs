@@ -26,7 +26,6 @@ namespace Oostel.Domain.Hostel.Entities
         public ICollection<Room> Rooms { get; set; }
         public UserProfile User { get; set; }
 
-
         public Hostel()
         {
             LastModifiedDate = DateTime.UtcNow;
