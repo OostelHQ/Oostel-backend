@@ -78,6 +78,37 @@ namespace Oostel.Application.Modules.Hostel.Services
             return hostelDto;
         }
 
+        public async Task<bool> CreateRoomForHostel(string userId, RoomDTO roomDTO)
+        {
+            var user = await _userAccessor.CheckIfTheUserExist(userId);
+            if (user is null) return false;
 
+            var hostel = await GetHostelById(roomDTO.HostelId);
+            if (hostel is null) return false;
+
+            var existingRoom = await _unitOfWork.RoomRepository.GetById(roomDTO.HostelId);
+            if(existingRoom is null)
+            {
+                var room = Room.CreateRoomForHostelFactory(roomDTO.RoomNumber, roomDTO.Price, roomDTO.Duration,
+                                                          roomDTO.RoomFacilities, roomDTO.RoomCategory, roomDTO.IsRented, roomDTO.HostelId);
+                await _unitOfWork.RoomRepository.Add(room);
+                await _unitOfWork.SaveAsync();
+            }
+            else
+            {
+                existingRoom.RoomNumber = roomDTO.RoomNumber;
+                existingRoom.Price = roomDTO.Price;
+                existingRoom.Duration = roomDTO.Duration;
+                existingRoom.RoomCategory = roomDTO.RoomCategory;
+                existingRoom.RoomFacilities = roomDTO.RoomFacilities;
+                existingRoom.RoomCategory = roomDTO.RoomCategory;
+                existingRoom.IsRented = roomDTO.IsRented;
+
+                await _unitOfWork.RoomRepository.UpdateAsync(existingRoom);
+                await _unitOfWork.SaveAsync();
+            }
+
+            return true;
+        }
     }
 }

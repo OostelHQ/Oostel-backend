@@ -12,13 +12,37 @@ namespace Oostel.Domain.Hostel.Entities
         public string RoomNumber { get; set; }
         public decimal Price { get; set; }
         public string Duration { get; set; }
-        public string RoomPicture { get; set; }
         public string RoomCategory { get; set; }
         public List<string> RoomPictures { get; set; }
         public bool IsRented { get; set; }
-
+        public List<string> RoomFacilities { get; set; }
         public string HostelId { get; set; }
         public Hostel Hostel { get; set; }
 
+        public Room() 
+        {
+            LastModifiedDate = DateTime.UtcNow;
+            CreatedDate = DateTime.UtcNow;
+        }
+
+        private Room(string roomNumber, decimal price, string duration, List<string> roomFacilities, string roomCategory,
+            bool isRented, string hostelId)
+        {
+            RoomNumber = roomNumber;
+            Price = price;
+            Duration = duration;
+            RoomFacilities = roomFacilities;
+            RoomCategory = roomCategory;
+            IsRented = isRented;
+            HostelId = hostelId;
+            LastModifiedDate = DateTime.UtcNow;
+            CreatedDate = DateTime.UtcNow;
+        }
+
+        public static Room CreateRoomForHostelFactory(string roomNumber, decimal price, string duration, List<string> roomFacilities,
+            string roomCategory, bool isRented, string hostelId)
+        {
+            return new Room(roomNumber, price, duration, roomFacilities, roomCategory, isRented, hostelId);
+        }
     }
 }
