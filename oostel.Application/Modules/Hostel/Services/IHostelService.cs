@@ -12,6 +12,9 @@ namespace Oostel.Application.Modules.Hostel.Services
         Task<bool> CreateHostel(HostelDTO hostelDTO);
         Task<List<HostelDTO>> GetAllHostels();
         Task<HostelDTO> GetHostelById(string hostelId);
+        Task<List<RoomDTO>> GetHostelRoomsById(string hostelId);
+        Task<RoomDTO> GetAllHostels(string hostelId, string roomId);
+        Task<bool> CreateRoomForHostel(string userId, RoomDTO roomDTO);
 
     }
 }

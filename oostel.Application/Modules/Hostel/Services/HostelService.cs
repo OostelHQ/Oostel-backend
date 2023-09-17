@@ -110,5 +110,22 @@ namespace Oostel.Application.Modules.Hostel.Services
 
             return true;
         }
+
+        public async Task<RoomDTO> GetAllHostels(string hostelId, string roomId)
+        {
+            var room = await _unitOfWork.RoomRepository.FindByCondition(h => h.HostelId.Equals(hostelId) && h.Id == roomId);
+
+            var roomDto = _mapper.Map<RoomDTO>(room);
+            return roomDto;
+        }
+
+        public async Task<List<RoomDTO>> GetHostelRoomsById(string hostelId)
+        {
+            var hostelRooms = await _unitOfWork.RoomRepository.GetById(hostelId);
+
+            var roomsDto = _mapper.Map<List<RoomDTO>>(hostelRooms);
+            return roomsDto;
+        }
+
     }
 }
