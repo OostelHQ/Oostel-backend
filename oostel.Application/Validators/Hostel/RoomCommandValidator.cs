@@ -17,7 +17,6 @@ namespace Oostel.Application.Validators.Hostel
             RuleFor(o => o.HostelId).NotEmpty().WithMessage("Hostel Id is required");
             RuleFor(o => o.UserId).NotEmpty().WithMessage("User Id is required");
             RuleFor(o => o.IsRented).NotEmpty().WithMessage("Price is required");
-            RuleFor(o => o.RoomCategory).NotEmpty().WithMessage("Price is required");
         }
     }
 }

@@ -59,7 +59,7 @@ namespace Oostel.Domain.Hostel.Entities
             string street, string junction, string hostelCategory, string state, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
             bool isAnyRoomVacant, ICollection<Room> rooms)
         {
-            return new Hostel(userId, hostelName, hostelDescription, totalRoom, homeSize, street, junction, hostelCategory state, country,
+            return new Hostel(userId, hostelName, hostelDescription, totalRoom, homeSize, street, junction, hostelCategory, state, country,
                 rulesAndRegulation, hostelFacilities, isAnyRoomVacant, rooms);
         }
     }

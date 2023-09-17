@@ -37,5 +37,27 @@ namespace Oostel.API.Controllers
         {
             return HandleResult(await Mediator.Send(new GetHostelByIdRequest { HostelId = hostelId}));
         }
+
+        [HttpPost]
+        [Route(HostelRoute.CreateAndUpdateRoomForHostel)]
+        public async Task<ActionResult<APIResponse>> CreateAndUpdateRoomForHostel([FromForm] RoomRequest request)
+        {
+            var roomRequest = _mapper.Map<CreateRoomForHostelCommand>(request);
+            return HandleResult(await Mediator.Send(roomRequest));
+        }
+
+        [HttpGet]
+        [Route(HostelRoute.GetARoomForHostel)]
+        public async Task<ActionResult<APIResponse>> GetARoomForHostel(string hostelId, string roomId)
+        {
+            return HandleResult(await Mediator.Send(new GetARoomForHostelRequest { HostelId = hostelId, RoomId = roomId}));
+        }
+
+        [HttpGet]
+        [Route(HostelRoute.GetAllRoomsForHostel)]
+        public async Task<ActionResult<APIResponse>> GetAllRoomsForHostel(string hostelId)
+        {
+            return HandleResult(await Mediator.Send(new GetAllRoomsForHostelRequest { HostelId = hostelId }));
+        }
     }
 }

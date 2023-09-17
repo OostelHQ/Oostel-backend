@@ -52,6 +52,7 @@ namespace Oostel.Application.Modules.Hostel.Services
                 existinghostel.HomeSize = hostelDTO.HomeSize;
                 existinghostel.Street= hostelDTO.Street;
                 existinghostel.Junction = hostelDTO.Junction;
+                existinghostel.HostelCategory = hostelDTO.HostelCategory.GetEnumDescription();
                 existinghostel.State = hostelDTO.State;
                 existinghostel.Country= hostelDTO.Country;
                 existinghostel.RulesAndRegulation = hostelDTO.RulesAndRegulation;
