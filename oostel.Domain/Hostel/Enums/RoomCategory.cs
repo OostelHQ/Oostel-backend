@@ -17,10 +17,8 @@ namespace Oostel.Domain.Hostel.Enums
         TwoBedRoomFat = 3,
         [Description("ThreeBedRoomFat")]
         ThreeBedRoomFat = 4,
-        [Description("Bungalow")]
-        Bungalow = 5,
-        [Description("BoySquarter")]
-        BoySquarter = 6
-
+        [Description("FaceToFace")]
+        FaceToFace = 5
+      
     }
 }

@@ -108,6 +108,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             user.ProfilePhotoURL = photoUploadResult.Url;
 
             await _unitOfWork.UserProfileRepository.UpdateAsync(user);
+            await _unitOfWork.SaveAsync();
 
             return true;
         }

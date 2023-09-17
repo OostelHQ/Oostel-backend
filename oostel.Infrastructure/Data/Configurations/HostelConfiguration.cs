@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Oostel.Domain.Hostel.Entities;
 
 namespace Oostel.Infrastructure.Data.Configurations
 {
@@ -11,7 +7,13 @@ namespace Oostel.Infrastructure.Data.Configurations
     {
         public static void ConfigureHostelSystem(this ModelBuilder builder)
         {
+            builder.Entity<Hostel>().HasKey(u => u.Id);
 
+            builder.Entity<Hostel>()
+                .HasMany(r => r.Rooms)
+                .WithOne(h => h.Hostel)
+                .HasForeignKey(h => h.HostelId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

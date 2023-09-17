@@ -32,18 +32,34 @@ namespace Oostel.Application.Modules.Hostel.Services
             var user = await _userAccessor.CheckIfTheUserExist(hostelDTO.UserId);
             if (user is null) return false;
 
+            var existinghostel = await _unitOfWork.HostelRepository.GetById(hostelDTO.UserId);
+            if(existinghostel is null)
+            {
             var hostel = Domain.Hostel.Entities.Hostel.CreateHostelFactory(hostelDTO.UserId, hostelDTO.HostelName, hostelDTO.HostelDescription,
                                                 hostelDTO.TotalRoom, hostelDTO.HomeSize, hostelDTO.Street, hostelDTO.Junction, hostelDTO.State,
                                                 hostelDTO.Country, hostelDTO.RulesAndRegulation, hostelDTO.HostelFacilities, hostelDTO.IsAnyRoomVacant);
-
-            var checkIfHostelExist = await _unitOfWork.HostelRepository.GetById(hostelDTO.UserId);
-            if(checkIfHostelExist is null)
-            {
-                var createHostel = await _unitOfWork.HostelRepository.Add(hostel);
+                 await _unitOfWork.HostelRepository.Add(hostel);
                 await _unitOfWork.SaveAsync();
             }
+            else
+            {
+                existinghostel.HostelName = hostelDTO.HostelName;
+                existinghostel.HostelDescription = hostelDTO.HostelDescription;
+                existinghostel.TotalRoom = hostelDTO.TotalRoom;
+                existinghostel.HomeSize = hostelDTO.HomeSize;
+                existinghostel.Street= hostelDTO.Street;
+                existinghostel.Junction = hostelDTO.Junction;
+                existinghostel.State = hostelDTO.State;
+                existinghostel.Country= hostelDTO.Country;
+                existinghostel.RulesAndRegulation = hostelDTO.RulesAndRegulation;
+                existinghostel.HostelFacilities = hostelDTO.HostelFacilities;
+                existinghostel.IsAnyRoomVacant = hostelDTO.IsAnyRoomVacant;
+                await _unitOfWork.HostelRepository.UpdateAsync(existinghostel);
+                await _unitOfWork.SaveAsync();
 
-            return false;
+            }
+
+            return true;
         }
 
         public async Task<List<HostelDTO>> GetAllHostels()
@@ -61,5 +77,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             var hostelDto = _mapper.Map<HostelDTO>(hostel);
             return hostelDto;
         }
+
+
     }
 }
