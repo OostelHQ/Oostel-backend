@@ -16,6 +16,7 @@ namespace Oostel.Application.Mappers.HostelMapping
         public void Register(TypeAdapterConfig config)
         {
             config.NewConfig<Hostel, HostelDTO>();
+            config.NewConfig<Room, RoomDTO>();  
         }
     }
 }

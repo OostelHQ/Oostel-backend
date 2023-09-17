@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Oostel.Application.Modules.Hostel.DTOs
+﻿namespace Oostel.Application.Modules.Hostel.DTOs
 {
     public class HostelDTO
     {
@@ -17,6 +11,7 @@ namespace Oostel.Application.Modules.Hostel.DTOs
         public string Junction { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
+        public ICollection<RoomDTO>? Rooms { get; set; }
         public List<string> RulesAndRegulation { get; set; }
         public List<string> HostelFacilities { get; set; }
         public bool IsAnyRoomVacant { get; set; }

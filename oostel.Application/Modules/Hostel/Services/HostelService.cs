@@ -33,11 +33,13 @@ namespace Oostel.Application.Modules.Hostel.Services
             if (user is null) return false;
 
             var existinghostel = await _unitOfWork.HostelRepository.GetById(hostelDTO.UserId);
-            if(existinghostel is null)
+            if(existinghostel is null)              
             {
-            var hostel = Domain.Hostel.Entities.Hostel.CreateHostelFactory(hostelDTO.UserId, hostelDTO.HostelName, hostelDTO.HostelDescription,
+                var rooms = _mapper.Map<ICollection<Room>>(hostelDTO.Rooms);
+                var hostel = Domain.Hostel.Entities.Hostel.CreateHostelFactory(hostelDTO.UserId, hostelDTO.HostelName, hostelDTO.HostelDescription,
                                                 hostelDTO.TotalRoom, hostelDTO.HomeSize, hostelDTO.Street, hostelDTO.Junction, hostelDTO.State,
-                                                hostelDTO.Country, hostelDTO.RulesAndRegulation, hostelDTO.HostelFacilities, hostelDTO.IsAnyRoomVacant);
+                                                hostelDTO.Country, hostelDTO.RulesAndRegulation, hostelDTO.HostelFacilities, hostelDTO.IsAnyRoomVacant,
+                                                rooms);
                  await _unitOfWork.HostelRepository.Add(hostel);
                 await _unitOfWork.SaveAsync();
             }
@@ -111,7 +113,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             return true;
         }
 
-        public async Task<RoomDTO> GetAllHostels(string hostelId, string roomId)
+        public async Task<RoomDTO> GetARoomForHostel(string hostelId, string roomId)
         {
             var room = await _unitOfWork.RoomRepository.FindByCondition(h => h.HostelId.Equals(hostelId) && h.Id == roomId);
 
@@ -119,7 +121,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             return roomDto;
         }
 
-        public async Task<List<RoomDTO>> GetHostelRoomsById(string hostelId)
+        public async Task<List<RoomDTO>> GetAllRoomsForHostel(string hostelId)
         {
             var hostelRooms = await _unitOfWork.RoomRepository.GetById(hostelId);
 

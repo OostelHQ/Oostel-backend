@@ -1,4 +1,6 @@
-﻿namespace Oostel.API.ViewModels.HostelsVM
+﻿using Oostel.Application.Modules.Hostel.DTOs;
+
+namespace Oostel.API.ViewModels.HostelsVM
 {
     public class HostelRequest
     {
@@ -11,6 +13,7 @@
         public string Junction { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
+        public ICollection<RoomDTO>? Rooms { get; set; }
         public List<string> RulesAndRegulation { get; set; }
         public List<string> HostelFacilities { get; set; }
         public bool IsAnyRoomVacant { get; set; }

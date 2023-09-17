@@ -19,11 +19,11 @@ namespace Oostel.Domain.Hostel.Entities
         public string Junction { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
-        public List<string> RulesAndRegulation { get; set; }
-        public List<string> HostelFacilities { get; set; }
+        public List<string>? RulesAndRegulation { get; set; }
+        public List<string>? HostelFacilities { get; set; }
         public string? HostelFrontViewPicture { get; set; }
         public bool IsAnyRoomVacant { get; set; }
-        public ICollection<Room> Rooms { get; set; }
+        public ICollection<Room>? Rooms { get; set; }
         public UserProfile User { get; set; }
 
         public Hostel()
@@ -34,7 +34,7 @@ namespace Oostel.Domain.Hostel.Entities
 
         private Hostel(string userId, string hostelName, string hostelDescription, int totalRoom, decimal homeSize,
             string street, string junction, string state, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
-            bool isAnyRoomVacant) : base(Guid.NewGuid().ToString())
+            bool isAnyRoomVacant, ICollection<Room> rooms) : base(Guid.NewGuid().ToString())
         {
             UserId = userId;
             HostelName = hostelName;
@@ -48,16 +48,17 @@ namespace Oostel.Domain.Hostel.Entities
             RulesAndRegulation = rulesAndRegulation;
             HostelFacilities = hostelFacilities;
             IsAnyRoomVacant= isAnyRoomVacant;
+            Rooms = rooms;
             LastModifiedDate = DateTime.UtcNow;
             CreatedDate = DateTime.UtcNow;
         }
 
         public static Hostel CreateHostelFactory(string userId, string hostelName, string hostelDescription, int totalRoom, decimal homeSize,
             string street, string junction, string state, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
-            bool isAnyRoomVacant)
+            bool isAnyRoomVacant, ICollection<Room> rooms)
         {
             return new Hostel(userId, hostelName, hostelDescription, totalRoom, homeSize, street, junction, state, country,
-                rulesAndRegulation, hostelFacilities, isAnyRoomVacant);
+                rulesAndRegulation, hostelFacilities, isAnyRoomVacant, rooms);
         }
     }
 }
