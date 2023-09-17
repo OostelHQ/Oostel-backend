@@ -17,6 +17,7 @@ namespace Oostel.Domain.Hostel.Entities
         public decimal HomeSize { get; set; }
         public string Street { get; set; }
         public string Junction { get; set; }
+        public string HostelCategory { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
         public List<string>? RulesAndRegulation { get; set; }
@@ -33,7 +34,7 @@ namespace Oostel.Domain.Hostel.Entities
         }
 
         private Hostel(string userId, string hostelName, string hostelDescription, int totalRoom, decimal homeSize,
-            string street, string junction, string state, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
+            string street, string junction, string hostelCategory, string state, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
             bool isAnyRoomVacant, ICollection<Room> rooms) : base(Guid.NewGuid().ToString())
         {
             UserId = userId;
@@ -43,6 +44,7 @@ namespace Oostel.Domain.Hostel.Entities
             HomeSize= homeSize;
             Street = street;
             Junction = junction;
+            HostelCategory = hostelCategory;
             State = state;
             Country = country;
             RulesAndRegulation = rulesAndRegulation;
@@ -54,10 +56,10 @@ namespace Oostel.Domain.Hostel.Entities
         }
 
         public static Hostel CreateHostelFactory(string userId, string hostelName, string hostelDescription, int totalRoom, decimal homeSize,
-            string street, string junction, string state, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
+            string street, string junction, string hostelCategory, string state, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
             bool isAnyRoomVacant, ICollection<Room> rooms)
         {
-            return new Hostel(userId, hostelName, hostelDescription, totalRoom, homeSize, street, junction, state, country,
+            return new Hostel(userId, hostelName, hostelDescription, totalRoom, homeSize, street, junction, hostelCategory state, country,
                 rulesAndRegulation, hostelFacilities, isAnyRoomVacant, rooms);
         }
     }

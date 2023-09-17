@@ -1,4 +1,5 @@
 ﻿using Oostel.Application.Modules.Hostel.DTOs;
+using Oostel.Domain.Hostel.Enums;
 
 namespace Oostel.API.ViewModels.HostelsVM
 {
@@ -11,6 +12,7 @@ namespace Oostel.API.ViewModels.HostelsVM
         public decimal HomeSize { get; set; }
         public string Street { get; set; }
         public string Junction { get; set; }
+        public HostelCategory HostelCategory { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
         public ICollection<RoomDTO>? Rooms { get; set; }

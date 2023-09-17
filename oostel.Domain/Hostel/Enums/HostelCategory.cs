@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Oostel.Domain.Hostel.Enums
 {
-    public enum RoomCategory
+    public enum HostelCategory
     {
         [Description("SingleRoom")]
         SingleRoom = 1,

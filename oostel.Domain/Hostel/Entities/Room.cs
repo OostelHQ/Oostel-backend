@@ -12,7 +12,6 @@ namespace Oostel.Domain.Hostel.Entities
         public string RoomNumber { get; set; }
         public decimal Price { get; set; }
         public string Duration { get; set; }
-        public string RoomCategory { get; set; }
         public List<string> RoomPictures { get; set; }
         public bool IsRented { get; set; }
         public List<string> RoomFacilities { get; set; }
@@ -25,14 +24,13 @@ namespace Oostel.Domain.Hostel.Entities
             CreatedDate = DateTime.UtcNow;
         }
 
-        private Room(string roomNumber, decimal price, string duration, List<string> roomFacilities, string roomCategory,
+        private Room(string roomNumber, decimal price, string duration, List<string> roomFacilities,
             bool isRented, string hostelId)
         {
             RoomNumber = roomNumber;
             Price = price;
             Duration = duration;
             RoomFacilities = roomFacilities;
-            RoomCategory = roomCategory;
             IsRented = isRented;
             HostelId = hostelId;
             LastModifiedDate = DateTime.UtcNow;
@@ -40,9 +38,9 @@ namespace Oostel.Domain.Hostel.Entities
         }
 
         public static Room CreateRoomForHostelFactory(string roomNumber, decimal price, string duration, List<string> roomFacilities,
-            string roomCategory, bool isRented, string hostelId)
+             bool isRented, string hostelId)
         {
-            return new Room(roomNumber, price, duration, roomFacilities, roomCategory, isRented, hostelId);
+            return new Room(roomNumber, price, duration, roomFacilities,isRented, hostelId);
         }
     }
 }

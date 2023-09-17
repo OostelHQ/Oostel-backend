@@ -6,6 +6,7 @@ using Oostel.Application.Modules.UserProfiles.Features.Commands;
 using Oostel.Application.Modules.UserProfiles.Services;
 using Oostel.Common.Constants;
 using Oostel.Common.Types;
+using Oostel.Domain.Hostel.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
         public decimal HomeSize { get; set; }
         public string Street { get; set; }
         public string Junction { get; set; }
+        public HostelCategory HostelCategory { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
         public ICollection<RoomDTO>? Rooms { get; set; }

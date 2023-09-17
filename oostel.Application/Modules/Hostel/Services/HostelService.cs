@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Application.UserAccessors;
+using Oostel.Common.Helpers;
 using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Infrastructure.Repositories;
@@ -37,7 +38,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             {
                 var rooms = _mapper.Map<ICollection<Room>>(hostelDTO.Rooms);
                 var hostel = Domain.Hostel.Entities.Hostel.CreateHostelFactory(hostelDTO.UserId, hostelDTO.HostelName, hostelDTO.HostelDescription,
-                                                hostelDTO.TotalRoom, hostelDTO.HomeSize, hostelDTO.Street, hostelDTO.Junction, hostelDTO.State,
+                                                hostelDTO.TotalRoom, hostelDTO.HomeSize, hostelDTO.Street, hostelDTO.Junction, hostelDTO.HostelCategory.GetEnumDescription(), hostelDTO.State,
                                                 hostelDTO.Country, hostelDTO.RulesAndRegulation, hostelDTO.HostelFacilities, hostelDTO.IsAnyRoomVacant,
                                                 rooms);
                  await _unitOfWork.HostelRepository.Add(hostel);
@@ -92,7 +93,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             if(existingRoom is null)
             {
                 var room = Room.CreateRoomForHostelFactory(roomDTO.RoomNumber, roomDTO.Price, roomDTO.Duration,
-                                                          roomDTO.RoomFacilities, roomDTO.RoomCategory, roomDTO.IsRented, roomDTO.HostelId);
+                                                          roomDTO.RoomFacilities, roomDTO.IsRented, roomDTO.HostelId);
                 await _unitOfWork.RoomRepository.Add(room);
                 await _unitOfWork.SaveAsync();
             }
@@ -101,9 +102,7 @@ namespace Oostel.Application.Modules.Hostel.Services
                 existingRoom.RoomNumber = roomDTO.RoomNumber;
                 existingRoom.Price = roomDTO.Price;
                 existingRoom.Duration = roomDTO.Duration;
-                existingRoom.RoomCategory = roomDTO.RoomCategory;
-                existingRoom.RoomFacilities = roomDTO.RoomFacilities;
-                existingRoom.RoomCategory = roomDTO.RoomCategory;
+                existingRoom.RoomFacilities = roomDTO.RoomFacilities;;
                 existingRoom.IsRented = roomDTO.IsRented;
 
                 await _unitOfWork.RoomRepository.UpdateAsync(existingRoom);
