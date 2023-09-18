@@ -24,9 +24,9 @@ namespace Oostel.Application.Modules.Hostel.Features.Queries
                 var rooms = await _hostelService.GetAllRoomsForHostel(request.HostelId);
 
                 if (rooms is null)
-                    return APIResponse.GetFailureMessage(HttpStatusCode.OK, null, ResponseMessages.NotFound);
+                    return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.NotFound);
 
-                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: null, ResponseMessages.SuccessfulCreation);
+                return APIResponse.GetSuccessMessage(HttpStatusCode.OK, data: rooms, ResponseMessages.FetchedSuccess);
             }
         }
     }

@@ -26,7 +26,7 @@ namespace Oostel.Application.Modules.Hostel.Features.Queries
                 if (hostel is null)
                     return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.NotFound);
 
-                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: hostel, ResponseMessages.SuccessfulCreation);
+                return APIResponse.GetSuccessMessage(HttpStatusCode.OK, data: hostel, ResponseMessages.FetchedSuccess);
             }
         }
     }

@@ -18,7 +18,8 @@ namespace Oostel.Infrastructure.Repositories
         Task<int> Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
         Task UpdateAsync(T entity);
-        Task<IQueryable<T>> FindByCondition(Expression<Func<T, bool>> expression);
+        IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression,
+        bool trackChanges);
 
         Task<int> Count(Expression<Func<T, bool>> expression);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);

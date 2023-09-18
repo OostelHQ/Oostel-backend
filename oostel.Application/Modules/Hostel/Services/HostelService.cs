@@ -1,16 +1,12 @@
 ﻿using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Application.UserAccessors;
 using Oostel.Common.Helpers;
 using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Infrastructure.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.Hostel.Services
 {
@@ -77,6 +73,10 @@ namespace Oostel.Application.Modules.Hostel.Services
         public async Task<HostelDTO> GetHostelById(string hostelId)
         {
             var hostel = await _unitOfWork.HostelRepository.GetById(hostelId);
+            if (hostel is null)
+            {
+                return null;
+            }
 
             var hostelDto = _mapper.Map<HostelDTO>(hostel);
             return hostelDto;
@@ -115,7 +115,17 @@ namespace Oostel.Application.Modules.Hostel.Services
 
         public async Task<RoomDTO> GetARoomForHostel(string hostelId, string roomId)
         {
-            var room = await _unitOfWork.RoomRepository.FindByCondition(h => h.HostelId.Equals(hostelId) && h.Id == roomId);
+            var checkIfHostelExist = await GetHostelById(hostelId);
+            if (checkIfHostelExist is null)
+            {
+                return null;
+            }
+            var room = await _unitOfWork.RoomRepository.FindByCondition(h => h.HostelId.Equals(hostelId) && h.Id.Equals(roomId), false).SingleOrDefaultAsync();
+
+            if (room is null)
+            {
+                return null;
+            }
 
             var roomDto = _mapper.Map<RoomDTO>(room);
             return roomDto;
@@ -125,8 +135,22 @@ namespace Oostel.Application.Modules.Hostel.Services
         {
             var hostelRooms = await _unitOfWork.RoomRepository.GetById(hostelId);
 
+            if (hostelRooms is null)
+            {
+                return null;
+            }
+
             var roomsDto = _mapper.Map<List<RoomDTO>>(hostelRooms);
             return roomsDto;
+        }
+
+
+        private async Task<T> CheckForNull<T>(T entity)
+        {
+            if (entity is null)
+                return entity;
+
+            return entity;
         }
 
     }

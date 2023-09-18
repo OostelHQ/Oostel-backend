@@ -29,11 +29,16 @@ namespace Oostel.Infrastructure.Repositories
         }
 
 
-        public async Task<IQueryable<T>> FindByCondition(Expression<Func<T, bool>> expression) =>
-            _dbContext.Set<T>()
-            .Where(expression);
+        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression,
+        bool trackChanges) =>
+      !trackChanges ?
+        _dbContext.Set<T>()
+        .Where(expression)
+        .AsNoTracking() :
+        _dbContext.Set<T>()
+        .Where(expression);
 
-
+        
         public void AddRange(IEnumerable<T> entities)
         {
             _dbContext.Set<T>().AddRange(entities);

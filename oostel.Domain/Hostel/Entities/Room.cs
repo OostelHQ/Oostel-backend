@@ -14,7 +14,7 @@ namespace Oostel.Domain.Hostel.Entities
         public string Duration { get; set; }
         public List<string> RoomPictures { get; set; }
         public bool IsRented { get; set; }
-        public List<string> RoomFacilities { get; set; }
+        public List<string>? RoomFacilities { get; set; }
         public string HostelId { get; set; }
         public Hostel Hostel { get; set; }
 
@@ -25,7 +25,7 @@ namespace Oostel.Domain.Hostel.Entities
         }
 
         private Room(string roomNumber, decimal price, string duration, List<string> roomFacilities,
-            bool isRented, string hostelId)
+            bool isRented, string hostelId) : base(Guid.NewGuid().ToString())
         {
             RoomNumber = roomNumber;
             Price = price;
