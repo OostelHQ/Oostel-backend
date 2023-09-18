@@ -109,13 +109,13 @@ namespace Oostel.Application.Modules.Hostel.Services
         public async Task<List<AHostelResponse>> GetHostelById(string hostelId)
         {
             var hostel = await _unitOfWork.HostelRepository.FindandInclude(h => h.Id == hostelId, true);
-            if (hostel is null && !hostel.Any())
+            if (hostel is not null && hostel.ToList().Count > 0)
             {
-                return null;
+                var hostelDto = _mapper.Map<List<AHostelResponse>>(hostel);
+                return hostelDto;
             }
 
-            var hostelDto = _mapper.Map<List<AHostelResponse>>(hostel);
-            return hostelDto;
+                return null;          
         }
 
         public async Task<bool> CreateRoomForHostel(string userId, RoomDTO roomDTO)
@@ -126,7 +126,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             var hostel = await GetHostelById(roomDTO.HostelId);
             if (hostel is null) return false;
 
-            var existingRoom = await _unitOfWork.RoomRepository.Find(r => r.HostelId == roomDTO.HostelId);
+            var existingRoom = await _unitOfWork.RoomRepository.GetById(roomDTO.HostelId);
             if(existingRoom is null)
             {
                 var room = Room.CreateRoomForHostelFactory(roomDTO.RoomNumber, roomDTO.Price, roomDTO.Duration,
