@@ -79,76 +79,32 @@ namespace Oostel.Application.Modules.Hostel.Services
 
         public async Task<List<HostelsResponse>> GetAllHostels()
         {
-            var hostel = await _unitOfWork.HostelRepository.GetAll(false);
+            var hostel = await _unitOfWork.HostelRepository.GetAll(true);
 
-          // int availableRoomsCount = await _unitOfWork.RoomRepository.CountAsync(x => !x.IsRented && x.HostelId == Id);
-
-            var hostelsDto = hostel.Select(h => new HostelsResponse
+            var tasks = hostel.Select(h =>
             {
-                UserId = h.UserId,
-                HostelId = h.Id,
-                HostelCategory = h.HostelCategory,
-                Country = h.Country,
-                HomeSize = h.HomeSize,
-                HostelDescription = h.HostelDescription,
-                HostelFacilities = h.HostelFacilities,
-                NumberOfRoomsLeft = 2, //_unitOfWork.RoomRepository.CountAsync(x => !x.IsRented && x.HostelId == h.Id), //_genericRepository.GetNumberOfAvailableRooms(),
-                Junction = h.Junction,
-                RulesAndRegulation = h.RulesAndRegulation,
-                State = h.State,
-                Street = h.Street,
-                TotalRoom = h.TotalRoom,
-                HostelName = h.HostelName,
-            }).ToList();
-            //var hostelsDto = _mapper.Map<List<HostelsResponse>>(hostel);
-           // var hostels = await Task.WhenAll(hostelsDto);
 
-            return hostelsDto;
-        }
-        
-
-
-       /* public async Task<List<HostelsResponse>> GetAllHostels()
-        {
-            // Retrieve a list of hostels (you may have a different method to do this)
-            var hostels = await _unitOfWork.HostelRepository.GetAll(true);
-
-            // Create a list to store the HostelsResponse objects
-            var hostelsDto = new List<HostelsResponse>();
-
-            foreach (var hostel in hostels)
-            {
-                // Count the available rooms for each hostel
-                int availableRoomsCount = await _unitOfWork.RoomRepository.CountAsync(x => !x.IsRented && x.HostelId == hostel.Id);
-
-                // Create the HostelsResponse object with the count
-                var hostelResponse = new HostelsResponse
+                return new HostelsResponse
                 {
-                    UserId = hostel.UserId,
-                    HostelId = hostel.Id,
-                    HostelCategory = hostel.HostelCategory,
-                    Country = hostel.Country,
-                    HomeSize = hostel.HomeSize,
-                    HostelDescription = hostel.HostelDescription,
-                    HostelFacilities = hostel.HostelFacilities,
-                    NumberOfRoomsLeft = availableRoomsCount,
-                    Junction = hostel.Junction,
-                    RulesAndRegulation = hostel.RulesAndRegulation,
-                    State = hostel.State,
-                    Street = hostel.Street,
-                    TotalRoom = hostel.TotalRoom,
-                    HostelName = hostel.HostelName,
+                    UserId = h.UserId,
+                    HostelId = h.Id,
+                    HostelCategory = h.HostelCategory,
+                    Country = h.Country,
+                    HomeSize = h.HomeSize,
+                    HostelDescription = h.HostelDescription,
+                    HostelFacilities = h.HostelFacilities,
+                    NumberOfRoomsLeft = h.Rooms?.Count(x => x.IsRented && x.HostelId == h.Id) ?? 0,
+                    Junction = h.Junction,
+                    RulesAndRegulation = h.RulesAndRegulation,
+                    State = h.State,
+                    Street = h.Street,
+                    TotalRoom = h.TotalRoom,
+                    HostelName = h.HostelName,
                 };
+            }).ToList();
 
-                // Add the HostelsResponse object to the list
-                hostelsDto.Add(hostelResponse);
-            }
-
-            // Return the list of HostelsResponse objects with counts of available rooms
-            return hostelsDto;
-        }*/
-
-
+            return tasks;
+        }
 
         public async Task<List<AHostelResponse>> GetHostelById(string hostelId)
         {
