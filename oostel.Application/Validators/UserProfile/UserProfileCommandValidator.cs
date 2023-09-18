@@ -12,8 +12,6 @@ namespace Oostel.Application.Validators.UserProfile
     {
         public UserProfileCommandValidator()
         {
-            RuleFor(f => f.FirstName).MaximumLength(100);
-            RuleFor(e => e.LastName).MaximumLength(100);
             RuleFor(w => w.SchoolLevel).MaximumLength(100); 
             RuleFor(p => p.StateOfOrigin).MaximumLength(100);
             RuleFor(p => p.Hobby).MaximumLength(100);

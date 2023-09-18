@@ -3,6 +3,7 @@ using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserProfiles.Entities;
+using Oostel.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,14 @@ namespace Oostel.Application.Mappers.HostelMapping
 {
     public class HostelMapping : IRegister
     {
+       
         public void Register(TypeAdapterConfig config)
         {
             config.NewConfig<Hostel, HostelDTO>();
-            config.NewConfig<Room, RoomDTO>();  
+            config.NewConfig<Room, RoomDTO>();
+            config.NewConfig<Room, HostelsResponse>()
+                .Map(dest => dest.HostelId, src => src.Id)
+                .Map(dest => dest.NumberOfRoomsLeft, src => src.IsRented);
         }
     }
 }

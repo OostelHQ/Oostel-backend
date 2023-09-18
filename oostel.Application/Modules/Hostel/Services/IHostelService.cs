@@ -10,8 +10,8 @@ namespace Oostel.Application.Modules.Hostel.Services
     public interface IHostelService
     {
         Task<bool> CreateHostel(HostelDTO hostelDTO);
-        Task<List<HostelDTO>> GetAllHostels();
-        Task<HostelDTO> GetHostelById(string hostelId);
+        Task<List<HostelsResponse>> GetAllHostels();
+        Task<List<AHostelResponse>> GetHostelById(string hostelId);
         Task<List<RoomDTO>> GetAllRoomsForHostel(string hostelId);
         Task<RoomDTO> GetARoomForHostel(string hostelId, string roomId);
         Task<bool> CreateRoomForHostel(string userId, RoomDTO roomDTO);

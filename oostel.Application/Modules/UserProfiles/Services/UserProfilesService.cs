@@ -31,7 +31,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         public async Task<List<GetUserProfileDTO>> GetAllUserProfile()
         {
-            var userProfile = await _unitOfWork.UserProfileRepository.GetAll(true);
+            var userProfile = await _unitOfWork.UserProfileRepository.GetAll(false);
             var userProfileMapping = _mapper.Map<List<GetUserProfileDTO>>(userProfile);
 
             return userProfileMapping;
@@ -56,8 +56,6 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             userProfile.Gender = userProfileDTO.Gender ?? userProfile.Gender ;
             userProfile.Religion = userProfileDTO.Religion ?? userProfile.Religion ;
             userProfile.StateOfOrigin = userProfileDTO.StateOfOrigin ?? userProfile.StateOfOrigin ;
-            userProfile.User.FirstName = userProfileDTO.FirstName ?? userProfile.User.FirstName;
-            userProfile.User.LastName = userProfileDTO.LastName ?? userProfile.User.LastName;
             userProfile.LastModifiedDate = DateTime.UtcNow;
 
               await _unitOfWork.UserProfileRepository.UpdateAsync(userProfile);

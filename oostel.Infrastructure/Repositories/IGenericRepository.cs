@@ -21,7 +21,11 @@ namespace Oostel.Infrastructure.Repositories
         IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression,
         bool trackChanges);
 
-        Task<int> Count(Expression<Func<T, bool>> expression);
+        Task<int> CountAsync(Expression<Func<T, bool>> expression);
+
+        Task<int> Count();
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+
+        int GetNumberOfAvailableRooms();
     }
 }

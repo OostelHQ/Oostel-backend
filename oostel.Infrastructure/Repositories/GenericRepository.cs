@@ -115,9 +115,14 @@ namespace Oostel.Infrastructure.Repositories
             _dbContext.Entry(entity).State = EntityState.Modified;
         }
 
-        public async Task<int> Count(Expression<Func<T, bool>> expression)
+        public async Task<int> CountAsync(Expression<Func<T, bool>> expression)
         {
             return await _dbSet.CountAsync(expression);
+        }
+
+        public async Task<int> Count()
+        {
+            return await _dbSet.CountAsync();
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
@@ -125,6 +130,12 @@ namespace Oostel.Infrastructure.Repositories
             return await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
+        public int GetNumberOfAvailableRooms()
+        {
+            int availableRoomsCount =  _dbContext.Rooms.Count(room => !room.IsRented);
+
+            return availableRoomsCount;
+        }
 
     }
 }

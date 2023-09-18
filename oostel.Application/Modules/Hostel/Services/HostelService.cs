@@ -7,6 +7,7 @@ using Oostel.Common.Helpers;
 using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Infrastructure.Repositories;
+using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.Hostel.Services
 {
@@ -16,11 +17,13 @@ namespace Oostel.Application.Modules.Hostel.Services
         private readonly UnitOfWork _unitOfWork;
         private readonly UserAccessor _userAccessor;
         private readonly IMapper _mapper;
-        public HostelService(UserManager<ApplicationUser> userManager, UnitOfWork unitOfWork, IMapper mapper, UserAccessor userAccessor)
+        private readonly IGenericRepository<Room, string> _genericRepository;
+        public HostelService(UserManager<ApplicationUser> userManager, UnitOfWork unitOfWork, IGenericRepository<Room, string> genericRepository, IMapper mapper, UserAccessor userAccessor)
         {
             _userManager = userManager;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _genericRepository = genericRepository;
             _userAccessor = userAccessor;
         }
 
@@ -42,43 +45,120 @@ namespace Oostel.Application.Modules.Hostel.Services
             }
             else
             {
-                existinghostel.HostelName = hostelDTO.HostelName;
-                existinghostel.HostelDescription = hostelDTO.HostelDescription;
-                existinghostel.TotalRoom = hostelDTO.TotalRoom;
-                existinghostel.HomeSize = hostelDTO.HomeSize;
-                existinghostel.Street= hostelDTO.Street;
-                existinghostel.Junction = hostelDTO.Junction;
-                existinghostel.HostelCategory = hostelDTO.HostelCategory.GetEnumDescription();
-                existinghostel.State = hostelDTO.State;
-                existinghostel.Country= hostelDTO.Country;
-                existinghostel.RulesAndRegulation = hostelDTO.RulesAndRegulation;
-                existinghostel.HostelFacilities = hostelDTO.HostelFacilities;
-                existinghostel.IsAnyRoomVacant = hostelDTO.IsAnyRoomVacant;
-                await _unitOfWork.HostelRepository.UpdateAsync(existinghostel);
-                await _unitOfWork.SaveAsync();
-
+                return false;
             }
 
             return true;
         }
 
-        public async Task<List<HostelDTO>> GetAllHostels()
+        public async Task<bool> UpdateHostel(string hostelId, HostelDTO hostelDTO)
         {
-            var hostel = await _unitOfWork.HostelRepository.GetAll(true);
+            var user = await _userAccessor.CheckIfTheUserExist(hostelDTO.UserId);
+            if (user is null) return false;
 
-            var hostelsDto = _mapper.Map<List<HostelDTO>>(hostel);
-            return hostelsDto;
+            var existinghostel = await _unitOfWork.HostelRepository.Find(h => h.Id == hostelId);
+            if (existinghostel is null) return false;
+
+            existinghostel.HostelName = hostelDTO.HostelName;
+            existinghostel.HostelDescription = hostelDTO.HostelDescription;
+            existinghostel.TotalRoom = hostelDTO.TotalRoom;
+            existinghostel.HomeSize = hostelDTO.HomeSize;
+            existinghostel.Street = hostelDTO.Street;
+            existinghostel.Junction = hostelDTO.Junction;
+            existinghostel.HostelCategory = hostelDTO.HostelCategory.GetEnumDescription();
+            existinghostel.State = hostelDTO.State;
+            existinghostel.Country = hostelDTO.Country;
+            existinghostel.RulesAndRegulation = hostelDTO.RulesAndRegulation;
+            existinghostel.HostelFacilities = hostelDTO.HostelFacilities;
+            existinghostel.IsAnyRoomVacant = hostelDTO.IsAnyRoomVacant;
+            await _unitOfWork.HostelRepository.UpdateAsync(existinghostel);
+            await _unitOfWork.SaveAsync();
+
+            return true;
         }
 
-        public async Task<HostelDTO> GetHostelById(string hostelId)
+        public async Task<List<HostelsResponse>> GetAllHostels()
         {
-            var hostel = await _unitOfWork.HostelRepository.GetById(hostelId);
-            if (hostel is null)
+            var hostel = await _unitOfWork.HostelRepository.GetAll(false);
+
+          // int availableRoomsCount = await _unitOfWork.RoomRepository.CountAsync(x => !x.IsRented && x.HostelId == Id);
+
+            var hostelsDto = hostel.Select(h => new HostelsResponse
+            {
+                UserId = h.UserId,
+                HostelId = h.Id,
+                HostelCategory = h.HostelCategory,
+                Country = h.Country,
+                HomeSize = h.HomeSize,
+                HostelDescription = h.HostelDescription,
+                HostelFacilities = h.HostelFacilities,
+                NumberOfRoomsLeft = 2, //_unitOfWork.RoomRepository.CountAsync(x => !x.IsRented && x.HostelId == h.Id), //_genericRepository.GetNumberOfAvailableRooms(),
+                Junction = h.Junction,
+                RulesAndRegulation = h.RulesAndRegulation,
+                State = h.State,
+                Street = h.Street,
+                TotalRoom = h.TotalRoom,
+                HostelName = h.HostelName,
+            }).ToList();
+            //var hostelsDto = _mapper.Map<List<HostelsResponse>>(hostel);
+           // var hostels = await Task.WhenAll(hostelsDto);
+
+            return hostelsDto;
+        }
+        
+
+
+       /* public async Task<List<HostelsResponse>> GetAllHostels()
+        {
+            // Retrieve a list of hostels (you may have a different method to do this)
+            var hostels = await _unitOfWork.HostelRepository.GetAll(true);
+
+            // Create a list to store the HostelsResponse objects
+            var hostelsDto = new List<HostelsResponse>();
+
+            foreach (var hostel in hostels)
+            {
+                // Count the available rooms for each hostel
+                int availableRoomsCount = await _unitOfWork.RoomRepository.CountAsync(x => !x.IsRented && x.HostelId == hostel.Id);
+
+                // Create the HostelsResponse object with the count
+                var hostelResponse = new HostelsResponse
+                {
+                    UserId = hostel.UserId,
+                    HostelId = hostel.Id,
+                    HostelCategory = hostel.HostelCategory,
+                    Country = hostel.Country,
+                    HomeSize = hostel.HomeSize,
+                    HostelDescription = hostel.HostelDescription,
+                    HostelFacilities = hostel.HostelFacilities,
+                    NumberOfRoomsLeft = availableRoomsCount,
+                    Junction = hostel.Junction,
+                    RulesAndRegulation = hostel.RulesAndRegulation,
+                    State = hostel.State,
+                    Street = hostel.Street,
+                    TotalRoom = hostel.TotalRoom,
+                    HostelName = hostel.HostelName,
+                };
+
+                // Add the HostelsResponse object to the list
+                hostelsDto.Add(hostelResponse);
+            }
+
+            // Return the list of HostelsResponse objects with counts of available rooms
+            return hostelsDto;
+        }*/
+
+
+
+        public async Task<List<AHostelResponse>> GetHostelById(string hostelId)
+        {
+            var hostel = await _unitOfWork.HostelRepository.FindandInclude(h => h.Id == hostelId, true);
+            if (hostel is null && !hostel.Any())
             {
                 return null;
             }
 
-            var hostelDto = _mapper.Map<HostelDTO>(hostel);
+            var hostelDto = _mapper.Map<List<AHostelResponse>>(hostel);
             return hostelDto;
         }
 
@@ -90,7 +170,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             var hostel = await GetHostelById(roomDTO.HostelId);
             if (hostel is null) return false;
 
-            var existingRoom = await _unitOfWork.RoomRepository.GetById(roomDTO.HostelId);
+            var existingRoom = await _unitOfWork.RoomRepository.Find(r => r.HostelId == roomDTO.HostelId);
             if(existingRoom is null)
             {
                 var room = Room.CreateRoomForHostelFactory(roomDTO.RoomNumber, roomDTO.Price, roomDTO.Duration,

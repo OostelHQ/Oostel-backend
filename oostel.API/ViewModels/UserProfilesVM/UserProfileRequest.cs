@@ -3,8 +3,6 @@
     public class UserProfileRequest
     {
         public string UserId { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
         public string StateOfOrigin { get; set; }
         public string Gender { get; set; }
         public string SchoolLevel { get; set; }
