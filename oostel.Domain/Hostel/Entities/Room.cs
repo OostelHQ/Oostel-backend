@@ -24,23 +24,24 @@ namespace Oostel.Domain.Hostel.Entities
             CreatedDate = DateTime.UtcNow;
         }
 
-        private Room(string roomNumber, decimal price, string duration, List<string> roomFacilities,
-            bool isRented, string hostelId) : base(Guid.NewGuid().ToString())
+        private Room(string roomNumber, decimal price, string duration, List<string>? roomFacilities,
+            bool isRented, string hostelId, List<string>? roomPictures) : base(Guid.NewGuid().ToString())
         {
             RoomNumber = roomNumber;
             Price = price;
             Duration = duration;
             RoomFacilities = roomFacilities;
             IsRented = isRented;
-            HostelId = hostelId;
             LastModifiedDate = DateTime.UtcNow;
+            HostelId= hostelId;
+            RoomPictures = roomPictures;
             CreatedDate = DateTime.UtcNow;
         }
 
-        public static Room CreateRoomForHostelFactory(string roomNumber, decimal price, string duration, List<string> roomFacilities,
-             bool isRented, string hostelId)
+        public static Room CreateRoomForHostelFactory(string roomNumber, decimal price, string duration, List<string>? roomFacilities,
+             bool isRented, string hostelId, List<string>? roomPictures)
         {
-            return new Room(roomNumber, price, duration, roomFacilities,isRented, hostelId);
+            return new Room(roomNumber, price, duration, roomFacilities,isRented, hostelId, roomPictures);
         }
     }
 }

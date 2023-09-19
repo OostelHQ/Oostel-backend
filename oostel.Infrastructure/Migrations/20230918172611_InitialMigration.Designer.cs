@@ -13,8 +13,8 @@ using Oostel.Infrastructure.Data;
 namespace Oostel.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230916113323_addHostelField")]
-    partial class addHostelField
+    [Migration("20230918172611_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -145,16 +145,18 @@ namespace Oostel.Infrastructure.Migrations
                     b.Property<decimal>("HomeSize")
                         .HasColumnType("numeric");
 
+                    b.Property<string>("HostelCategory")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("HostelDescription")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<List<string>>("HostelFacilities")
-                        .IsRequired()
                         .HasColumnType("text[]");
 
                     b.Property<string>("HostelFrontViewPicture")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("HostelName")
@@ -172,7 +174,6 @@ namespace Oostel.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<List<string>>("RulesAndRegulation")
-                        .IsRequired()
                         .HasColumnType("text[]");
 
                     b.Property<string>("State")
@@ -186,7 +187,13 @@ namespace Oostel.Infrastructure.Migrations
                     b.Property<int>("TotalRoom")
                         .HasColumnType("integer");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Hostels");
                 });
@@ -217,20 +224,15 @@ namespace Oostel.Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("RoomCategory")
+                    b.Property<List<string>>("RoomFacilities")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text[]");
 
                     b.Property<string>("RoomNumber")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("RoomPicture")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<List<string>>("RoomPictures")
-                        .IsRequired()
                         .HasColumnType("text[]");
 
                     b.HasKey("Id");
@@ -391,8 +393,9 @@ namespace Oostel.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
-                    b.Property<int>("Age")
-                        .HasColumnType("integer");
+                    b.Property<string>("Age")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
@@ -483,7 +486,7 @@ namespace Oostel.Infrastructure.Migrations
                 {
                     b.HasOne("Oostel.Domain.UserProfiles.Entities.UserProfile", "User")
                         .WithMany("Hostels")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

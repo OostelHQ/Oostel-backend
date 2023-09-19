@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Oostel.Domain.Hostel.Entities;
+using System.Reflection.Emit;
 
 namespace Oostel.Infrastructure.Data.Configurations
 {
@@ -14,6 +15,10 @@ namespace Oostel.Infrastructure.Data.Configurations
                 .WithOne(h => h.Hostel)
                 .HasForeignKey(h => h.HostelId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Hostel>()
+                .Property(h => h.LastModifiedDate)
+                .IsConcurrencyToken();
         }
     }
 }

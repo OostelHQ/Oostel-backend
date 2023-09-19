@@ -1,4 +1,5 @@
 ﻿using MapsterMapper;
+using Microsoft.AspNetCore.Http;
 using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Application.Modules.Hostel.Services;
 using Oostel.Common.Constants;
@@ -21,6 +22,7 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
         public string Duration { get; set; }
         public List<string> RoomFacilities { get; set; }
         public bool IsRented { get; set; }
+        public List<IFormFile> Files { get; set; }
 
         public sealed class CreateRoomForHostelCommandHandler : IRequestHandler<CreateRoomForHostelCommand, APIResponse>
         {
@@ -33,7 +35,16 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
             }
             public async Task<APIResponse> Handle(CreateRoomForHostelCommand request, CancellationToken cancellationToken)
             {
-                var mapData = _mapper.Map<RoomDTO>(request);
+                var mapData = new RoomDTO()
+                {
+                    RoomNumber = request.RoomNumber,
+                    Files = request.Files,
+                    Duration = request.Duration,
+                    HostelId = request.HostelId,
+                    IsRented = request.IsRented,
+                    Price = request.Price,
+                    RoomFacilities = request.RoomFacilities,
+                };//_mapper.Map<RoomDTO>(request);
                 var createroomForHostel = await _hostelService.CreateRoomForHostel(request.UserId,mapData);
 
                 if (!createroomForHostel) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);

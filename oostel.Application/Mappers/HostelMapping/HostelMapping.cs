@@ -18,7 +18,14 @@ namespace Oostel.Application.Mappers.HostelMapping
         public void Register(TypeAdapterConfig config)
         {
             config.NewConfig<Hostel, HostelDTO>();
-            config.NewConfig<Room, RoomDTO>();
+            config.NewConfig<Room, RoomDTO>()
+                .Map(dest => dest.Files, src => src.RoomPictures);
+
+            config.NewConfig<Hostel, RoomDTO>()
+                .Map(dest => dest.Files, src => src.Rooms.ToList()[0].RoomPictures);
+
+            config.NewConfig<Room, AHostelResponse>();
+
             config.NewConfig<Room, HostelsResponse>()
                 .Map(dest => dest.HostelId, src => src.Id)
                 .Map(dest => dest.NumberOfRoomsLeft, src => src.IsRented);

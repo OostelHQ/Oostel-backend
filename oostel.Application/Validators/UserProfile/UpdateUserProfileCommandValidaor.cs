@@ -1,26 +1,18 @@
-﻿using FluentValidation;
-using Oostel.Application.Modules.UserProfiles.Features.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Oostel.Application.Modules.UserProfiles.Features.Commands;
 
 namespace Oostel.Application.Validators.UserProfile
 {
-    public class UserProfileCommandValidator : AbstractValidator<CreateUserProfileCommand>
+    public class UpdateUserProfileCommandValidaor : AbstractValidator<UpdateUserProfileCommand>
     {
-        public UserProfileCommandValidator()
+        public UpdateUserProfileCommandValidaor()
         {
             RuleFor(u => u.UserId).NotEmpty().WithMessage("UserId is required");
-            RuleFor(w => w.SchoolLevel).MaximumLength(100); 
+            RuleFor(w => w.SchoolLevel).MaximumLength(100);
             RuleFor(p => p.StateOfOrigin).MaximumLength(100);
             RuleFor(p => p.Hobby).MaximumLength(100);
             RuleFor(a => a.Age);
             RuleFor(g => g.Gender).MaximumLength(20);
             RuleFor(r => r.Religion).MaximumLength(50);
-
-
         }
     }
 }

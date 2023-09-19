@@ -72,6 +72,8 @@ namespace Oostel.Infrastructure.Repositories
             return query;
         }
 
+  
+
         public async Task<IEnumerable<T>> GetAll(bool eager)
         {
             var query = _dbContext.Set<T>().AsQueryable();

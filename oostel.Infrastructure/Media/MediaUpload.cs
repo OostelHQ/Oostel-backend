@@ -58,6 +58,40 @@ namespace Oostel.Infrastructure.Media
             return null;
         }
 
+        public async Task<List<PhotoUploadResult>> UploadPhotos(List<IFormFile> files)
+        {
+            var results = new List<PhotoUploadResult>();
+
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    await using var stream = file.OpenReadStream();
+                    var uploadParams = new ImageUploadParams
+                    {
+                        File = new FileDescription(file.FileName, stream)
+                    };
+
+                    var uploadResult = await cloudinary.UploadAsync(uploadParams);
+
+                    if (uploadResult.Error != null)
+                    {
+                        throw new Exception(uploadResult.Error.Message);
+                    }
+
+                    results.Add(new PhotoUploadResult
+                    {
+                        PublicId = uploadResult.PublicId,
+                        Url = uploadResult.SecureUrl.ToString()
+                    });
+                }
+            }
+
+            return results;
+        }
+
+
+
         public async Task<string> DeletePhoto(string publicId)
         {
             var deleteParams = new DeletionParams(publicId);

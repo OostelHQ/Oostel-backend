@@ -19,7 +19,7 @@ namespace Oostel.Application.Modules.Hostel.DTOs
         public string HostelCategory { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
-        public ICollection<RoomDTO>? Rooms { get; set; }
+        public List<RoomToReturn>? Rooms { get; set; }
         public List<string> RulesAndRegulation { get; set; }
         public List<string> HostelFacilities { get; set; }
     }

@@ -8,6 +8,7 @@ using Oostel.Application.Modules.Hostel.Features.Queries;
 using Oostel.Application.Modules.UserProfiles.Features.Commands;
 using Oostel.Application.Modules.UserProfiles.Features.Queries;
 using Oostel.Common.Types;
+using Oostel.Domain.Hostel.Entities;
 using Oostel.Infrastructure.Repositories;
 
 namespace Oostel.API.Controllers
@@ -24,7 +25,7 @@ namespace Oostel.API.Controllers
 
         [HttpPost]
         [Route(HostelRoute.CreateHostel)]
-        public async Task<ActionResult<APIResponse>> CreateHostel([FromForm]HostelRequest request)
+        public async Task<ActionResult<APIResponse>> CreateHostel(HostelRequest request)
         {
             var hostelRequest = _mapper.Map<CreateHostelCommand>(request);
             return HandleResult(await Mediator.Send(hostelRequest));
@@ -48,8 +49,20 @@ namespace Oostel.API.Controllers
         [Route(HostelRoute.CreateAndUpdateRoomForHostel)]
         public async Task<ActionResult<APIResponse>> CreateAndUpdateRoomForHostel([FromForm] RoomRequest request)
         {
-            var roomRequest = _mapper.Map<CreateRoomForHostelCommand>(request);
+            var roomRequest = (new CreateRoomForHostelCommand
+            {
+                HostelId = request.HostelId,
+                UserId = request.UserId,
+                Duration = request.Duration,
+                IsRented = request.IsRented,
+                Price = request.Price,
+                RoomFacilities = request.RoomFacilities,
+                RoomNumber = request.RoomNumber,
+                Files = request.Files
+            });
             return HandleResult(await Mediator.Send(roomRequest));
+            //var roomRequest = _mapper.Map<CreateRoomForHostelCommand>(request);
+            //return HandleResult(await Mediator.Send(roomRequest));
         }
 
         [HttpGet]

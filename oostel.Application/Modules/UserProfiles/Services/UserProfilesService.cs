@@ -31,18 +31,18 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         public async Task<List<GetUserProfileDTO>> GetAllUserProfile()
         {
-            var userProfile = await _unitOfWork.UserProfileRepository.GetAll(false);
+            var userProfile = await _unitOfWork.UserProfileRepository.GetAll(true);
             var userProfileMapping = _mapper.Map<List<GetUserProfileDTO>>(userProfile);
 
             return userProfileMapping;
         }
 
-        public async Task<GetUserProfileDTO> GetUserProfileById(string userId)
+        public async Task<List<GetUserProfileDTO>> GetUserProfileById(string userId)
         {
-            var userProfile = await _unitOfWork.UserProfileRepository.GetById(userId);
+            var userProfile = await _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == userId, true);
             if (userProfile is null) return null;
 
-            var userProfileMapping = _mapper.Map<GetUserProfileDTO>(userProfile);
+            var userProfileMapping = _mapper.Map<List<GetUserProfileDTO>>(userProfile);
             return userProfileMapping;
         }
         public async Task<bool> UpdateUserProfile(UserProfileDTO userProfileDTO)
@@ -51,7 +51,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             if (userProfile is null) return false;
 
             userProfile.SchoolLevel = userProfileDTO.SchoolLevel ?? userProfile.SchoolLevel;
-            userProfile.Age = userProfileDTO.Age;
+            userProfile.Age = userProfileDTO.Age ?? userProfile.Age;
             userProfile.Hobby = userProfileDTO.Hobby ?? userProfile.Hobby;
             userProfile.Gender = userProfileDTO.Gender ?? userProfile.Gender ;
             userProfile.Religion = userProfileDTO.Religion ?? userProfile.Religion ;

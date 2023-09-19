@@ -3,7 +3,7 @@ using Oostel.Domain.Hostel.Enums;
 
 namespace Oostel.API.ViewModels.HostelsVM
 {
-    public class HostelRequest
+    public record HostelRequest
     {
         public string UserId { get; set; }
         public string HostelName { get; set; }
@@ -15,9 +15,9 @@ namespace Oostel.API.ViewModels.HostelsVM
         public HostelCategory HostelCategory { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
-        public ICollection<RoomToCreate>? Rooms { get; set; }
-        public List<string> RulesAndRegulation { get; set; }
-        public List<string> HostelFacilities { get; set; }
+        public IEnumerable<RoomToCreate>? Rooms { get; set; }
+        public List<string>? RulesAndRegulation { get; set; }
+        public List<string>? HostelFacilities { get; set; }
         public bool IsAnyRoomVacant { get; set; }
     }
 }

@@ -11,5 +11,6 @@ namespace Oostel.Infrastructure.Media
     {
         Task<PhotoUploadResult> UploadPhoto(IFormFile file);
         Task<string> DeletePhoto(string publicId);
+        Task<List<PhotoUploadResult>> UploadPhotos(List<IFormFile> files);
     }
 }

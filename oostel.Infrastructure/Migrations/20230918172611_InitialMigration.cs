@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -189,13 +190,12 @@ namespace Oostel.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "text", nullable: false),
                     StateOfOrigin = table.Column<string>(type: "text", nullable: false),
                     Gender = table.Column<string>(type: "text", nullable: false),
                     SchoolLevel = table.Column<string>(type: "text", nullable: false),
                     ProfilePhotoURL = table.Column<string>(type: "text", nullable: true),
                     Religion = table.Column<string>(type: "text", nullable: false),
-                    Age = table.Column<int>(type: "integer", nullable: false),
+                    Age = table.Column<string>(type: "text", nullable: false),
                     Hobby = table.Column<string>(type: "text", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
@@ -207,6 +207,65 @@ namespace Oostel.Infrastructure.Migrations
                         name: "FK_UserProfiles_AspNetUsers_Id",
                         column: x => x.Id,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Hostels",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    HostelName = table.Column<string>(type: "text", nullable: false),
+                    HostelDescription = table.Column<string>(type: "text", nullable: false),
+                    TotalRoom = table.Column<int>(type: "integer", nullable: false),
+                    HomeSize = table.Column<decimal>(type: "numeric", nullable: false),
+                    Street = table.Column<string>(type: "text", nullable: false),
+                    Junction = table.Column<string>(type: "text", nullable: false),
+                    HostelCategory = table.Column<string>(type: "text", nullable: false),
+                    State = table.Column<string>(type: "text", nullable: false),
+                    Country = table.Column<string>(type: "text", nullable: false),
+                    RulesAndRegulation = table.Column<List<string>>(type: "text[]", nullable: true),
+                    HostelFacilities = table.Column<List<string>>(type: "text[]", nullable: true),
+                    HostelFrontViewPicture = table.Column<string>(type: "text", nullable: true),
+                    IsAnyRoomVacant = table.Column<bool>(type: "boolean", nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Hostels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Hostels_UserProfiles_UserId",
+                        column: x => x.UserId,
+                        principalTable: "UserProfiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rooms",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    RoomNumber = table.Column<string>(type: "text", nullable: false),
+                    Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    Duration = table.Column<string>(type: "text", nullable: false),
+                    RoomPictures = table.Column<List<string>>(type: "text[]", nullable: true),
+                    IsRented = table.Column<bool>(type: "boolean", nullable: false),
+                    RoomFacilities = table.Column<List<string>>(type: "text[]", nullable: false),
+                    HostelId = table.Column<string>(type: "text", nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rooms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Rooms_Hostels_HostelId",
+                        column: x => x.HostelId,
+                        principalTable: "Hostels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -256,6 +315,16 @@ namespace Oostel.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Hostels_UserId",
+                table: "Hostels",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rooms_HostelId",
+                table: "Rooms",
+                column: "HostelId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserOTPs_UserId",
                 table: "UserOTPs",
                 column: "UserId");
@@ -280,13 +349,19 @@ namespace Oostel.Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Rooms");
+
+            migrationBuilder.DropTable(
                 name: "UserOTPs");
 
             migrationBuilder.DropTable(
-                name: "UserProfiles");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "Hostels");
+
+            migrationBuilder.DropTable(
+                name: "UserProfiles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
