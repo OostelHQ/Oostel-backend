@@ -8,6 +8,7 @@ using Oostel.Application.Modules.Hostel.Features.Queries;
 using Oostel.Application.Modules.UserProfiles.Features.Commands;
 using Oostel.Application.Modules.UserProfiles.Features.Queries;
 using Oostel.Common.Types;
+using Oostel.Common.Types.RequestFeatures;
 using Oostel.Domain.Hostel.Entities;
 using Oostel.Infrastructure.Repositories;
 
@@ -33,9 +34,9 @@ namespace Oostel.API.Controllers
 
         [HttpGet]
         [Route(HostelRoute.GetAllHostels)]
-        public async Task<ActionResult<APIResponse>> GetAllHostels()
+        public async Task<ActionResult<APIResponse>> GetAllHostels([FromQuery] HostelTypesParam hostelTypesParam)
         {
-            return HandleResult(await Mediator.Send(new GetAllHostelsRequest()));
+            return HandlePagedResult(await Mediator.Send(new GetAllHostelsRequest{hostelTypesParam = hostelTypesParam}));
         }
 
         [HttpGet]

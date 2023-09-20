@@ -26,7 +26,7 @@ namespace Oostel.Common.Types.RequestFeatures
             }
         }
 
-        public string SearchTerm { get; set; }
+        public string? SearchTerm { get; set; }
 
     }
 }

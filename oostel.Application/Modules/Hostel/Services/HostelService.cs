@@ -1,16 +1,22 @@
-﻿using MapsterMapper;
+﻿using Mapster;
+using MapsterMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Oostel.Application.Modules.Hostel.DTOs;
+using Oostel.Application.RequestFilters;
 using Oostel.Application.UserAccessors;
+using Oostel.Common.Constants;
 using Oostel.Common.Helpers;
+using Oostel.Common.Types.RequestFeatures;
 using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserProfiles.Entities;
+using Oostel.Infrastructure.Data;
 using Oostel.Infrastructure.Media;
 using Oostel.Infrastructure.Repositories;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Oostel.Application.Modules.Hostel.Services
 {
@@ -21,12 +27,14 @@ namespace Oostel.Application.Modules.Hostel.Services
         private readonly UserAccessor _userAccessor;
         private readonly IMapper _mapper;
         private readonly IMediaUpload _mediaUpload;
+        private readonly ApplicationDbContext _applicationDbContext;
         private readonly IGenericRepository<Room, string> _genericRepository;
-        public HostelService(UserManager<ApplicationUser> userManager, IMediaUpload mediaUpload, UnitOfWork unitOfWork, IGenericRepository<Room, string> genericRepository, IMapper mapper, UserAccessor userAccessor)
+        public HostelService(UserManager<ApplicationUser> userManager, IMediaUpload mediaUpload, ApplicationDbContext applicationDbContext, UnitOfWork unitOfWork, IGenericRepository<Room, string> genericRepository, IMapper mapper, UserAccessor userAccessor)
         {
             _userManager = userManager;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _applicationDbContext= applicationDbContext;
             _mediaUpload = mediaUpload;
             _genericRepository = genericRepository;
             _userAccessor = userAccessor;
@@ -138,17 +146,24 @@ namespace Oostel.Application.Modules.Hostel.Services
             return true;
         }
 
-        public async Task<List<HostelsResponse>> GetAllHostels()
+        public async Task<ResultResponse<PagedList<HostelsResponse>>> GetAllHostels(HostelTypesParam hostelTypesParam)
         {
-            var hostel = await _unitOfWork.HostelRepository.GetAll(true);
 
-            var tasks = hostel.Select(h =>
+           /* var hostelsQuery = _unitOfWork.HostelRepository.GetAll(true).Result;
+            hostelsQuery = hostelsQuery.OrderBy(d => d.CreatedDate).AsQueryable();*/
+           var hostelsQuery = _applicationDbContext.Hostels
+                .Include(r => r.Rooms)
+                .OrderBy(d => d.CreatedDate)
+                .ProjectToType<HostelsResponse>()
+                .AsQueryable();
+           // hostelsQuery?.Select(h => h.Rooms.Count(x => x.IsRented && x.HostelId == h.i));
+           /* var hostelDto = hostelsQuery.Select(h =>
             {
 
                 return new HostelsResponse
                 {
                     UserId = h.UserId,
-                    HostelId = h.Id,
+                    HostelId = h.,
                     HostelCategory = h.HostelCategory,
                     Country = h.Country,
                     HomeSize = h.HomeSize,
@@ -162,9 +177,23 @@ namespace Oostel.Application.Modules.Hostel.Services
                     TotalRoom = h.TotalRoom,
                     HostelName = h.HostelName,
                 };
-            }).ToList();
+            });*/
 
-            return tasks;
+            if (!string.IsNullOrWhiteSpace(hostelTypesParam.SearchTerm))
+            {
+                hostelsQuery = hostelsQuery.Search(hostelTypesParam.SearchTerm);
+            }
+            if (hostelTypesParam.HostelCategory != null)
+            {
+                hostelsQuery = hostelsQuery.Where(o => o.HostelCategory == hostelTypesParam.HostelCategory.GetEnumDescription());
+            }
+
+            if (hostelsQuery is null)
+            {
+                return ResultResponse<PagedList<HostelsResponse>>.Failure(ResponseMessages.NotFound);
+            }
+
+            return ResultResponse<PagedList<HostelsResponse>>.Success(await PagedList<HostelsResponse>.CreateAsync(hostelsQuery, hostelTypesParam.PageNumber, hostelTypesParam.PageSize));
         }
 
         public async Task<AHostelResponse> GetHostelById(string hostelId)

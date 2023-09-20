@@ -1,4 +1,5 @@
 ﻿using Oostel.Application.Modules.Hostel.DTOs;
+using Oostel.Domain.Hostel.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Oostel.Application.RequestFilters
 {
     public static class SearchEngineExtension
     {
-        public static IQueryable<HostelDTO> Search(this IQueryable<HostelDTO> hostelDto, string searchTerm)
+        public static IQueryable<HostelsResponse> Search(this IQueryable<HostelsResponse> hostelDto, string searchTerm)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
                 return hostelDto;
