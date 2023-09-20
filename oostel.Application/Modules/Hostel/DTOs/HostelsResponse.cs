@@ -6,6 +6,7 @@
         public string HostelId { get; set; }
         public string HostelName { get; set; }
         public string HostelDescription { get; set; }
+        public decimal Price { get; set; }
         public int TotalRoom { get; set; }
         public decimal HomeSize { get; set; }
         public string Street { get; set; }

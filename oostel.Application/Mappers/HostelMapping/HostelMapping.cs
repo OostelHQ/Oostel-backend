@@ -22,6 +22,7 @@ namespace Oostel.Application.Mappers.HostelMapping
                 .Map(dest => dest.Files, src => src.RoomPictures);
 
             config.NewConfig<Hostel, RoomDTO>()
+                //.Map(dest =)
                 .Map(dest => dest.Files, src => src.Rooms.ToList()[0].RoomPictures);
 
             config.NewConfig<Room, AHostelResponse>();

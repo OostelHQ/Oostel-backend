@@ -145,51 +145,52 @@ namespace Oostel.Application.Modules.Hostel.Services
 
             return true;
         }
-
+           
         public async Task<ResultResponse<PagedList<HostelsResponse>>> GetAllHostels(HostelTypesParam hostelTypesParam)
         {
 
-           /* var hostelsQuery = _unitOfWork.HostelRepository.GetAll(true).Result;
-            hostelsQuery = hostelsQuery.OrderBy(d => d.CreatedDate).AsQueryable();*/
            var hostelsQuery = _applicationDbContext.Hostels
                 .Include(r => r.Rooms)
                 .OrderBy(d => d.CreatedDate)
-                .ProjectToType<HostelsResponse>()
-                .AsQueryable();
-           // hostelsQuery?.Select(h => h.Rooms.Count(x => x.IsRented && x.HostelId == h.i));
-           /* var hostelDto = hostelsQuery.Select(h =>
-            {
-
-                return new HostelsResponse
-                {
+                .Select(h => new HostelsResponse {
                     UserId = h.UserId,
-                    HostelId = h.,
+                    HostelId = h.Id,
                     HostelCategory = h.HostelCategory,
                     Country = h.Country,
                     HomeSize = h.HomeSize,
                     HostelDescription = h.HostelDescription,
                     HostelFacilities = h.HostelFacilities,
-                    NumberOfRoomsLeft = h.Rooms?.Count(x => x.IsRented && x.HostelId == h.Id) ?? 0,
+                    Price = h.Rooms.Select(x => x.Price).FirstOrDefault(),
+                    NumberOfRoomsLeft = h.Rooms.Count(x => x.IsRented && x.HostelId == h.Id),
                     Junction = h.Junction,
                     RulesAndRegulation = h.RulesAndRegulation,
                     State = h.State,
                     Street = h.Street,
                     TotalRoom = h.TotalRoom,
                     HostelName = h.HostelName,
-                };
-            });*/
+                })
+                .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(hostelTypesParam.SearchTerm))
             {
                 hostelsQuery = hostelsQuery.Search(hostelTypesParam.SearchTerm);
             }
-            if (hostelTypesParam.HostelCategory != null)
+            else if (hostelTypesParam.HostelCategory != null)
             {
                 hostelsQuery = hostelsQuery.Where(o => o.HostelCategory == hostelTypesParam.HostelCategory.GetEnumDescription());
             }
+            else if (hostelTypesParam.MinPrice.HasValue)
+            {
+                hostelsQuery = hostelsQuery.Where(r => r.Price >= hostelTypesParam.MinPrice.Value);
+            }
+            else if (hostelTypesParam.MaxPrice.HasValue)
+            {
+                hostelsQuery = hostelsQuery.Where(r => r.Price <= hostelTypesParam.MaxPrice.Value);
+            }
+
 
             if (hostelsQuery is null)
-            {
+            {   
                 return ResultResponse<PagedList<HostelsResponse>>.Failure(ResponseMessages.NotFound);
             }
 
