@@ -1,4 +1,4 @@
-﻿using Oostel.Domain.Hostel.Enums;
+﻿using Oostel.Common.Enums;
 
 namespace Oostel.Application.Modules.Hostel.DTOs
 {

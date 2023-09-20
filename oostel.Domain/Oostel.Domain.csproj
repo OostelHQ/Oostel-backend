@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Hostel\Enums\" />
     <Folder Include="UserAuthentication\Enum\" />
   </ItemGroup>
 

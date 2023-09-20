@@ -1,18 +1,10 @@
 ﻿using MapsterMapper;
 using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Application.Modules.Hostel.Services;
-using Oostel.Application.Modules.UserProfiles.DTOs;
-using Oostel.Application.Modules.UserProfiles.Features.Commands;
-using Oostel.Application.Modules.UserProfiles.Services;
 using Oostel.Common.Constants;
+using Oostel.Common.Enums;
 using Oostel.Common.Types;
-using Oostel.Domain.Hostel.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.Hostel.Features.Commands
 {

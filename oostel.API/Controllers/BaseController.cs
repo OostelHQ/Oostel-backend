@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Oostel.API.Extensions;
+using Oostel.Common.Helpers;
 using Oostel.Common.Types;
+using Oostel.Common.Types.RequestFeatures;
 
 namespace Oostel.API.Controllers
 {
@@ -50,6 +53,21 @@ namespace Oostel.API.Controllers
                     Data = result.Data,
                     StatusCode = result.StatusCode
                 });
+        }
+
+        protected ActionResult HandlePagedResult<T>(ResultResponse<PagedList<T>> result)
+        {
+            if (result == null) return NotFound();
+            if (result.IsSuccess && result.Data != null)
+            {
+                Response.AddPaginationHeader(result.Data.MetaData.CurrentPage, result.Data.MetaData.PageSize,
+                    result.Data.MetaData.TotalCount, result.Data.MetaData.TotalPages);
+
+                return Ok(result.Data);
+            }
+            if (result.IsSuccess && result.Data == null)
+                return NotFound();
+            return BadRequest(result.Error);
         }
 
     }

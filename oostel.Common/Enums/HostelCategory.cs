@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Oostel.Domain.Hostel.Enums
+namespace Oostel.Common.Enums
 {
     public enum HostelCategory
     {
@@ -19,6 +19,6 @@ namespace Oostel.Domain.Hostel.Enums
         ThreeBedRoomFat = 4,
         [Description("FaceToFace")]
         FaceToFace = 5
-      
+
     }
 }

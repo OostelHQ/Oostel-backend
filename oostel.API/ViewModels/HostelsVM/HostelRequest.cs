@@ -1,5 +1,5 @@
 ﻿using Oostel.Application.Modules.Hostel.DTOs;
-using Oostel.Domain.Hostel.Enums;
+using Oostel.Common.Enums;
 
 namespace Oostel.API.ViewModels.HostelsVM
 {
