@@ -20,6 +20,7 @@ namespace Oostel.Domain.Hostel.Entities
         public string HostelCategory { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
+        public string PriceBudgetRange { get; set; }
         public List<string>? RulesAndRegulation { get; set; }
         public List<string>? HostelFacilities { get; set; }
         public string? HostelFrontViewPicture { get; set; }

@@ -9,6 +9,7 @@ namespace Oostel.Application.Modules.Hostel.DTOs
         public string HostelDescription { get; set; }
         public int TotalRoom { get; set; }
         public decimal HomeSize { get; set; }
+        public string PriceBudgetRange { get; set; }
         public string Street { get; set; }
         public string Junction { get; set; }
         public HostelCategory HostelCategory { get; set; }

@@ -160,7 +160,7 @@ namespace Oostel.Application.Modules.Hostel.Services
                     HomeSize = h.HomeSize,
                     HostelDescription = h.HostelDescription,
                     HostelFacilities = h.HostelFacilities,
-                    Price = h.Rooms.Select(x => x.Price).FirstOrDefault(),
+                    PriceBudgetRange = h.PriceBudgetRange,
                     NumberOfRoomsLeft = h.Rooms.Count(x => x.IsRented && x.HostelId == h.Id),
                     Junction = h.Junction,
                     RulesAndRegulation = h.RulesAndRegulation,
@@ -179,14 +179,11 @@ namespace Oostel.Application.Modules.Hostel.Services
             {
                 hostelsQuery = hostelsQuery.Where(o => o.HostelCategory == hostelTypesParam.HostelCategory.GetEnumDescription());
             }
-            else if (hostelTypesParam.MinPrice.HasValue)
+            else if (hostelTypesParam.PriceBudgetRange != null)
             {
-                hostelsQuery = hostelsQuery.Where(r => r.Price >= hostelTypesParam.MinPrice.Value);
+                hostelsQuery = hostelsQuery.Where(r => r.PriceBudgetRange == hostelTypesParam.PriceBudgetRange);
             }
-            else if (hostelTypesParam.MaxPrice.HasValue)
-            {
-                hostelsQuery = hostelsQuery.Where(r => r.Price <= hostelTypesParam.MaxPrice.Value);
-            }
+
 
 
             if (hostelsQuery is null)
