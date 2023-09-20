@@ -4,12 +4,7 @@ using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Application.Modules.Hostel.Services;
 using Oostel.Common.Constants;
 using Oostel.Common.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.Hostel.Features.Commands
 {
@@ -44,7 +39,7 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
                     IsRented = request.IsRented,
                     Price = request.Price,
                     RoomFacilities = request.RoomFacilities,
-                };//_mapper.Map<RoomDTO>(request);
+                };
                 var createroomForHostel = await _hostelService.CreateRoomForHostel(request.UserId,mapData);
 
                 if (!createroomForHostel) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);
