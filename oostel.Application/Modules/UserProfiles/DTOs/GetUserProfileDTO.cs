@@ -15,6 +15,8 @@ namespace Oostel.Application.Modules.UserProfiles.DTOs
         public string Gender { get; set; }
         public string SchoolLevel { get; set; }
         public string Religion { get; set; }
+        public string Denomination { get; set; }
+        public int RentedHostels { get; set; }
         public int Age { get; set; }
         public string Hobby { get; set; }
     }

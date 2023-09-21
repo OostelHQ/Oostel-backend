@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Oostel.Application.Modules.UserProfiles.DTOs;
+using Oostel.Common.Enums;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserProfiles.Entities;
 using Oostel.Infrastructure.Media;
@@ -39,7 +40,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         public async Task<List<GetUserProfileDTO>> GetUserProfileById(string userId)
         {
-            var userProfile = await _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == userId, true);
+            var userProfile = await _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == userId, true);//&& x.User.RolesCSV.Contains(roleType), true);
             if (userProfile is null) return null;
 
             var userProfileMapping = _mapper.Map<List<GetUserProfileDTO>>(userProfile);
@@ -110,5 +111,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
             return true;
         }
+
+        public async Task<>
     }
 }

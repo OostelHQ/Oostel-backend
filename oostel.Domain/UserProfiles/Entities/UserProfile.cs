@@ -15,7 +15,10 @@ namespace Oostel.Domain.UserProfiles.Entities
         public string SchoolLevel { get; set; }
         public string? ProfilePhotoURL { get; set; }
         public string Religion { get; set; }
+        public bool IsVerified { get; set; }
+        public bool IsAvailable { get; set; }
         public string Age { get; set; }
+        public string Denomination { get; set; }
         public string Hobby { get; set; }
         public virtual ApplicationUser User { get; set; }
         public ICollection<Domain.Hostel.Entities.Hostel> Hostels { get; set; }
