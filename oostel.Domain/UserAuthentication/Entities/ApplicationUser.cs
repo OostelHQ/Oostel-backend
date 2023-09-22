@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Oostel.Domain.UserProfiles.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Oostel.Domain.UserRoleProfiles.Entities;
 
 namespace Oostel.Domain.UserAuthentication.Entities
 {
@@ -18,7 +13,8 @@ namespace Oostel.Domain.UserAuthentication.Entities
         public bool IsBlocked { get; set; } = false;
 
         public ICollection<UserOTP> UserOTPs { get; set; }
-        public virtual UserProfile UserProfile { get; set; }
+        public virtual Landlord Landlord { get; set; }
+        public virtual Student Student { get; set; }
 
         public ApplicationUser()
         {

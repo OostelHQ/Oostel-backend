@@ -18,8 +18,8 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
 
         public sealed class UploadUserProfilePictureCommandHandler : IRequestHandler<UploadUserProfilePictureCommand, APIResponse>
         {
-            private readonly IUserProfilesService _userProfilesService;
-            public UploadUserProfilePictureCommandHandler(IUserProfilesService userProfileService)
+            private readonly IUserRolesProfilesService _userProfilesService;
+            public UploadUserProfilePictureCommandHandler(IUserRolesProfilesService userProfileService)
             {
                 _userProfilesService = userProfileService;
             }

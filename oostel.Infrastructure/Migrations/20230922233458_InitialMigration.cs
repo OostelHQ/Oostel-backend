@@ -165,6 +165,63 @@ namespace Oostel.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Landlords",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    StateOfOrigin = table.Column<string>(type: "text", nullable: false),
+                    ProfilePhotoURL = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    Religion = table.Column<string>(type: "text", nullable: false),
+                    Country = table.Column<string>(type: "text", nullable: true),
+                    IsVerified = table.Column<bool>(type: "boolean", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Age = table.Column<int>(type: "integer", nullable: false),
+                    Denomination = table.Column<string>(type: "text", nullable: true),
+                    LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Landlords", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Landlords_AspNetUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    StateOfOrigin = table.Column<string>(type: "text", nullable: false),
+                    Gender = table.Column<string>(type: "text", nullable: false),
+                    SchoolLevel = table.Column<string>(type: "text", nullable: false),
+                    ProfilePhotoURL = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    Religion = table.Column<string>(type: "text", nullable: false),
+                    IsAvailable = table.Column<bool>(type: "boolean", nullable: false),
+                    Age = table.Column<string>(type: "text", nullable: false),
+                    Denomination = table.Column<string>(type: "text", nullable: false),
+                    Hobby = table.Column<string>(type: "text", nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Students_AspNetUsers_Id",
+                        column: x => x.Id,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserOTPs",
                 columns: table => new
                 {
@@ -186,32 +243,6 @@ namespace Oostel.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserProfiles",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    StateOfOrigin = table.Column<string>(type: "text", nullable: false),
-                    Gender = table.Column<string>(type: "text", nullable: false),
-                    SchoolLevel = table.Column<string>(type: "text", nullable: false),
-                    ProfilePhotoURL = table.Column<string>(type: "text", nullable: true),
-                    Religion = table.Column<string>(type: "text", nullable: false),
-                    Age = table.Column<string>(type: "text", nullable: false),
-                    Hobby = table.Column<string>(type: "text", nullable: false),
-                    LastModifiedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserProfiles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserProfiles_AspNetUsers_Id",
-                        column: x => x.Id,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Hostels",
                 columns: table => new
                 {
@@ -226,6 +257,7 @@ namespace Oostel.Infrastructure.Migrations
                     HostelCategory = table.Column<string>(type: "text", nullable: false),
                     State = table.Column<string>(type: "text", nullable: false),
                     Country = table.Column<string>(type: "text", nullable: false),
+                    PriceBudgetRange = table.Column<string>(type: "text", nullable: false),
                     RulesAndRegulation = table.Column<List<string>>(type: "text[]", nullable: true),
                     HostelFacilities = table.Column<List<string>>(type: "text[]", nullable: true),
                     HostelFrontViewPicture = table.Column<string>(type: "text", nullable: true),
@@ -237,9 +269,9 @@ namespace Oostel.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Hostels", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Hostels_UserProfiles_UserId",
+                        name: "FK_Hostels_Landlords_UserId",
                         column: x => x.UserId,
-                        principalTable: "UserProfiles",
+                        principalTable: "Landlords",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -352,6 +384,9 @@ namespace Oostel.Infrastructure.Migrations
                 name: "Rooms");
 
             migrationBuilder.DropTable(
+                name: "Students");
+
+            migrationBuilder.DropTable(
                 name: "UserOTPs");
 
             migrationBuilder.DropTable(
@@ -361,7 +396,7 @@ namespace Oostel.Infrastructure.Migrations
                 name: "Hostels");
 
             migrationBuilder.DropTable(
-                name: "UserProfiles");
+                name: "Landlords");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

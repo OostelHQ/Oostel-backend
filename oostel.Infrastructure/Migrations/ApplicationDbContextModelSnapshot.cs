@@ -388,7 +388,53 @@ namespace Oostel.Infrastructure.Migrations
                     b.ToTable("UserOTPs");
                 });
 
-            modelBuilder.Entity("Oostel.Domain.UserProfiles.Entities.UserProfile", b =>
+            modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Landlord", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Denomination")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProfilePhotoURL")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Religion")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("StateOfOrigin")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Landlords");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Student", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -398,13 +444,7 @@ namespace Oostel.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Country")
-                        .HasColumnType("text");
-
                     b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Denomination")
@@ -420,9 +460,6 @@ namespace Oostel.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<bool>("IsAvailable")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsVerified")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime?>("LastModifiedDate")
@@ -448,7 +485,7 @@ namespace Oostel.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserProfiles");
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -504,13 +541,13 @@ namespace Oostel.Infrastructure.Migrations
 
             modelBuilder.Entity("Oostel.Domain.Hostel.Entities.Hostel", b =>
                 {
-                    b.HasOne("Oostel.Domain.UserProfiles.Entities.UserProfile", "User")
+                    b.HasOne("Oostel.Domain.UserRoleProfiles.Entities.Landlord", "Landlord")
                         .WithMany("Hostels")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Landlord");
                 });
 
             modelBuilder.Entity("Oostel.Domain.Hostel.Entities.Room", b =>
@@ -535,11 +572,22 @@ namespace Oostel.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Oostel.Domain.UserProfiles.Entities.UserProfile", b =>
+            modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Landlord", b =>
                 {
                     b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "User")
-                        .WithOne("UserProfile")
-                        .HasForeignKey("Oostel.Domain.UserProfiles.Entities.UserProfile", "Id")
+                        .WithOne("Landlord")
+                        .HasForeignKey("Oostel.Domain.UserRoleProfiles.Entities.Landlord", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Student", b =>
+                {
+                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "User")
+                        .WithOne("Student")
+                        .HasForeignKey("Oostel.Domain.UserRoleProfiles.Entities.Student", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -553,13 +601,16 @@ namespace Oostel.Infrastructure.Migrations
 
             modelBuilder.Entity("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", b =>
                 {
-                    b.Navigation("UserOTPs");
-
-                    b.Navigation("UserProfile")
+                    b.Navigation("Landlord")
                         .IsRequired();
+
+                    b.Navigation("Student")
+                        .IsRequired();
+
+                    b.Navigation("UserOTPs");
                 });
 
-            modelBuilder.Entity("Oostel.Domain.UserProfiles.Entities.UserProfile", b =>
+            modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Landlord", b =>
                 {
                     b.Navigation("Hostels");
                 });

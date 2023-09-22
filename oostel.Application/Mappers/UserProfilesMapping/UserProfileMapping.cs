@@ -1,6 +1,6 @@
 ﻿using Mapster;
 using Oostel.Application.Modules.UserProfiles.DTOs;
-using Oostel.Domain.UserProfiles.Entities;
+using Oostel.Domain.UserRoleProfiles.Entities;
 
 namespace Oostel.Application.Mappers.UserProfilesMapping
 {
@@ -8,8 +8,8 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
     {
         public void Register(TypeAdapterConfig config)
         {
-            config.NewConfig<UserProfile, StudentProfileDTO>();
-            config.NewConfig<UserProfile, GetStudentProfileDTO>()
+            config.NewConfig<Student, StudentProfileDTO>();
+            config.NewConfig<Student, GetStudentProfileDTO>()
                 .Map(dest => dest.UserId, src => src.Id)
                 .Map(dest => dest.Email, src => src.User.Email)
                 .Map(dest => dest.JoinedDate, src => src.User.CreatedDate)
@@ -17,8 +17,8 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
                 .Map(dest => dest.FullName, src => $"{src.User.FirstName} {src.User.LastName}");
 
 
-            config.NewConfig<UserProfile, LandlordProfileDTO>();
-            config.NewConfig<UserProfile, GetLandlordProfileDTO>()
+            config.NewConfig<Landlord, LandlordProfileDTO>();
+            config.NewConfig<Landlord, GetLandlordProfileDTO>()
                 .Map(dest => dest.UserId, src => src.Id)
                 .Map(dest => dest.Email, src => src.User.Email)
                 .Map(dest => dest.JoinedDate, src => src.User.CreatedDate)

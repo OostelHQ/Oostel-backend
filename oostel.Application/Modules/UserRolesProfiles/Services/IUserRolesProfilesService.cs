@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.UserProfiles.Services
 {
-    public interface IUserProfilesService
+    public interface IUserRolesProfilesService
     {
         Task<List<GetStudentProfileDTO>> GetAllStudents();
         Task<List<GetStudentProfileDTO>> GetStudentById(string studentId);

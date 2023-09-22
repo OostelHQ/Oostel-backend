@@ -15,8 +15,8 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Queries
         public string LandlordId { get; set; }
         public sealed class GetLandlordByIdRequestCommand : IRequestHandler<GetLandlordByIdRequest, APIResponse>
         {
-            private readonly IUserProfilesService _userProfilesService;
-            public GetLandlordByIdRequestCommand(IUserProfilesService userProfilesService) =>
+            private readonly IUserRolesProfilesService _userProfilesService;
+            public GetLandlordByIdRequestCommand(IUserRolesProfilesService userProfilesService) =>
                 _userProfilesService = userProfilesService;
             public async Task<APIResponse> Handle(GetLandlordByIdRequest request, CancellationToken cancellationToken)
             {

@@ -1,11 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Oostel.Domain.Hostel.Entities;
-using Oostel.Domain.UserProfiles.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Oostel.Domain.UserRoleProfiles.Entities;
 
 namespace Oostel.Infrastructure.Data.Configurations
 {
@@ -13,11 +7,11 @@ namespace Oostel.Infrastructure.Data.Configurations
     {
         public static void ConfigureUserProfile(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserProfile>().HasKey(u => u.Id);
+            modelBuilder.Entity<Landlord>().HasKey(u => u.Id);
 
-            modelBuilder.Entity<UserProfile>()
+            modelBuilder.Entity<Landlord>()
                 .HasMany(h => h.Hostels)
-                .WithOne(u => u.User)
+                .WithOne(u => u.Landlord)
                 .HasForeignKey(u => u.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         }

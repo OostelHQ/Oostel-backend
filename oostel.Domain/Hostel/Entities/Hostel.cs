@@ -1,10 +1,5 @@
 ﻿using Oostel.Common.Types;
-using Oostel.Domain.UserProfiles.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Oostel.Domain.UserRoleProfiles.Entities;
 
 namespace Oostel.Domain.Hostel.Entities
 {
@@ -26,7 +21,7 @@ namespace Oostel.Domain.Hostel.Entities
         public string? HostelFrontViewPicture { get; set; }
         public bool IsAnyRoomVacant { get; set; }
         public ICollection<Room>? Rooms { get; set; }
-        public UserProfile User { get; set; }
+        public Landlord Landlord { get; set; }
 
         public Hostel()
         {

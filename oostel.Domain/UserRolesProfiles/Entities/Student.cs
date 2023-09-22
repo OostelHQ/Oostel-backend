@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Oostel.Domain.UserProfiles.Entities
+namespace Oostel.Domain.UserRoleProfiles.Entities
 {
-    public class UserProfile : BaseEntity<string>
+    public class Student : BaseEntity<string>
     {
         public string StateOfOrigin { get; set; }
         public string Gender { get; set; }
@@ -16,26 +16,23 @@ namespace Oostel.Domain.UserProfiles.Entities
         public string? ProfilePhotoURL { get; set; }
         public string? PhoneNumber { get; set; }
         public string Religion { get; set; }
-        public string? Country { get; set; }
-        public bool IsVerified { get; set; }
-        public bool IsAvailable { get; set; }
-        public DateTime? DateOfBirth { get; set; }
+        public bool IsAvailable { get; set; } = false;
         public string Age { get; set; }
         public string Denomination { get; set; }
         public string Hobby { get; set; }
         public virtual ApplicationUser User { get; set; }
-        public ICollection<Domain.Hostel.Entities.Hostel> Hostels { get; set; }
 
-        public UserProfile()
+        public Student()
         {
             LastModifiedDate = DateTime.UtcNow;
             CreatedDate = DateTime.UtcNow;
         }
 
-        public UserProfile(string userId) : base(userId)
+        public Student(string userId) : base(userId)
         {
             LastModifiedDate = DateTime.UtcNow;
             CreatedDate = DateTime.UtcNow;
         }
     }
 }
+

@@ -14,8 +14,8 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Queries
     {
         public sealed class GetAllLandLordProfileRequestCommand : IRequestHandler<GetAllLandLordsRequest, APIResponse>
         {
-            private readonly IUserProfilesService _userProfilesService;
-            public GetAllLandLordProfileRequestCommand(IUserProfilesService userProfilesService) =>
+            private readonly IUserRolesProfilesService _userProfilesService;
+            public GetAllLandLordProfileRequestCommand(IUserRolesProfilesService userProfilesService) =>
                 _userProfilesService = userProfilesService;
             public async Task<APIResponse> Handle(GetAllLandLordsRequest request, CancellationToken cancellationToken)
             {

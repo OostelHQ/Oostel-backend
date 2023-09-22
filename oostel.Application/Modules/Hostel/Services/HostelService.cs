@@ -1,6 +1,4 @@
-﻿using Mapster;
-using MapsterMapper;
-using Microsoft.AspNetCore.Http;
+﻿using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Oostel.Application.Modules.Hostel.DTOs;
@@ -11,12 +9,9 @@ using Oostel.Common.Helpers;
 using Oostel.Common.Types.RequestFeatures;
 using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserAuthentication.Entities;
-using Oostel.Domain.UserProfiles.Entities;
 using Oostel.Infrastructure.Data;
 using Oostel.Infrastructure.Media;
 using Oostel.Infrastructure.Repositories;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Oostel.Application.Modules.Hostel.Services
 {
@@ -43,7 +38,7 @@ namespace Oostel.Application.Modules.Hostel.Services
 
         public async Task<bool> CreateHostel(HostelDTO hostelDTO)
         {
-            var user = await _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == hostelDTO.UserId, true);
+            var user = await _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == hostelDTO.UserId, true);
             if (user is null) return false;
 
             var rooms = new List<Room>();

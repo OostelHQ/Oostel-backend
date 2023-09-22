@@ -15,8 +15,8 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Queries
         public string StudentId { get; set; }
         public sealed class GetStudentByIdRequestCommand : IRequestHandler<GetStudentByIdRequest, APIResponse>
         {
-            private readonly IUserProfilesService _userProfilesService;
-            public GetStudentByIdRequestCommand(IUserProfilesService userProfilesService) =>
+            private readonly IUserRolesProfilesService _userProfilesService;
+            public GetStudentByIdRequestCommand(IUserRolesProfilesService userProfilesService) =>
                 _userProfilesService = userProfilesService;
             public async Task<APIResponse> Handle(GetStudentByIdRequest request, CancellationToken cancellationToken)
             {

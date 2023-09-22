@@ -17,6 +17,6 @@ namespace Oostel.Application.Modules.UserProfiles.DTOs
         public string PhoneNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Religion { get; set; }
-        public string Age { get; set; }
+        public int Age { get; set; }
     }
 }

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.UserProfiles.Features.Commands
 {
-    public class UpdateLandLordProfileCommand : IRequest<APIResponse>
+    public class CreateLandlordProfileCommand : IRequest<APIResponse>
     {
         public string UserId { get; set; }
         public string? FirstName { get; set; }
@@ -25,20 +25,20 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
         public string? Religion { get; set; }
         public string? Age { get; set; }
 
-        public sealed class UpdateLandLordProfileCommandHandler : IRequestHandler<UpdateLandLordProfileCommand, APIResponse>
+        public sealed class CreateLandlordProfileCommandHandler : IRequestHandler<CreateLandlordProfileCommand, APIResponse>
         {
-            private readonly IUserProfilesService _userProfilesService;
+            private readonly IUserRolesProfilesService _userProfilesService;
             private readonly IMapper _mapper;
-            public UpdateLandLordProfileCommandHandler(IUserProfilesService userProfilesService, IMapper mapper)
+            public CreateLandlordProfileCommandHandler(IUserRolesProfilesService userProfilesService, IMapper mapper)
             {
                 _userProfilesService = userProfilesService;
                 _mapper = mapper;
             }
-            public async Task<APIResponse> Handle(UpdateLandLordProfileCommand request, CancellationToken cancellationToken)
+            public async Task<APIResponse> Handle(CreateLandlordProfileCommand request, CancellationToken cancellationToken)
             {
                 var mapData = _mapper.Map<LandlordProfileDTO>(request);
-                var landlordProfile = await _userProfilesService.UpdateLandLordProfile(mapData);
-                if (!landlordProfile) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailToUpdateError);
+                var lordlordProfile = await _userProfilesService.CreateLandLordProfile(mapData);
+                if (!lordlordProfile) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);
 
                 return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: null, ResponseMessages.SuccessfulCreation);
             }

@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Oostel.Domain.UserAuthentication.Entities;
-using Oostel.Domain.UserProfiles.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Oostel.Domain.UserRoleProfiles.Entities;
 
 namespace Oostel.Infrastructure.Data.Configurations
 {
@@ -29,9 +24,14 @@ namespace Oostel.Infrastructure.Data.Configurations
             });
 
             builder.Entity<ApplicationUser>()
-                .HasOne(u => u.UserProfile)
+                .HasOne(u => u.Landlord)
                 .WithOne(a => a.User)
-                .HasForeignKey<UserProfile>(k => k.Id);
+                .HasForeignKey<Landlord>(k => k.Id);
+
+            builder.Entity<ApplicationUser>()
+                .HasOne(u => u.Student)
+                .WithOne(a => a.User)
+                .HasForeignKey<Student>(k => k.Id);
 
             builder.Entity<ApplicationRole>()
             .Property(e => e.Id)

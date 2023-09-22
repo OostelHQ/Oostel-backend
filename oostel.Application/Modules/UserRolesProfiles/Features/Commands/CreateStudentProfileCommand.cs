@@ -25,9 +25,9 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
 
         public sealed class CreateUserProfileCommandHandler : IRequestHandler<CreateStudentProfileCommand, APIResponse>
         {
-            private readonly IUserProfilesService _userProfilesService;
+            private readonly IUserRolesProfilesService _userProfilesService;
             private readonly IMapper _mapper;
-            public CreateUserProfileCommandHandler(IUserProfilesService userProfilesService, IMapper mapper)
+            public CreateUserProfileCommandHandler(IUserRolesProfilesService userProfilesService, IMapper mapper)
             {
                 _userProfilesService = userProfilesService;
                 _mapper = mapper;

@@ -40,7 +40,7 @@ namespace Oostel.Application
 
             services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
 
-            services.AddScoped<IUserProfilesService, UserProfilesService>();
+            services.AddScoped<IUserRolesProfilesService, UserRolesProfilesService>();
             services.AddScoped<IHostelService, HostelService>();
 
             return services;

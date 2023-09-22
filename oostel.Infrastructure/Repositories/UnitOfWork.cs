@@ -1,12 +1,7 @@
 ﻿using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserAuthentication.Entities;
-using Oostel.Domain.UserProfiles.Entities;
+using Oostel.Domain.UserRoleProfiles.Entities;
 using Oostel.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oostel.Infrastructure.Repositories
 {
@@ -20,7 +15,8 @@ namespace Oostel.Infrastructure.Repositories
         }
 
         private GenericRepository<UserOTP, string> userOTPRepository;
-        private GenericRepository<UserProfile, string> userProfileRepository;
+        private GenericRepository<Landlord, string> landlordRepository;
+        private GenericRepository<Student, string> studentRepository;
         private GenericRepository<Hostel, string> hostelRepository;
         private GenericRepository<Room, string> roomRepository;
 
@@ -62,15 +58,27 @@ namespace Oostel.Infrastructure.Repositories
             }
         }
 
-        public GenericRepository<UserProfile, string> UserProfileRepository
+        public GenericRepository<Landlord, string> LandlordRepository
         {
             get
             {
-                if (userProfileRepository == null)
+                if (landlordRepository == null)
                 {
-                    userProfileRepository = new GenericRepository<UserProfile, string>(_context);
+                    landlordRepository = new GenericRepository<Landlord, string>(_context);
                 }
-                return userProfileRepository;
+                return landlordRepository;
+            }
+        }
+
+        public GenericRepository<Student, string> StudentRepository
+        {
+            get
+            {
+                if (studentRepository == null)
+                {
+                    studentRepository = new GenericRepository<Student, string>(_context);
+                }
+                return studentRepository;
             }
         }
 
