@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.UserProfiles.Features.Queries
 {
-    public class GetUserProfileByIdRequest : IRequest<APIResponse>
+    public class GetStudentByIdRequest : IRequest<APIResponse>
     {
-        public string UserId { get; set; }
-        public sealed class GetUserProfileByIdRequestCommand : IRequestHandler<GetUserProfileByIdRequest, APIResponse>
+        public string StudentId { get; set; }
+        public sealed class GetStudentByIdRequestCommand : IRequestHandler<GetStudentByIdRequest, APIResponse>
         {
             private readonly IUserProfilesService _userProfilesService;
-            public GetUserProfileByIdRequestCommand(IUserProfilesService userProfilesService) =>
+            public GetStudentByIdRequestCommand(IUserProfilesService userProfilesService) =>
                 _userProfilesService = userProfilesService;
-            public async Task<APIResponse> Handle(GetUserProfileByIdRequest request, CancellationToken cancellationToken)
+            public async Task<APIResponse> Handle(GetStudentByIdRequest request, CancellationToken cancellationToken)
             {
-                var userProfile = await _userProfilesService.GetUserProfileById(request.UserId);
+                var userProfile = await _userProfilesService.GetStudentById(request.StudentId);
                 if (userProfile is null) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.NotFound);
 
                 return APIResponse.GetSuccessMessage(HttpStatusCode.OK, data: userProfile, ResponseMessages.FetchedSuccess);

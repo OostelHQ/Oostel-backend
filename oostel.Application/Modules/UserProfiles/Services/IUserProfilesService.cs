@@ -10,10 +10,10 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 {
     public interface IUserProfilesService
     {
-        Task<List<GetUserProfileDTO>> GetAllUserProfile();
-        Task<List<GetUserProfileDTO>> GetUserProfileById(string userId);
-        Task<bool> UpdateUserProfile(UserProfileDTO userProfileDTO);
-        Task<bool> CreateUserProfile(UserProfileDTO userProfileDTO);
+        Task<List<GetStudentProfileDTO>> GetAllStudents();
+        Task<List<GetStudentProfileDTO>> GetStudentById(string studentId);
+        Task<bool> UpdateStudentProfile(UpdateStudentProfileDTO userProfileDTO);
+        Task<bool> CreateStudentProfile(UpdateStudentProfileDTO userProfileDTO);
         Task<bool> UploadDisplayPictureAsync(IFormFile file, string userId);
     }
 }

@@ -3,9 +3,9 @@
     public class UserProfileRoute
     {
         public const string CreateUserProfile = "user-profile/create-user-profile";
-        public const string UpdateUserProfile = "user-profile/update-user-profile";
-        public const string GetAllUserProfiles = "user-profile/get-all-user-profiles";
-        public const string GetUserProfileById = "user-profile/get-user-profile-by-id";
+        public const string UpdateStudentProfile = "user-profile/update-student-profile";
+        public const string GetAllStudents = "user-profile/get-all-students";
+        public const string GetStudentById = "user-profile/get-student-by-id";
         public const string UploadUserProfilePicture = "user-profile/upload-user-profile-picture";
     }
 }

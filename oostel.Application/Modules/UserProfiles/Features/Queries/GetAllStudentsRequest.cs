@@ -13,16 +13,16 @@ using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.UserProfiles.Features.Queries
 {
-    public class GetAllUserProfileRequest : IRequest<APIResponse>
+    public class GetAllStudentsRequest : IRequest<APIResponse>
     {
-        public sealed class GetAllUserProfileRequestCommand : IRequestHandler<GetAllUserProfileRequest, APIResponse>
+        public sealed class GetAllStudentsRequestCommand : IRequestHandler<GetAllStudentsRequest, APIResponse>
         {
             private readonly IUserProfilesService _userProfilesService;
-            public GetAllUserProfileRequestCommand(IUserProfilesService userProfilesService) => 
+            public GetAllStudentsRequestCommand(IUserProfilesService userProfilesService) => 
                 _userProfilesService = userProfilesService;
-            public async Task<APIResponse> Handle(GetAllUserProfileRequest request, CancellationToken cancellationToken)
+            public async Task<APIResponse> Handle(GetAllStudentsRequest request, CancellationToken cancellationToken)
             {
-                var userProfile = await _userProfilesService.GetAllUserProfile();
+                var userProfile = await _userProfilesService.GetAllStudents();
                 if (userProfile is null) return APIResponse.GetFailureMessage(HttpStatusCode.OK, null, ResponseMessages.NotFound);
 
                 return APIResponse.GetSuccessMessage(HttpStatusCode.OK, data: userProfile, ResponseMessages.FetchedSuccess);

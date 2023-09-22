@@ -16,32 +16,32 @@ namespace Oostel.API.Controllers
 
         [HttpPost]
         [Route(UserProfileRoute.CreateUserProfile)]
-        public async Task<ActionResult<APIResponse>> CreateUserProfile(UserProfileRequest request)
+        public async Task<ActionResult<APIResponse>> CreateUserProfile(StudentProfileRequest request)
         {
-            var userProfileRequest = _mapper.Map<CreateUserProfileCommand>(request);
+            var userProfileRequest = _mapper.Map<CreateStudentProfileCommand>(request);
             return HandleResult(await Mediator.Send(userProfileRequest));
         }
 
         [HttpPut]
-        [Route(UserProfileRoute.UpdateUserProfile)]
-        public async Task<ActionResult<APIResponse>> UpdateUserProfile(UserProfileRequest request)
+        [Route(UserProfileRoute.UpdateStudentProfile)]
+        public async Task<ActionResult<APIResponse>> UpdateUserProfile(StudentProfileRequest request)
         {
-            var userProfileRequest = _mapper.Map<UpdateUserProfileCommand>(request);
-            return HandleResult(await Mediator.Send(userProfileRequest));
+            var studentProfileRequest = _mapper.Map<UpdateStudentProfileCommand>(request);
+            return HandleResult(await Mediator.Send(studentProfileRequest));
         }
 
         [HttpGet]
-        [Route(UserProfileRoute.GetAllUserProfiles)]
-        public async Task<ActionResult<APIResponse>> GetAllUserProfiles()
+        [Route(UserProfileRoute.GetAllStudents)]
+        public async Task<ActionResult<APIResponse>> GetAllStudents()
         {
-            return HandleResult(await Mediator.Send(new GetAllUserProfileRequest()));
+            return HandleResult(await Mediator.Send(new GetAllStudentsRequest()));
         }
 
         [HttpGet]
-        [Route(UserProfileRoute.GetUserProfileById)]
-        public async Task<ActionResult<APIResponse>> GetUserProfileById(string userId)
+        [Route(UserProfileRoute.GetStudentById)]
+        public async Task<ActionResult<APIResponse>> GetUserProfileById(string studentId)
         {
-            return HandleResult(await Mediator.Send(new GetUserProfileByIdRequest { UserId = userId }));
+            return HandleResult(await Mediator.Send(new GetStudentByIdRequest { StudentId = studentId }));
         }
 
         [HttpPut]

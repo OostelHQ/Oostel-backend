@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.UserProfiles.Features.Commands
 {
-    public class CreateUserProfileCommand : IRequest<APIResponse>
+    public class CreateStudentProfileCommand : IRequest<APIResponse>
     {
         public string UserId { get; set; }
         public string StateOfOrigin { get; set; }
@@ -23,7 +23,7 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
         public string Age { get; set; }
         public string Hobby { get; set; }
 
-        public sealed class CreateUserProfileCommandHandler : IRequestHandler<CreateUserProfileCommand, APIResponse>
+        public sealed class CreateUserProfileCommandHandler : IRequestHandler<CreateStudentProfileCommand, APIResponse>
         {
             private readonly IUserProfilesService _userProfilesService;
             private readonly IMapper _mapper;
@@ -32,10 +32,10 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
                 _userProfilesService = userProfilesService;
                 _mapper = mapper;
             }
-            public async Task<APIResponse> Handle(CreateUserProfileCommand request, CancellationToken cancellationToken)
+            public async Task<APIResponse> Handle(CreateStudentProfileCommand request, CancellationToken cancellationToken)
             {
-                var mapData = _mapper.Map<UserProfileDTO>(request);
-                var userProfile = await _userProfilesService.CreateUserProfile(mapData);
+                var mapData = _mapper.Map<UpdateStudentProfileDTO>(request);
+                var userProfile = await _userProfilesService.CreateStudentProfile(mapData);
                 if(!userProfile) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);
 
                 return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: null, ResponseMessages.SuccessfulCreation);

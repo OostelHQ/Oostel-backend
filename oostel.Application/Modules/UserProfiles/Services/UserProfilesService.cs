@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Common.Enums;
+using Oostel.Common.Helpers;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserProfiles.Entities;
+using Oostel.Infrastructure.Data;
 using Oostel.Infrastructure.Media;
 using Oostel.Infrastructure.Repositories;
 using System;
@@ -22,64 +24,80 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IMediaUpload _mediaUpload;
-        public UserProfilesService(UserManager<ApplicationUser> userManager, UnitOfWork unitOfWork, IMediaUpload mediaUpload, IMapper mapper)
+        private readonly ApplicationDbContext _applicationDbContext;
+        public UserProfilesService(UserManager<ApplicationUser> userManager, ApplicationDbContext applicationDbContext, UnitOfWork unitOfWork, IMediaUpload mediaUpload, IMapper mapper)
         {
             _unitOfWork= unitOfWork;
             _userManager= userManager;
             _mapper= mapper;
             _mediaUpload = mediaUpload;
+            _applicationDbContext = applicationDbContext;
         }
 
-        public async Task<List<GetUserProfileDTO>> GetAllUserProfile()
+        public async Task<List<GetStudentProfileDTO>> GetAllStudents()
         {
-            var userProfile = await _unitOfWork.UserProfileRepository.GetAll(true);
-            var userProfileMapping = _mapper.Map<List<GetUserProfileDTO>>(userProfile);
+            var students = await _unitOfWork.UserProfileRepository.FindandInclude(x => x.User.RolesCSV.Contains(RoleType.Student.GetEnumDescription()), true);
+            var studentsMapping = _mapper.Map<List<GetStudentProfileDTO>>(students);
 
-            return userProfileMapping;
+            return studentsMapping;
         }
 
-        public async Task<List<GetUserProfileDTO>> GetUserProfileById(string userId)
+        public async Task<List<GetStudentProfileDTO>> GetStudentById(string studentId)
         {
-            var userProfile = await _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == userId, true);//&& x.User.RolesCSV.Contains(roleType), true);
-            if (userProfile is null) return null;
+            var student = await _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == studentId && x.User.RolesCSV.Contains(RoleType.Student.GetEnumDescription()), true);
+            if (student is null) return null;
 
-            var userProfileMapping = _mapper.Map<List<GetUserProfileDTO>>(userProfile);
-            return userProfileMapping;
+            var studentMapping = _mapper.Map<List<GetStudentProfileDTO>>(student);
+            return studentMapping;
         }
-        public async Task<bool> UpdateUserProfile(UserProfileDTO userProfileDTO)
+        public async Task<bool> UpdateStudentProfile(UpdateStudentProfileDTO userProfileDTO)
         {
-            var userProfile = await _unitOfWork.UserProfileRepository.Find(x => x.Id == userProfileDTO.UserId);
-            if (userProfile is null) return false;
+            var studentProfile =  _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == userProfileDTO.UserId, true).Result.SingleOrDefault();
+            if (studentProfile is null) return false;
 
-            userProfile.SchoolLevel = userProfileDTO.SchoolLevel ?? userProfile.SchoolLevel;
-            userProfile.Age = userProfileDTO.Age ?? userProfile.Age;
-            userProfile.Hobby = userProfileDTO.Hobby ?? userProfile.Hobby;
-            userProfile.Gender = userProfileDTO.Gender ?? userProfile.Gender ;
-            userProfile.Religion = userProfileDTO.Religion ?? userProfile.Religion ;
-            userProfile.StateOfOrigin = userProfileDTO.StateOfOrigin ?? userProfile.StateOfOrigin ;
-            userProfile.LastModifiedDate = DateTime.UtcNow;
+            studentProfile.SchoolLevel = userProfileDTO.SchoolLevel ?? studentProfile.SchoolLevel;
+            studentProfile.Age = userProfileDTO.Age ?? studentProfile.Age;
+            studentProfile.Hobby = userProfileDTO.Hobby ?? studentProfile.Hobby;
+            studentProfile.Gender = userProfileDTO.Gender ?? studentProfile.Gender ;
+            studentProfile.Religion = userProfileDTO.Religion ?? studentProfile.Religion ;
+            studentProfile.StateOfOrigin = userProfileDTO.StateOfOrigin ?? studentProfile.StateOfOrigin ;
+            studentProfile.Denomination = userProfileDTO.Denomination ?? studentProfile.Denomination;
+            studentProfile.PhoneNumber = userProfileDTO.PhoneNumber ?? studentProfile.PhoneNumber;
+            studentProfile.User.FirstName = userProfileDTO.FirstName ?? studentProfile.User.FirstName;
+            studentProfile.User.LastName = userProfileDTO.LastName ?? studentProfile.User.LastName;
+            studentProfile.User.Email = userProfileDTO.Email ?? studentProfile.User.Email;
+            studentProfile.LastModifiedDate = DateTime.UtcNow;
 
-              await _unitOfWork.UserProfileRepository.UpdateAsync(userProfile);
+              await _unitOfWork.UserProfileRepository.UpdateAsync(studentProfile);
              var saveState = await _unitOfWork.SaveAsync() > 0;
              if(!saveState) return false;
 
             return true;
         }
 
-        public async Task<bool> CreateUserProfile(UserProfileDTO userProfileDTO)
+        public async Task<bool> CreateStudentProfile(UpdateStudentProfileDTO userProfileDTO)
         {
-            var user = await _userManager.FindByIdAsync(userProfileDTO.UserId);
-            if (user is null) return false;
+            var studentProfile = _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == userProfileDTO.UserId, true).Result.SingleOrDefault();
+            if (studentProfile is null) return false;
+
 
             var userProfile = new UserProfile()
             {
-                Id = user.Id,
+                Id = studentProfile.Id,
                 Age = userProfileDTO.Age,
                 Gender = userProfileDTO.Gender,
                 Hobby = userProfileDTO.Hobby,
                 Religion = userProfileDTO.Religion,
                 SchoolLevel = userProfileDTO.SchoolLevel,
+                Denomination = userProfileDTO.Denomination,
+                PhoneNumber = userProfileDTO.PhoneNumber,
                 StateOfOrigin = userProfileDTO.StateOfOrigin,
+                User = new ApplicationUser
+                {
+                    FirstName = userProfileDTO.FirstName,
+                    LastName = userProfileDTO.LastName,
+                    Email = userProfileDTO.Email
+                },
                 CreatedDate = DateTime.UtcNow,
                 LastModifiedDate = DateTime.UtcNow,
             };

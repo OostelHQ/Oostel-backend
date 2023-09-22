@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Oostel.Application.Validators.UserProfile
 {
-    public class UserProfileCommandValidator : AbstractValidator<CreateUserProfileCommand>
+    public class UserProfileCommandValidator : AbstractValidator<CreateStudentProfileCommand>
     {
         public UserProfileCommandValidator()
         {

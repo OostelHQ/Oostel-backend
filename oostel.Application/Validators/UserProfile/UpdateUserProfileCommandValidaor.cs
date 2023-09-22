@@ -2,7 +2,7 @@
 
 namespace Oostel.Application.Validators.UserProfile
 {
-    public class UpdateUserProfileCommandValidaor : AbstractValidator<UpdateUserProfileCommand>
+    public class UpdateUserProfileCommandValidaor : AbstractValidator<UpdateStudentProfileCommand>
     {
         public UpdateUserProfileCommandValidaor()
         {
