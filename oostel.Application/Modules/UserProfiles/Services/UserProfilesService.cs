@@ -126,9 +126,9 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             return landlordMapping;
         }
 
-        public async Task<List<GetLandlordProfileDTO>> GetLandlordsById(string studentId)
+        public async Task<List<GetLandlordProfileDTO>> GetLandlordsById(string landlordId)
         {
-            var landlord = await _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == studentId && x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()), true);
+            var landlord = await _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == landlordId && x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()), true);
             if (landlord is null) return null;
 
             var landlordMapping = _mapper.Map<List<GetLandlordProfileDTO>>(landlord);
