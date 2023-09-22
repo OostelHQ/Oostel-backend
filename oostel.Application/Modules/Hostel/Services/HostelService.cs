@@ -67,7 +67,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             await _unitOfWork.HostelRepository.Add(hostel);
             await _unitOfWork.SaveAsync();
 
-            var createdHostel = await _unitOfWork.HostelRepository.GetById(hostel.Id);
+          /*  var createdHostel = await _unitOfWork.HostelRepository.GetById(hostel.Id);
 
             foreach (var roomDto in hostelDTO.Rooms)
             {
@@ -86,7 +86,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             createdHostel.LastModifiedDate = DateTime.UtcNow;
            
             await _unitOfWork.HostelRepository.UpdateAsync(createdHostel);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveAsync();*/
 
             return true;
         }
@@ -124,7 +124,7 @@ namespace Oostel.Application.Modules.Hostel.Services
 
             var existinghostel = await _unitOfWork.HostelRepository.Find(h => h.Id == hostelId);
             if (existinghostel is null) return false;
-            var rooms = _mapper.Map<ICollection<Room>>(hostelDTO.Rooms);
+           // var rooms = _mapper.Map<ICollection<Room>>(hostelDTO.Rooms);
 
             existinghostel.HostelName = hostelDTO.HostelName;
             existinghostel.HostelDescription = hostelDTO.HostelDescription;
@@ -138,7 +138,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             existinghostel.RulesAndRegulation = hostelDTO.RulesAndRegulation;
             existinghostel.HostelFacilities = hostelDTO.HostelFacilities;
             existinghostel.IsAnyRoomVacant = hostelDTO.IsAnyRoomVacant;
-            existinghostel.Rooms = rooms;
+           // existinghostel.Rooms = rooms;
             existinghostel.LastModifiedDate = DateTime.UtcNow;
             await _unitOfWork.HostelRepository.UpdateAsync(existinghostel);
             await _unitOfWork.SaveAsync();
