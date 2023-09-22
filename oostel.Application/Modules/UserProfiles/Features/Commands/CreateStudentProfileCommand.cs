@@ -34,7 +34,7 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
             }
             public async Task<APIResponse> Handle(CreateStudentProfileCommand request, CancellationToken cancellationToken)
             {
-                var mapData = _mapper.Map<UpdateStudentProfileDTO>(request);
+                var mapData = _mapper.Map<StudentProfileDTO>(request);
                 var userProfile = await _userProfilesService.CreateStudentProfile(mapData);
                 if(!userProfile) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);
 

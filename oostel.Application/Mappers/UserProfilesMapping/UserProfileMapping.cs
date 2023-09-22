@@ -8,7 +8,7 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
     {
         public void Register(TypeAdapterConfig config)
         {
-            config.NewConfig<UserProfile, UpdateStudentProfileDTO>();
+            config.NewConfig<UserProfile, StudentProfileDTO>();
             config.NewConfig<UserProfile, GetStudentProfileDTO>()
                 .Map(dest => dest.UserId, src => src.Id)
                 .Map(dest => dest.Email, src => src.User.Email)

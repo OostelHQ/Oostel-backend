@@ -33,7 +33,7 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
             }
             public async Task<APIResponse> Handle(UpdateStudentProfileCommand request, CancellationToken cancellationToken)
             {
-                var mapData = _mapper.Map<UpdateStudentProfileDTO>(request);
+                var mapData = _mapper.Map<StudentProfileDTO>(request);
                 var studentProfile = await _userProfilesService.UpdateStudentProfile(mapData);
                 if (!studentProfile) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailToUpdateError);
 

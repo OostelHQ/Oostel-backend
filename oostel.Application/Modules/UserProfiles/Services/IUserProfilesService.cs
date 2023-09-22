@@ -12,8 +12,12 @@ namespace Oostel.Application.Modules.UserProfiles.Services
     {
         Task<List<GetStudentProfileDTO>> GetAllStudents();
         Task<List<GetStudentProfileDTO>> GetStudentById(string studentId);
-        Task<bool> UpdateStudentProfile(UpdateStudentProfileDTO userProfileDTO);
-        Task<bool> CreateStudentProfile(UpdateStudentProfileDTO userProfileDTO);
+        Task<bool> UpdateStudentProfile(StudentProfileDTO userProfileDTO);
+        Task<List<GetLandlordProfileDTO>> GetLandlordsById(string studentId);
+        Task<List<GetLandlordProfileDTO>> GetAllLandlords();
+        Task<bool> CreateLandLordProfile(LandlordProfileDTO landlordProfileDTO);
+        Task<bool> CreateStudentProfile(StudentProfileDTO userProfileDTO);
+        Task<bool> UpdateLandLordProfile(LandlordProfileDTO updateLandlordProfileDTO);
         Task<bool> UploadDisplayPictureAsync(IFormFile file, string userId);
     }
 }
