@@ -52,7 +52,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         }
         public async Task<bool> UpdateStudentProfile(StudentProfileDTO userProfileDTO)
         {
-            var studentProfile =  _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == userProfileDTO.UserId, true).Result.SingleOrDefault();
+            var studentProfile =  _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == userProfileDTO.UserId && x.User.RolesCSV.Contains(RoleType.Student.GetEnumDescription()), true).Result.FirstOrDefault();
             if (studentProfile is null) return false;
 
             studentProfile.SchoolLevel = userProfileDTO.SchoolLevel ?? studentProfile.SchoolLevel;
@@ -78,7 +78,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         public async Task<bool> CreateStudentProfile(StudentProfileDTO updateStudentProfileDTO)
         {
-            var studentProfile = _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == updateStudentProfileDTO.UserId, true).Result.SingleOrDefault();
+            var studentProfile = _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == updateStudentProfileDTO.UserId && x.User.RolesCSV.Contains(RoleType.Student.GetEnumDescription()), true).Result.SingleOrDefault();
             if (studentProfile is null) return false;
 
 
@@ -137,7 +137,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         public async Task<bool> CreateLandLordProfile(LandlordProfileDTO landlordProfileDTO)
         {
-            var studentProfile = _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == landlordProfileDTO.UserId, true).Result.SingleOrDefault();
+            var studentProfile = _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == landlordProfileDTO.UserId && x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()), true).Result.SingleOrDefault();
             if (studentProfile is null) return false;
 
 
@@ -175,7 +175,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         }
         public async Task<bool> UpdateLandLordProfile(LandlordProfileDTO landlordProfileDTO)
         {
-            var landlordProfile = _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == landlordProfileDTO.UserId, true).Result.SingleOrDefault();
+            var landlordProfile = _unitOfWork.UserProfileRepository.FindandInclude(x => x.Id == landlordProfileDTO.UserId && x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()), true).Result.SingleOrDefault();
             if (landlordProfile is null) return false;
 
             landlordProfile.Age = landlordProfileDTO.Age ?? landlordProfile.Age;
