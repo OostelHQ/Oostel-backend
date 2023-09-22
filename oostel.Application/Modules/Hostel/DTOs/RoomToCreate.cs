@@ -9,7 +9,7 @@ namespace Oostel.Application.Modules.Hostel.DTOs
 {
     public class RoomToCreate
     {
-        public string Id { get; set; }
+       // public string Id { get; set; }
         public string RoomNumber { get; set; }
         public decimal Price { get; set; }
         public string Duration { get; set; }
