@@ -8,11 +8,11 @@ using Oostel.Common.Types;
 
 namespace Oostel.API.Controllers
 {
-    public class UserProfilesController : BaseController
+    public class StudentProfilesController : BaseController
     {
 
         private readonly IMapper _mapper;
-        public UserProfilesController(IMapper mapper) => _mapper = mapper;
+        public StudentProfilesController(IMapper mapper) => _mapper = mapper;
 
         [HttpPost]
         [Route(UserProfileRoute.CreateUserProfile)]
