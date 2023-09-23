@@ -4,6 +4,7 @@ using Oostel.API.APIRoutes;
 using Oostel.API.ViewModels.UserProfilesVM;
 using Oostel.Application.Modules.UserProfiles.Features.Commands;
 using Oostel.Application.Modules.UserProfiles.Features.Queries;
+using Oostel.Application.Modules.UserRolesProfiles.Features.Commands;
 using Oostel.Common.Types;
 
 namespace Oostel.API.Controllers
@@ -51,5 +52,13 @@ namespace Oostel.API.Controllers
             return HandleResult(await Mediator.Send(new UploadUserProfilePictureCommand { File = request.File, UserId = request.UserId }));
         }
 
+
+        [HttpPost]
+        [Route(UserProfileRoute.OpenToRoommate)]
+        public async Task<ActionResult<APIResponse>> OpenToRoommate(OpenToRoommateRequest request)
+        {
+            var openToRoommateRequest = _mapper.Map<OpenToRoommateCommand>(request);
+            return HandleResult(await Mediator.Send(openToRoommateRequest));
+        }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Oostel.Domain.UserRolesProfiles.Entities
 {
-    public class OpenToRoomate : BaseEntity<string>
+    public class OpenToRoommate : BaseEntity<string>
     {
         public string StudentId { get; set; }
         public string HostelName { get; set; }
@@ -16,13 +16,13 @@ namespace Oostel.Domain.UserRolesProfiles.Entities
         public string HostelAddress { get; set; }
         public Student Student { get; set; }
 
-        public OpenToRoomate()
+        public OpenToRoommate()
         {
             LastModifiedDate = DateTime.UtcNow;
             CreatedDate = DateTime.UtcNow;
         }
 
-        private OpenToRoomate(string studentId, string hostelName, decimal hostelPrice, string hostelAddress)
+        private OpenToRoommate(string studentId, string hostelName, decimal hostelPrice, string hostelAddress)
         {
             StudentId = studentId;
             HostelName = hostelName;
@@ -31,9 +31,9 @@ namespace Oostel.Domain.UserRolesProfiles.Entities
             Id = Guid.NewGuid().ToString();
         }
 
-        public static OpenToRoomate CreateOpenToRoomateFactory(string studentId, string hostelName, decimal hostelPrice, string hostelAddress)
+        public static OpenToRoommate CreateOpenToRoomateFactory(string studentId, string hostelName, decimal hostelPrice, string hostelAddress)
         {
-            return new OpenToRoomate(studentId, hostelName, hostelPrice, hostelAddress);
+            return new OpenToRoommate(studentId, hostelName, hostelPrice, hostelAddress);
         }
     }
 }

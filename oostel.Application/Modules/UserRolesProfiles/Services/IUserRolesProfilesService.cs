@@ -15,6 +15,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         Task<List<GetStudentProfileDTO>> GetStudentById(string studentId);
         Task<bool> UpdateStudentProfile(StudentProfileDTO userProfileDTO);
         Task<List<GetLandlordProfileDTO>> GetLandlordsById(string studentId);
+        Task<bool> AvailableForRoommate(OpenToRoommateDTO openToRoommateDTO);
         Task<List<GetLandlordProfileDTO>> GetAllLandlords();
         Task<bool> CreateLandLordProfile(CreateLandlordDTO landlordProfileDTO);
         Task<bool> CreateStudentProfile(CreateStudentDTO userProfileDTO);

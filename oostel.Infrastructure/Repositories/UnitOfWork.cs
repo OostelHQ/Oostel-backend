@@ -1,6 +1,7 @@
 ﻿using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserRoleProfiles.Entities;
+using Oostel.Domain.UserRolesProfiles.Entities;
 using Oostel.Infrastructure.Data;
 
 namespace Oostel.Infrastructure.Repositories
@@ -19,6 +20,7 @@ namespace Oostel.Infrastructure.Repositories
         private GenericRepository<Student, string> studentRepository;
         private GenericRepository<Hostel, string> hostelRepository;
         private GenericRepository<Room, string> roomRepository;
+        private GenericRepository<OpenToRoommate, string> openToRoommateRepository;
 
         public GenericRepository<UserOTP, string> UserOTPRepository
         {
@@ -43,6 +45,18 @@ namespace Oostel.Infrastructure.Repositories
                     roomRepository = new GenericRepository<Room, string>(_context);
                 }
                 return roomRepository;
+            }
+        }
+
+        public GenericRepository<OpenToRoommate, string> OpenToRoommateRepository
+        {
+            get
+            {
+                if (openToRoommateRepository == null)
+                {
+                    openToRoommateRepository = new GenericRepository<OpenToRoommate, string>(_context);
+                }
+                return openToRoommateRepository;
             }
         }
 
