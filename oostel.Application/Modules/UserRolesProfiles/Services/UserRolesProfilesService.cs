@@ -8,6 +8,7 @@ using Oostel.Common.Enums;
 using Oostel.Common.Helpers;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserRoleProfiles.Entities;
+using Oostel.Domain.UserRolesProfiles.Entities;
 using Oostel.Infrastructure.Data;
 using Oostel.Infrastructure.Media;
 using Oostel.Infrastructure.Repositories;
@@ -36,6 +37,26 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             var studentsMapping = _mapper.Map<List<GetStudentProfileDTO>>(students);
 
             return studentsMapping;
+        }
+
+        public async Task<bool> AvailableForRoommate(OpenToRoommateDTO openToRoommateDTO)
+        {
+            var student = await _unitOfWork.StudentRepository.FindandInclude(x => x.Id == openToRoommateDTO.StudentId,true);
+            if (student is null) return false;
+
+            var openToRoomate = OpenToRoommate.CreateOpenToRoomateFactory(openToRoommateDTO.StudentId, openToRoommateDTO.HostelName,
+                                openToRoommateDTO.HostelPrice, openToRoommateDTO.HostelAddress);
+
+            if (openToRoomate.Student.IsAvailable == true) 
+                return false;
+
+            openToRoomate.Student.IsAvailable = true;
+
+            await _unitOfWork.OpenToRoommateRepository.Add(openToRoomate);
+            await _unitOfWork.SaveAsync();
+
+            return true;
+
         }
 
         public async Task<List<GetStudentProfileDTO>> GetStudentById(string studentId)

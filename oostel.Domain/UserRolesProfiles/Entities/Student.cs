@@ -21,7 +21,7 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         public string Denomination { get; set; }
         public string Hobby { get; set; }
         
-        public virtual OpenToRoomate OpenToRoomate { get; set; }
+        public virtual OpenToRoommate OpenToRoomate { get; set; }
         public virtual ApplicationUser User { get; set; }
 
         public Student()

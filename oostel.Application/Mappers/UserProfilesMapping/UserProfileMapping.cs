@@ -1,6 +1,8 @@
 ﻿using Mapster;
 using Oostel.Application.Modules.UserProfiles.DTOs;
+using Oostel.Application.Modules.UserRolesProfiles.DTOs;
 using Oostel.Domain.UserRoleProfiles.Entities;
+using Oostel.Domain.UserRolesProfiles.Entities;
 
 namespace Oostel.Application.Mappers.UserProfilesMapping
 {
@@ -26,6 +28,8 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
                 .Map(dest => dest.JoinedDate, src => src.User.CreatedDate)
                 .Map(dest => dest.PictureUrl, src => src.ProfilePhotoURL)
                 .Map(dest => dest.FullName, src => $"{src.User.FirstName} {src.User.LastName}");
+
+            config.NewConfig<OpenToRoommate, OpenToRoommateDTO>();
         }
     }
 }

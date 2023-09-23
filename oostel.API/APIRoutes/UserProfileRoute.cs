@@ -12,6 +12,8 @@
         public const string GetAllLandlords = "user-profile/get-all-landlords";
         public const string GetLandlordById = "user-profile/get-landlord-by-id";
 
+        public const string OpenToRoommate = "user-profile/open-to-roommate";
+
         public const string UploadUserProfilePicture = "user-profile/upload-user-profile-picture";
     }
 }
