@@ -225,6 +225,20 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             return true;
         }
 
+
+        public async Task<bool> ProfileViewsCount(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return false;
+
+            user.ProfileViewCount++;
+
+            await _userManager.UpdateAsync(user);
+
+            return true;
+        }
+
+
       
     }
 }

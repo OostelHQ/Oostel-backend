@@ -20,6 +20,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         Task<bool> CreateLandLordProfile(CreateLandlordDTO landlordProfileDTO);
         Task<bool> CreateStudentProfile(CreateStudentDTO userProfileDTO);
         Task<bool> UpdateLandLordProfile(LandlordProfileDTO updateLandlordProfileDTO);
+        Task<bool> ProfileViewsCount(string userId);
         Task<bool> UploadDisplayPictureAsync(IFormFile file, string userId);
     }
 }

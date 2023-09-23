@@ -13,7 +13,10 @@ namespace Oostel.Application.Modules.UserProfiles.DTOs
         public string Email { get; set; }
         public DateTime JoinedDate { get; set; }
         public string StateOfOrigin { get; set; }
+        public bool IsAvailable { get; set; }
+        public decimal RoomBudgetAmount { get; set; }
         public string? PictureUrl { get; set; }
+        public int ProfileViewCount { get; set; }
         public string Gender { get; set; }
         public string Country { get; set; }
         public string SchoolLevel { get; set; }

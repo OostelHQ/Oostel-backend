@@ -60,5 +60,12 @@ namespace Oostel.API.Controllers
             var openToRoommateRequest = _mapper.Map<OpenToRoommateCommand>(request);
             return HandleResult(await Mediator.Send(openToRoommateRequest));
         }
+
+        [HttpPost]
+        [Route(UserProfileRoute.ProfileViewsCount)]
+        public async Task<ActionResult<APIResponse>> ProfileViewsCount(string userId)
+        {
+            return HandleResult(await Mediator.Send(new ProfileViewsCountCommand { UserId = userId}));
+        }
     }
 }

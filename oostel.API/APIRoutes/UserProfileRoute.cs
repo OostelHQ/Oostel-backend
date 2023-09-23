@@ -14,6 +14,8 @@
 
         public const string OpenToRoommate = "user-profile/open-to-roommate";
 
+        public const string ProfileViewsCount = "user-profile/profile-views-count";
+
         public const string UploadUserProfilePicture = "user-profile/upload-user-profile-picture";
     }
 }

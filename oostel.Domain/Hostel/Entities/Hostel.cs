@@ -22,6 +22,7 @@ namespace Oostel.Domain.Hostel.Entities
         public bool IsAnyRoomVacant { get; set; }
         public ICollection<Room>? Rooms { get; set; }
         public Landlord Landlord { get; set; }
+        public ICollection<HostelLikes> HostelLikes { get; set; }
 
         public Hostel()
         {
