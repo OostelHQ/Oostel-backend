@@ -2,6 +2,7 @@
 using MapsterMapper;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserProfiles.Services;
+using Oostel.Application.Modules.UserRolesProfiles.DTOs;
 using Oostel.Common.Constants;
 using Oostel.Common.Types;
 using System;
@@ -34,7 +35,7 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
             }
             public async Task<APIResponse> Handle(CreateStudentProfileCommand request, CancellationToken cancellationToken)
             {
-                var mapData = _mapper.Map<StudentProfileDTO>(request);
+                var mapData = _mapper.Map<CreateStudentDTO>(request);
                 var userProfile = await _userProfilesService.CreateStudentProfile(mapData);
                 if(!userProfile) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);
 
