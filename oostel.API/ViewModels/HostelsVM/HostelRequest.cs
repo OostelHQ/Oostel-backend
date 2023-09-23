@@ -12,10 +12,11 @@ namespace Oostel.API.ViewModels.HostelsVM
         public decimal HomeSize { get; set; }
         public string Street { get; set; }
         public string Junction { get; set; }
+        public string PriceBudgetRange { get; set; }
         public HostelCategory HostelCategory { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
-       // public IEnumerable<RoomToCreate>? Rooms { get; set; }
+        public List<RoomToCreate>? Rooms { get; set; }
         public List<string>? RulesAndRegulation { get; set; }
         public List<string>? HostelFacilities { get; set; }
         public bool IsAnyRoomVacant { get; set; }

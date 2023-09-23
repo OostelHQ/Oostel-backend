@@ -73,13 +73,13 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         public async Task<bool> CreateStudentProfile(CreateStudentDTO updateStudentProfileDTO)
         {
-            var studentProfile = _unitOfWork.StudentRepository.FindandInclude(x => x.Id == updateStudentProfileDTO.UserId && x.User.RolesCSV.Contains(RoleType.Student.GetEnumDescription()), true).Result.SingleOrDefault();
-            if (studentProfile is null) return false;
+            var studentProfile = _userManager.Users.Any(x => x.Id == updateStudentProfileDTO.UserId && x.RolesCSV.Contains(RoleType.Student.GetEnumDescription()));
+            if (!studentProfile) return false;
 
 
             var student = new Student()
             {
-                Id = studentProfile.Id,
+                Id = updateStudentProfileDTO.UserId,
                 Age = updateStudentProfileDTO.Age,
                 Gender = updateStudentProfileDTO.Gender,
                 Hobby = updateStudentProfileDTO.Hobby,
@@ -107,7 +107,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         public async Task<List<GetLandlordProfileDTO>> GetAllLandlords()
         {
-            var landlords = await _unitOfWork.StudentRepository.FindandInclude(x => x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()), true);
+            var landlords = await _unitOfWork.LandlordRepository.FindandInclude(x => x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()), true);
             var landlordMapping = _mapper.Map<List<GetLandlordProfileDTO>>(landlords);
 
             return landlordMapping;
@@ -124,7 +124,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         public async Task<bool> CreateLandLordProfile(CreateLandlordDTO landlordProfileDTO)
         {
-            var user = _userManager.Users.Any(x => x.Id == landlordProfileDTO.UserId && x.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()));
+            var user =  _userManager.Users.Any(x => x.Id == landlordProfileDTO.UserId && x.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()));
             if (!user) return false;
 
             var landlord = new Landlord()

@@ -8,7 +8,7 @@
         public string? SchoolLevel { get; set; }
         public string? Religion { get; set; }
         public string? Denomination { get; set; }
-        public string? Age { get; set; }
+        public int Age { get; set; }
         public string? Hobby { get; set; }
     }
 }

@@ -43,6 +43,16 @@ namespace Oostel.Application.Modules.Hostel.Services
 
             var rooms = new List<Room>();
 
+            foreach (var roomDto in hostelDTO.Rooms)
+            {
+                bool roomCreated = await CreateRoomForHostel(hostelDTO.UserId, roomDto);
+
+                if (!roomCreated)
+                {
+                    return false;
+                }
+            }
+
             var hostel = Domain.Hostel.Entities.Hostel.CreateHostelFactory(
                 hostelDTO.UserId,
                 hostelDTO.HostelName,
@@ -53,16 +63,21 @@ namespace Oostel.Application.Modules.Hostel.Services
                 hostelDTO.Junction,
                 hostelDTO.HostelCategory.GetEnumDescription(),
                 hostelDTO.State,
+                hostelDTO.PriceBudgetRange,
                 hostelDTO.Country,
                 hostelDTO.RulesAndRegulation,
                 hostelDTO.HostelFacilities,
                 hostelDTO.IsAnyRoomVacant,
-                rooms);
+                rooms
+                );
 
             await _unitOfWork.HostelRepository.Add(hostel);
             await _unitOfWork.SaveAsync();
 
-          /*  var createdHostel = await _unitOfWork.HostelRepository.GetById(hostel.Id);
+
+            return true;
+        }          /*  var createdHostel = await _unitOfWork.HostelRepository.GetById(hostel.Id);
+
 
             foreach (var roomDto in hostelDTO.Rooms)
             {
@@ -82,9 +97,6 @@ namespace Oostel.Application.Modules.Hostel.Services
            
             await _unitOfWork.HostelRepository.UpdateAsync(createdHostel);
             await _unitOfWork.SaveAsync();*/
-
-            return true;
-        }
 
 
         /*public async Task<bool> CreateHostel(HostelDTO hostelDTO)
@@ -156,7 +168,7 @@ namespace Oostel.Application.Modules.Hostel.Services
                     HostelDescription = h.HostelDescription,
                     HostelFacilities = h.HostelFacilities,
                     PriceBudgetRange = h.PriceBudgetRange,
-                    NumberOfRoomsLeft = h.Rooms.Count(x => x.IsRented && x.HostelId == h.Id),
+                    NumberOfRoomsLeft = h.Rooms.Count(x => !x.IsRented && x.HostelId == h.Id),
                     Junction = h.Junction,
                     RulesAndRegulation = h.RulesAndRegulation,
                     State = h.State,

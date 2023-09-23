@@ -62,8 +62,7 @@ namespace Oostel.API.Controllers
                 Files = request.Files
             });
             return HandleResult(await Mediator.Send(roomRequest));
-            //var roomRequest = _mapper.Map<CreateRoomForHostelCommand>(request);
-            //return HandleResult(await Mediator.Send(roomRequest));
+            
         }
 
         [HttpGet]

@@ -30,7 +30,7 @@ namespace Oostel.Domain.Hostel.Entities
         }
 
         private Hostel(string userId, string hostelName, string hostelDescription, int totalRoom, decimal homeSize,
-            string street, string junction, string hostelCategory, string state, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
+            string street, string junction, string hostelCategory, string state, string priceBudgetRange, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
             bool isAnyRoomVacant, ICollection<Room> rooms) : base(Guid.NewGuid().ToString())
         {
             UserId = userId;
@@ -42,6 +42,7 @@ namespace Oostel.Domain.Hostel.Entities
             Junction = junction;
             HostelCategory = hostelCategory;
             State = state;
+            PriceBudgetRange = priceBudgetRange;
             Country = country;
             RulesAndRegulation = rulesAndRegulation;
             HostelFacilities = hostelFacilities;
@@ -52,10 +53,10 @@ namespace Oostel.Domain.Hostel.Entities
         }
 
         public static Hostel CreateHostelFactory(string userId, string hostelName, string hostelDescription, int totalRoom, decimal homeSize,
-            string street, string junction, string hostelCategory, string state, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
-            bool isAnyRoomVacant, ICollection<Room> rooms)
+            string street, string junction, string hostelCategory, string state, string priceBudgetRange, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
+            bool isAnyRoomVacant, List<Room> rooms)
         {
-            return new Hostel(userId, hostelName, hostelDescription, totalRoom, homeSize, street, junction, hostelCategory, state, country,
+            return new Hostel(userId, hostelName, hostelDescription, totalRoom, homeSize, street, junction, hostelCategory, state, priceBudgetRange, country,
                 rulesAndRegulation, hostelFacilities, isAnyRoomVacant, rooms);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Oostel.Common.Types;
 using Oostel.Domain.UserAuthentication.Entities;
+using Oostel.Domain.UserRolesProfiles.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         public string Age { get; set; }
         public string Denomination { get; set; }
         public string Hobby { get; set; }
+        
+        public virtual OpenToRoomate OpenToRoomate { get; set; }
         public virtual ApplicationUser User { get; set; }
 
         public Student()

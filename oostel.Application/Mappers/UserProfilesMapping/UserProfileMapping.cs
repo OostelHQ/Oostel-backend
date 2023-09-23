@@ -21,6 +21,8 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
             config.NewConfig<Landlord, GetLandlordProfileDTO>()
                 .Map(dest => dest.UserId, src => src.Id)
                 .Map(dest => dest.Email, src => src.User.Email)
+                .Map(dest => dest.NumberOfHostelsCreated, src => src.Hostels.Count(x => x.UserId == src.Id))
+                //.Map(dest => dest.NumberRoomsCreated, src => src.Hostels.FirstOrDefault().Rooms.Count(x => x.Id == src.Id))
                 .Map(dest => dest.JoinedDate, src => src.User.CreatedDate)
                 .Map(dest => dest.PictureUrl, src => src.ProfilePhotoURL)
                 .Map(dest => dest.FullName, src => $"{src.User.FirstName} {src.User.LastName}");

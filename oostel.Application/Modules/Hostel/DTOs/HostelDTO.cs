@@ -15,7 +15,7 @@ namespace Oostel.Application.Modules.Hostel.DTOs
         public HostelCategory HostelCategory { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
-      //  public IEnumerable<RoomToCreate>? Rooms { get; set; }
+        public IEnumerable<RoomDTO>? Rooms { get; set; }
         public List<string> RulesAndRegulation { get; set; }
         public List<string> HostelFacilities { get; set; }
         public bool IsAnyRoomVacant { get; set; }
