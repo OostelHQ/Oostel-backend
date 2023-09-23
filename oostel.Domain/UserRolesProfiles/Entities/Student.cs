@@ -14,7 +14,6 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         public string Gender { get; set; }
         public string SchoolLevel { get; set; }
         public string? ProfilePhotoURL { get; set; }
-        public string? PhoneNumber { get; set; }
         public string Religion { get; set; }
         public bool IsAvailable { get; set; } = false;
         public string Age { get; set; }

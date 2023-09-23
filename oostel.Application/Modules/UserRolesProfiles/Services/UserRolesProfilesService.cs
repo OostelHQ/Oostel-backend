@@ -1,7 +1,9 @@
-﻿using MapsterMapper;
+﻿using Mailjet.Client.Resources;
+using MapsterMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Oostel.Application.Modules.UserProfiles.DTOs;
+using Oostel.Application.Modules.UserRolesProfiles.DTOs;
 using Oostel.Common.Enums;
 using Oostel.Common.Helpers;
 using Oostel.Domain.UserAuthentication.Entities;
@@ -56,7 +58,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             studentProfile.Religion = userProfileDTO.Religion ?? studentProfile.Religion ;
             studentProfile.StateOfOrigin = userProfileDTO.StateOfOrigin ?? studentProfile.StateOfOrigin ;
             studentProfile.Denomination = userProfileDTO.Denomination ?? studentProfile.Denomination;
-            studentProfile.PhoneNumber = userProfileDTO.PhoneNumber ?? studentProfile.PhoneNumber;
+            studentProfile.User.PhoneNumber = userProfileDTO.PhoneNumber ?? studentProfile.User.PhoneNumber;
             studentProfile.User.FirstName = userProfileDTO.FirstName ?? studentProfile.User.FirstName;
             studentProfile.User.LastName = userProfileDTO.LastName ?? studentProfile.User.LastName;
             studentProfile.User.Email = userProfileDTO.Email ?? studentProfile.User.Email;
@@ -69,7 +71,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             return true;
         }
 
-        public async Task<bool> CreateStudentProfile(StudentProfileDTO updateStudentProfileDTO)
+        public async Task<bool> CreateStudentProfile(CreateStudentDTO updateStudentProfileDTO)
         {
             var studentProfile = _unitOfWork.StudentRepository.FindandInclude(x => x.Id == updateStudentProfileDTO.UserId && x.User.RolesCSV.Contains(RoleType.Student.GetEnumDescription()), true).Result.SingleOrDefault();
             if (studentProfile is null) return false;
@@ -84,14 +86,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
                 Religion = updateStudentProfileDTO.Religion,
                 SchoolLevel = updateStudentProfileDTO.SchoolLevel,
                 Denomination = updateStudentProfileDTO.Denomination,
-                PhoneNumber = updateStudentProfileDTO.PhoneNumber,
                 StateOfOrigin = updateStudentProfileDTO.StateOfOrigin,
-                User = new ApplicationUser
-                {
-                    FirstName = updateStudentProfileDTO.FirstName,
-                    LastName = updateStudentProfileDTO.LastName,
-                    Email = updateStudentProfileDTO.Email
-                },
                 CreatedDate = DateTime.UtcNow,
                 LastModifiedDate = DateTime.UtcNow,
             };
@@ -127,27 +122,19 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             return landlordMapping;
         }
 
-        public async Task<bool> CreateLandLordProfile(LandlordProfileDTO landlordProfileDTO)
+        public async Task<bool> CreateLandLordProfile(CreateLandlordDTO landlordProfileDTO)
         {
-            var landlordProfile = _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == landlordProfileDTO.UserId && x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()), true).Result.SingleOrDefault();
-            if (landlordProfile is null) return false;
-
+            var user = _userManager.Users.Any(x => x.Id == landlordProfileDTO.UserId && x.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()));
+            if (!user) return false;
 
             var landlord = new Landlord()
             {
-                Id = landlordProfile.Id,
+                Id = landlordProfileDTO.UserId,
                 Age = landlordProfileDTO.Age,
                 Religion = landlordProfileDTO.Religion,
                 DateOfBirth = landlordProfileDTO.DateOfBirth,
-                PhoneNumber = landlordProfileDTO.PhoneNumber,
                 StateOfOrigin = landlordProfileDTO.StateOfOrigin,
                 Country = landlordProfileDTO.Country,
-                User = new ApplicationUser
-                {
-                    FirstName = landlordProfileDTO.FirstName,
-                    LastName = landlordProfileDTO.LastName,
-                    Email = landlordProfileDTO.Email
-                },
                 CreatedDate = DateTime.UtcNow,
                 LastModifiedDate = DateTime.UtcNow,
             };
@@ -175,7 +162,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             landlordProfile.StateOfOrigin = landlordProfileDTO.StateOfOrigin ?? landlordProfile.StateOfOrigin;
             landlordProfile.DateOfBirth = landlordProfileDTO.DateOfBirth;
             landlordProfile.Country = landlordProfileDTO.Country ?? landlordProfile.Country;
-            landlordProfile.PhoneNumber = landlordProfileDTO.PhoneNumber ?? landlordProfile.PhoneNumber;
+            landlordProfile.User.PhoneNumber = landlordProfileDTO.PhoneNumber ?? landlordProfile.User.PhoneNumber;
             landlordProfile.User.FirstName = landlordProfileDTO.FirstName ?? landlordProfile.User.FirstName;
             landlordProfile.User.LastName = landlordProfileDTO.LastName ?? landlordProfile.User.LastName;
             landlordProfile.User.Email = landlordProfileDTO.Email ?? landlordProfile.User.Email;

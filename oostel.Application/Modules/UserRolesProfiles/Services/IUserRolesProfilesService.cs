@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Oostel.Application.Modules.UserProfiles.DTOs;
+using Oostel.Application.Modules.UserRolesProfiles.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,8 +16,8 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         Task<bool> UpdateStudentProfile(StudentProfileDTO userProfileDTO);
         Task<List<GetLandlordProfileDTO>> GetLandlordsById(string studentId);
         Task<List<GetLandlordProfileDTO>> GetAllLandlords();
-        Task<bool> CreateLandLordProfile(LandlordProfileDTO landlordProfileDTO);
-        Task<bool> CreateStudentProfile(StudentProfileDTO userProfileDTO);
+        Task<bool> CreateLandLordProfile(CreateLandlordDTO landlordProfileDTO);
+        Task<bool> CreateStudentProfile(CreateStudentDTO userProfileDTO);
         Task<bool> UpdateLandLordProfile(LandlordProfileDTO updateLandlordProfileDTO);
         Task<bool> UploadDisplayPictureAsync(IFormFile file, string userId);
     }

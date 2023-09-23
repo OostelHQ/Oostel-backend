@@ -16,7 +16,7 @@ namespace Oostel.API.Controllers
 
         [HttpPost]
         [Route(UserProfileRoute.CreateLandlordProfile)]
-        public async Task<ActionResult<APIResponse>> CreateLandlordProfile(LandlordProfileRequest request)
+        public async Task<ActionResult<APIResponse>> CreateLandlordProfile(CreateLandlordRequest request)
         {
             var landlordProfileRequest = _mapper.Map<CreateLandlordProfileCommand>(request);
             return HandleResult(await Mediator.Send(landlordProfileRequest));
