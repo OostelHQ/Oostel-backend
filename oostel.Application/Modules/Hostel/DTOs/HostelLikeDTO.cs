@@ -8,7 +8,7 @@ namespace Oostel.Application.Modules.Hostel.DTOs
 {
     public class HostelLikeDTO
     {
-        public string HostelLikeId { get; set; }
         public string LikingUserId { get; set; }
+        public string HostelLikeId { get; set; }
     }
 }

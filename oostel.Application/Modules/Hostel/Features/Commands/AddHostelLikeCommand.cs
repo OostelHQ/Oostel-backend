@@ -14,8 +14,8 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
 {
     public class AddHostelLikeCommand : IRequest<APIResponse>
     {
-        public string HostelLikeId { get; set; }
         public string LikingUserId { get; set; }
+        public string HostelLikeId { get; set; }
         public sealed class AddHostelLikeCommandHandler : IRequestHandler<AddHostelLikeCommand, APIResponse>
         {
             private readonly IHostelService _hostelService;
@@ -24,7 +24,7 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
 
             public async Task<APIResponse> Handle(AddHostelLikeCommand request, CancellationToken cancellationToken)
             {
-                var createhostel = await _hostelService.AddHostelLike(request.HostelLikeId, request.LikingUserId);
+                var createhostel = await _hostelService.AddHostelLike(request.LikingUserId, request.HostelLikeId);
 
                 if (!createhostel) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);
 

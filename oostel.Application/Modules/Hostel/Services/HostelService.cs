@@ -263,11 +263,11 @@ namespace Oostel.Application.Modules.Hostel.Services
 
         public async Task<bool> AddHostelLike(string sourceId, string hostelLikeId)
         {
-            var sourceUser = await _userManager.FindByIdAsync(sourceId);
-            if (sourceId is null) return false;
+            var sourceUser =  await _userAccessor.CheckIfTheUserExist(sourceId);
+            if (sourceUser is null) return false;
 
             var hostelLiked = await _unitOfWork.HostelRepository.FindandInclude(x => x.Id == hostelLikeId, true);
-            if (hostelLiked is null) return false;
+            if (hostelLiked is null && hostelLiked.Count() < 0) return false;
 
             var hostelLike = await _unitOfWork.HostelLikesRepository.Find(x => x.UserId == sourceId && x.HostelId == hostelLikeId);
             if (hostelLike is null)
