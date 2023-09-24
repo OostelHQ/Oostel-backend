@@ -10,6 +10,8 @@
         public string PriceBudgetRange { get; set; }
         public string Street { get; set; }
         public string Junction { get; set; }
+        public int HostelLikesCount { get; set; }
+        public int NumberOfRoomsLeft { get; set; }
         public string HostelCategory { get; set; }
         public string State { get; set; }
         public string Country { get; set; }

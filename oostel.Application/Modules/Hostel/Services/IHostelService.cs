@@ -16,6 +16,7 @@ namespace Oostel.Application.Modules.Hostel.Services
         Task<AHostelResponse> GetHostelById(string hostelId);
         Task<List<RoomToReturn>> GetAllRoomsForHostel(string hostelId);
         Task<RoomToReturn> GetARoomForHostel(string hostelId, string roomId);
+        Task<bool> AddHostelLike(string sourceId, string hostelLikeId);
         Task<bool> CreateRoomForHostel(string userId, RoomDTO roomDTO);
 
     }
