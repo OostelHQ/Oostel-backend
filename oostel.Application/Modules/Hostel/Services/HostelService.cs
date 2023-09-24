@@ -123,7 +123,7 @@ namespace Oostel.Application.Modules.Hostel.Services
                     PriceBudgetRange = h.PriceBudgetRange,
                     NumberOfRoomsLeft = h.Rooms.Count(x => !x.IsRented && x.HostelId == h.Id),
                     Junction = h.Junction,
-                    HostelLikesCount = h.HostelLikes.Count(x => x.HostelId == h.Id),
+                    HostelLikesCount = h.HostelLikes.Count(x => x.LikedHostelId == h.Id),
                     RulesAndRegulation = h.RulesAndRegulation,
                     State = h.State,
                     Street = h.Street,
@@ -173,7 +173,7 @@ namespace Oostel.Application.Modules.Hostel.Services
                     HostelFacilities = hostel.HostelFacilities,
                     HostelName = hostel.HostelName,
                     PriceBudgetRange = hostel.PriceBudgetRange,
-                    HostelLikesCount = hostel.HostelLikes.Count(x => x.HostelId == hostel.Id),
+                    HostelLikesCount = hostel.HostelLikes.Count(x => x.LikedHostelId == hostel.Id),
                     NumberOfRoomsLeft = hostel.Rooms.Count(x => !x.IsRented && x.HostelId == hostel.Id),
                     Junction = hostel.Junction,
                     Rooms = rooms,
@@ -269,7 +269,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             var hostelLiked = await _unitOfWork.HostelRepository.FindandInclude(x => x.Id == hostelLikeId, true);
             if (hostelLiked is null && hostelLiked.Count() < 0) return false;
 
-            var hostelLike = await _unitOfWork.HostelLikesRepository.Find(x => x.UserId == sourceId && x.HostelId == hostelLikeId);
+            var hostelLike = await _unitOfWork.HostelLikesRepository.Find(x => x.SourceUserId == sourceId && x.LikedHostelId == hostelLikeId);
             if (hostelLike is null)
             {
                 var likeHostel = HostelLikes.CreateHostelLikesFactory(sourceId, hostelLikeId);
