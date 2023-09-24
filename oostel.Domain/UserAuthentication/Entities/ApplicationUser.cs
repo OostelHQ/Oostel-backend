@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Oostel.Domain.UserRoleProfiles.Entities;
+using Oostel.Domain.UserWallet;
 
 namespace Oostel.Domain.UserAuthentication.Entities
 {
@@ -16,6 +17,8 @@ namespace Oostel.Domain.UserAuthentication.Entities
         public ICollection<UserOTP> UserOTPs { get; set; }
         public virtual Landlord Landlord { get; set; }
         public virtual Student Student { get; set; }
+        public ICollection<Transaction> Transactions { get; set; }
+        public virtual Wallet Wallets { get; set; }
 
         public ApplicationUser()
         {

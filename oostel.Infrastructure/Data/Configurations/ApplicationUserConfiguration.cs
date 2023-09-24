@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserRoleProfiles.Entities;
+using Oostel.Domain.UserWallet;
 
 namespace Oostel.Infrastructure.Data.Configurations
 {
@@ -36,6 +37,18 @@ namespace Oostel.Infrastructure.Data.Configurations
             builder.Entity<ApplicationRole>()
             .Property(e => e.Id)
             .ValueGeneratedOnAdd();
+
+            builder.Entity<ApplicationUser>()
+                .HasOne(x => x.Wallets)
+                .WithOne(s => s.User)
+                .HasForeignKey<Wallet>(w => w.Id)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<ApplicationUser>()
+                .HasMany(x => x.Transactions)
+                .WithOne(e => e.User)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
