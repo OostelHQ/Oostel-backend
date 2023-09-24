@@ -16,6 +16,8 @@
 
         public const string ProfileViewsCount = "user-profile/profile-views-count";
 
+        public const string AddStudentLikes = "user-profile/add-user-profile";
+
         public const string UploadUserProfilePicture = "user-profile/upload-user-profile-picture";
     }
 }

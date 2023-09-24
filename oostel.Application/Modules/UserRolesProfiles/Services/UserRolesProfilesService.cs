@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserRolesProfiles.DTOs;
+using Oostel.Application.UserAccessors;
 using Oostel.Common.Enums;
 using Oostel.Common.Helpers;
+using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserRoleProfiles.Entities;
 using Oostel.Domain.UserRolesProfiles.Entities;
@@ -238,7 +240,33 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             return true;
         }
 
+        public async Task<bool> AddStudentLike(string sourceId, string studentLikeId)
+        {
+            var sourceUser = await _userManager.FindByIdAsync(sourceId);
+            if (sourceUser is null) return false;
 
-      
+            var studentLiked = await _unitOfWork.HostelRepository.FindandInclude(x => x.Id == studentLikeId, true);
+            if (studentLiked is null && studentLiked.Count() < 0) return false;
+
+            if(sourceId.Equals(studentLikeId)) return false;
+
+            var studentLike = await _unitOfWork.StudentLikesRepository.Find(x => x.SourceUserId == sourceId && x.LikedStudentId == studentLikeId);
+            if (studentLike is null)
+            {
+                var likestudent = StudentLikes.CreateStudentLikesFactory(sourceId, studentLikeId);
+                await _unitOfWork.StudentLikesRepository.Add(likestudent);
+                await _unitOfWork.SaveAsync();
+            }
+            else
+            {
+                await _unitOfWork.StudentLikesRepository.Remove(studentLike);
+                await _unitOfWork.SaveAsync();
+            }
+
+            return true;
+        }
+
+
+
     }
 }

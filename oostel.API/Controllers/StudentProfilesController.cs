@@ -67,5 +67,12 @@ namespace Oostel.API.Controllers
         {
             return HandleResult(await Mediator.Send(new ProfileViewsCountCommand { UserId = userId}));
         }
+
+        [HttpPost]
+        [Route(UserProfileRoute.AddStudentLikes)]
+        public async Task<ActionResult<APIResponse>> AddStudentLikes(StudentLikesRequest request)
+        {
+            return HandleResult(await Mediator.Send(new AddStudentLikesCommand {LikingUserId = request.LikingUserId, StudentLikeId = request.StudentLikeId }));
+        }
     }
 }
