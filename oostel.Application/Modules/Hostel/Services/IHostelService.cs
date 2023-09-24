@@ -19,6 +19,7 @@ namespace Oostel.Application.Modules.Hostel.Services
         Task<bool> AddHostelLike(string sourceId, string hostelLikeId);
         Task<bool> CreateRoomForHostel(string userId, RoomDTO roomDTO);
         Task<bool> UpdateHostel(string hostelId, HostelDTO hostelDTO);
+        Task<bool> UpdateARoomForHostel(string userId, RoomDTO roomDTO);
 
     }
 }

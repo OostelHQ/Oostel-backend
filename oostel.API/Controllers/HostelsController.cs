@@ -73,6 +73,14 @@ namespace Oostel.API.Controllers
             
         }
 
+        [HttpPut]
+        [Route(HostelRoute.UpdateRoom)]
+        public async Task<ActionResult<APIResponse>> UpdateRoom([FromForm] RoomRequest request)
+        {
+            var roomRequest = _mapper.Map<UpdateRoomCommand>(request);
+            return HandleResult(await Mediator.Send(roomRequest));
+        }
+
         [HttpGet]
         [Route(HostelRoute.GetARoomForHostel)]
         public async Task<ActionResult<APIResponse>> GetARoomForHostel(string hostelId, string roomId)

@@ -10,6 +10,7 @@
         public const string CreateAndUpdateRoomForHostel = "hostel/create-and-update-room-for-hostel";
         public const string GetARoomForHostel = "hostel/get-a-room-for-hostel";
         public const string GetAllRoomsForHostel = "hostel/get-all-rooms-for-hostel";
+        public const string UpdateRoom = "hostel/update-room";
 
         public const string AddHostelLikes = "hostel/add-hostel-likes";
 
