@@ -32,6 +32,14 @@ namespace Oostel.API.Controllers
             return HandleResult(await Mediator.Send(hostelRequest));
         }
 
+        [HttpPut]
+        [Route(HostelRoute.UpdateHostel)]
+        public async Task<ActionResult<APIResponse>> UpdateHostel([FromForm] HostelRequest request)
+        {
+            var hostelRequest = _mapper.Map<UpdateHostelCommand>(request);
+            return HandleResult(await Mediator.Send(hostelRequest));
+        }
+
         [HttpGet]
         [Route(HostelRoute.GetAllHostels)]
         public async Task<ActionResult<APIResponse>> GetAllHostels([FromQuery] HostelTypesParam hostelTypesParam)
@@ -88,7 +96,7 @@ namespace Oostel.API.Controllers
 
         [HttpPost]
         [Route(HostelRoute.AddHostelLikes)]
-        public async Task<ActionResult<APIResponse>> CreateHostel([FromForm] HostelLikeRequest request)
+        public async Task<ActionResult<APIResponse>> AddHostelLikes([FromForm] HostelLikeRequest request)
         {
             var hostelLikeRequest = _mapper.Map<AddHostelLikeCommand>(request);
             return HandleResult(await Mediator.Send(hostelLikeRequest));
