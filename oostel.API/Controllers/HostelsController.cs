@@ -85,5 +85,13 @@ namespace Oostel.API.Controllers
             int availableRoomsCount = await _unitOfWork.RoomRepository.CountAsync(x => x.IsRented && x.HostelId == hostelId);
             return availableRoomsCount;
         }
+
+        [HttpPost]
+        [Route(HostelRoute.AddHostelLikes)]
+        public async Task<ActionResult<APIResponse>> CreateHostel([FromForm] HostelLikeRequest request)
+        {
+            var hostelLikeRequest = _mapper.Map<AddHostelLikeCommand>(request);
+            return HandleResult(await Mediator.Send(hostelLikeRequest));
+        }
     }
 }
