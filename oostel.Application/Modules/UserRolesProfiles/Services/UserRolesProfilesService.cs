@@ -2,6 +2,7 @@
 using MapsterMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserRolesProfiles.DTOs;
 using Oostel.Application.UserAccessors;
