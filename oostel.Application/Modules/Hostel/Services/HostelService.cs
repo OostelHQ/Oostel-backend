@@ -19,12 +19,12 @@ namespace Oostel.Application.Modules.Hostel.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly UnitOfWork _unitOfWork;
-        private readonly UserAccessor _userAccessor;
+        private readonly IUserAccessor _userAccessor;
         private readonly IMapper _mapper;
         private readonly IMediaUpload _mediaUpload;
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly IGenericRepository<Room, string> _genericRepository;
-        public HostelService(UserManager<ApplicationUser> userManager, IMediaUpload mediaUpload, ApplicationDbContext applicationDbContext, UnitOfWork unitOfWork, IGenericRepository<Room, string> genericRepository, IMapper mapper, UserAccessor userAccessor)
+        public HostelService(UserManager<ApplicationUser> userManager, IMediaUpload mediaUpload, ApplicationDbContext applicationDbContext, UnitOfWork unitOfWork, IGenericRepository<Room, string> genericRepository, IMapper mapper, IUserAccessor userAccessor)
         {
             _userManager = userManager;
             _unitOfWork = unitOfWork;
@@ -157,7 +157,7 @@ namespace Oostel.Application.Modules.Hostel.Services
 
         public async Task<AHostelResponse> GetHostelById(string hostelId)
         {
-            var hostel =  _unitOfWork.HostelRepository.FindandInclude(x => x.Id == hostelId, true).Result.SingleOrDefault();
+            var hostel = _unitOfWork.HostelRepository.FindandInclude(x => x.Id == hostelId, true).Result.SingleOrDefault();
 
             if (hostel is not null)
             {
@@ -286,13 +286,33 @@ namespace Oostel.Application.Modules.Hostel.Services
         }
 
 
-        public async Task<bool> CreateComment(CreateCommentDTO createCommentDTO)
+        public async Task<ResultResponse<CommentDTO>> CreateComment(CreateCommentDTO createCommentDTO)
         {
-            var hostel = await _unitOfWork.HostelRepository.FindandInclude(x => x.Id == createCommentDTO.HostelId, true);
-            if (hostel is null) return false;
+           //var hostel = await _unitOfWork.HostelRepository.FindandInclude(x => x.Id == createCommentDTO.HostelId, true);
+           var hostel = await _applicationDbContext.Hostels.FindAsync(createCommentDTO.HostelId);
+            if (hostel is null) return null;
 
             var user = await _userManager.Users
-                .SingleOrDefaultAsync();
+                .SingleOrDefaultAsync(x => x.LastName == _userAccessor.GetUsername());
+            if (user is null) return null;
+
+            var comment = new Comment
+            {
+                Author = user,
+                Hostel = hostel,
+                UserComment = createCommentDTO.UserComment,
+            };
+
+            hostel.Comments.Add(comment);
+            var success = await _applicationDbContext.SaveChangesAsync() > 0;
+
+            if (success)
+            {
+                return ResultResponse<CommentDTO>.Success(_mapper.Map<CommentDTO>(comment));
+            }
+
+            return ResultResponse<CommentDTO>.Failure(ResponseMessages.FailedCreation);
+
         }
 
        

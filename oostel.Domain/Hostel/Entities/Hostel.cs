@@ -23,6 +23,7 @@ namespace Oostel.Domain.Hostel.Entities
         public ICollection<Room>? Rooms { get; set; }
         public Landlord Landlord { get; set; }
         public ICollection<HostelLikes> HostelLikes { get; set; }
+        public ICollection<Comment> Comments { get; set; }
 
         public Hostel()
         {

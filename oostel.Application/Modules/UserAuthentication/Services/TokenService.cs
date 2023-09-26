@@ -28,6 +28,7 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
             {
                new Claim(ClaimTypes.NameIdentifier, user.Id),
                new Claim(ClaimTypes.Email, user.Email),
+               new Claim(ClaimTypes.Name, user.LastName),
                new Claim(ClaimTypes.Role, user.RolesCSV),
             };
 

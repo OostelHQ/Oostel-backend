@@ -15,7 +15,7 @@ namespace Oostel.Domain.Hostel.Entities
         public Hostel Hostel { get; set; }
         public ApplicationUser Author { get; set; }
 
-        public Comment(string id):base(id)
+        public Comment():base(Guid.NewGuid().ToString())
         {
             LastModifiedDate = DateTime.UtcNow;
             CreatedDate = DateTime.UtcNow;
