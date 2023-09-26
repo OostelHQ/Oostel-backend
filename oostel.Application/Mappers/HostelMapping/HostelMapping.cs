@@ -22,6 +22,9 @@ namespace Oostel.Application.Mappers.HostelMapping
             config.NewConfig<Room, HostelsResponse>()
                 .Map(dest => dest.HostelId, src => src.Id)
                 .Map(dest => dest.NumberOfRoomsLeft, src => src.IsRented);
+
+            config.NewConfig<Comment, CreateCommentDTO>();
+            config.NewConfig<Comment, CommentDTO>();
         }
     }
 }

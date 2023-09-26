@@ -23,6 +23,7 @@ namespace Oostel.Infrastructure.Repositories
         private GenericRepository<OpenToRoommate, string> openToRoommateRepository;
         private GenericRepository<HostelLikes, string> hostelLikesRepository;
         private GenericRepository<StudentLikes, string> studentLikesRepository;
+        private GenericRepository<Comment, string> commentRepository;
 
         public GenericRepository<UserOTP, string> UserOTPRepository
         {
@@ -47,6 +48,19 @@ namespace Oostel.Infrastructure.Repositories
                     roomRepository = new GenericRepository<Room, string>(_context);
                 }
                 return roomRepository;
+            }
+        }
+
+        public GenericRepository<Comment, string> CommentRepository
+        {
+            get
+            {
+
+                if (commentRepository == null)
+                {
+                    commentRepository = new GenericRepository<Comment, string>(_context);
+                }
+                return commentRepository;
             }
         }
 

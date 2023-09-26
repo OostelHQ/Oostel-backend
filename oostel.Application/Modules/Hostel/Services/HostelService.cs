@@ -285,6 +285,16 @@ namespace Oostel.Application.Modules.Hostel.Services
             return true;
         }
 
+
+        public async Task<bool> CreateComment(CreateCommentDTO createCommentDTO)
+        {
+            var hostel = await _unitOfWork.HostelRepository.FindandInclude(x => x.Id == createCommentDTO.HostelId, true);
+            if (hostel is null) return false;
+
+            var user = await _userManager.Users
+                .SingleOrDefaultAsync();
+        }
+
        
 
         private async Task<T> CheckForNull<T>(T entity)
