@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="ActionFilters\" />
-    <Folder Include="SIgnalR\" />
   </ItemGroup>
 
   <ItemGroup>

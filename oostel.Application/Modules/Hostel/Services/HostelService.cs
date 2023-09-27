@@ -1,4 +1,5 @@
-﻿using MapsterMapper;
+﻿using Mapster;
+using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Oostel.Application.Modules.Hostel.DTOs;
@@ -315,6 +316,16 @@ namespace Oostel.Application.Modules.Hostel.Services
 
         }
 
+        public async Task<ResultResponse<List<CommentDTO>>> GetComments(string hostelId)
+        {
+            var comments = await _applicationDbContext.Comments
+                .Where(x => x.Hostel.Id == hostelId)
+                .OrderByDescending(x => x.CreatedDate)
+                .ProjectToType<CommentDTO>()
+                .ToListAsync();
+
+            return ResultResponse<List<CommentDTO>>.Success(comments);
+        }
        
 
         private async Task<T> CheckForNull<T>(T entity)
