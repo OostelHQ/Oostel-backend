@@ -25,7 +25,8 @@ namespace Oostel.API.SIgnalR
             var hostelId = httpContext.Request.Query["hostelId"];
             await Groups.AddToGroupAsync(Context.ConnectionId, hostelId);
 
-            var result = await _mediator.Send(new List.)
+            var result = await _mediator.Send(new CreateCommentCommand { HostelId = hostelId});
+            await Clients.Caller.SendAsync("LoadComments", result.Data);
         }
     }
 }
