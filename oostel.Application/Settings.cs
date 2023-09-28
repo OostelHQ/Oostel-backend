@@ -37,7 +37,7 @@ namespace Oostel.Application
 
             services.Configure<CloudinarySettings>(_configuration.GetSection("CloudinarySettings"));
             services.AddScoped<IMediaUpload, MediaUpload>();
-            services.AddScoped<UserAccessor>();
+            services.AddScoped<IUserAccessor, UserAccessor>();
 
             services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
 

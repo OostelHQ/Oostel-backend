@@ -29,6 +29,7 @@ namespace Oostel.Infrastructure.Repositories
         private GenericRepository<Wallet, string> walletRepository;
         private GenericRepository<Transaction, string> transactionRepository;
         private GenericRepository<Message, string> messageRepository;
+        private 
 
         public GenericRepository<UserOTP, string> UserOTPRepository
         {
