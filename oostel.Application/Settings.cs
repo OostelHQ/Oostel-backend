@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Oostel.Application.Modules.Hostel.Services;
 using Oostel.Application.Modules.UserAuthentication.Services;
+using Oostel.Application.Modules.UserMessage.Services;
 using Oostel.Application.Modules.UserProfiles.Services;
 using Oostel.Application.UserAccessors;
 using Oostel.Application.Validators.UserAuthentication;
@@ -42,6 +43,7 @@ namespace Oostel.Application
 
             services.AddScoped<IUserRolesProfilesService, UserRolesProfilesService>();
             services.AddScoped<IHostelService, HostelService>();
+            services.AddScoped<IMessageService, MessageService>();
 
             return services;
         }

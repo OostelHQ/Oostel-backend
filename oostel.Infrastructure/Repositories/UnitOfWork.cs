@@ -1,7 +1,9 @@
 ﻿using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserAuthentication.Entities;
+using Oostel.Domain.UserMessage;
 using Oostel.Domain.UserRoleProfiles.Entities;
 using Oostel.Domain.UserRolesProfiles.Entities;
+using Oostel.Domain.UserWallet;
 using Oostel.Infrastructure.Data;
 
 namespace Oostel.Infrastructure.Repositories
@@ -24,6 +26,9 @@ namespace Oostel.Infrastructure.Repositories
         private GenericRepository<HostelLikes, string> hostelLikesRepository;
         private GenericRepository<StudentLikes, string> studentLikesRepository;
         private GenericRepository<Comment, string> commentRepository;
+        private GenericRepository<Wallet, string> walletRepository;
+        private GenericRepository<Transaction, string> transactionRepository;
+        private GenericRepository<Message, string> messageRepository;
 
         public GenericRepository<UserOTP, string> UserOTPRepository
         {
@@ -35,6 +40,45 @@ namespace Oostel.Infrastructure.Repositories
                     userOTPRepository = new GenericRepository<UserOTP, string>(_context);
                 }
                 return userOTPRepository;
+            }
+        }
+
+        public GenericRepository<Wallet, string> WalletRepository
+        {
+            get
+            {
+
+                if (walletRepository == null)
+                {
+                    walletRepository = new GenericRepository<Wallet, string>(_context);
+                }
+                return walletRepository;
+            }
+        }
+
+        public GenericRepository<Message, string> MessageRepository
+        {
+            get
+            {
+
+                if (messageRepository == null)
+                {
+                    messageRepository = new GenericRepository<Message, string>(_context);
+                }
+                return messageRepository;
+            }
+        }
+
+        public GenericRepository<Transaction, string> TransactionRepository
+        {
+            get
+            {
+
+                if (transactionRepository == null)
+                {
+                    transactionRepository = new GenericRepository<Transaction, string>(_context);
+                }
+                return transactionRepository;
             }
         }
 
