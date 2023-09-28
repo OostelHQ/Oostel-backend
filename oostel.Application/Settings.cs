@@ -12,6 +12,7 @@ using Oostel.Application.UserAccessors;
 using Oostel.Application.Validators.UserAuthentication;
 using Oostel.Infrastructure.EmailService;
 using Oostel.Infrastructure.Media;
+using Oostel.Infrastructure.Repositories;
 using System.Reflection;
 
 
@@ -44,6 +45,7 @@ namespace Oostel.Application
             services.AddScoped<IUserRolesProfilesService, UserRolesProfilesService>();
             services.AddScoped<IHostelService, HostelService>();
             services.AddScoped<IMessageService, MessageService>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
 
             return services;
         }

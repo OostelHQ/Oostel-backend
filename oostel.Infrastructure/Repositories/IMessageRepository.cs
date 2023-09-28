@@ -25,7 +25,7 @@ namespace Oostel.Infrastructure.Repositories
 
         void DeleteMessage(Message message);
 
-        Task<Message> GetMessage(int id);
+        Task<Message> GetMessage(string id);
 
         Task<PagedList<MessageDTO>> GetMessagesForUser(MessageParams messageParams);
 

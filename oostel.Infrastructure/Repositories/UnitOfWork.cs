@@ -1,4 +1,5 @@
-﻿using Oostel.Domain.Hostel.Entities;
+﻿using MapsterMapper;
+using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserMessage;
 using Oostel.Domain.UserRoleProfiles.Entities;
@@ -12,8 +13,10 @@ namespace Oostel.Infrastructure.Repositories
     {
 
         ApplicationDbContext _context;
-        public UnitOfWork(ApplicationDbContext context)
+        private readonly IMapper _mapper;
+        public UnitOfWork(ApplicationDbContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -29,7 +32,8 @@ namespace Oostel.Infrastructure.Repositories
         private GenericRepository<Wallet, string> walletRepository;
         private GenericRepository<Transaction, string> transactionRepository;
         private GenericRepository<Message, string> messageRepository;
-        private 
+
+        public IMessageRepository MessageRepository => new MessageRepository(_context, _mapper);
 
         public GenericRepository<UserOTP, string> UserOTPRepository
         {
