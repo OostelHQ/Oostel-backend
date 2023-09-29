@@ -68,16 +68,29 @@ namespace Oostel.Infrastructure.Repositories
         {
             var query = _applicationDbContext.Messages
                 .OrderByDescending(m => m.MessengeSent)
-                .ProjectTo<MessageDTO>()
+                .Select(m => new MessageDTO()
+                {
+                    SenderLastname = m.SenderLastName,
+                    SenderDeleted = m.SenderDeleted,
+                    SenderId = m.SenderId,
+                    Content = m.Content,
+                    DateRead = m.DateRead,
+                    MessageSent = m.MessengeSent,
+                    RecipientDeleted = m.RecipientDeleted,
+                    RecipientId = m.RecipientId,
+                    RecipientLastname = m.RecipientLastName,
+                    RecipientPhotoUrl = m.Recipient.ProfilePhotoURL,
+                    SenderPhotoUrl = m.Sender.ProfilePhotoURL
+                })
                 .AsQueryable();
 
             query = messageParams.Container switch
             {
-                "Inbox" => query.Where(u => u. == messageParams.Lastname
+                "Inbox" => query.Where(u => u.RecipientLastname == messageParams.Lastname
                     && u.RecipientDeleted == false),
-                "Outbox" => query.Where(u => u.SenderUsername == messageParams.Lastname
+                "Outbox" => query.Where(u => u.SenderLastname == messageParams.Lastname
                     && u.SenderDeleted == false),
-                _ => query.Where(u => u.RecipientUsername ==
+                _ => query.Where(u => u.RecipientLastname ==
                     messageParams.Lastname && u.RecipientDeleted == false && u.DateRead == null)
             };
 

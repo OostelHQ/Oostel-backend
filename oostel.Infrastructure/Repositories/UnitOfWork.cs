@@ -61,19 +61,6 @@ namespace Oostel.Infrastructure.Repositories
             }
         }
 
-        public GenericRepository<Message, string> MessageRepository
-        {
-            get
-            {
-
-                if (messageRepository == null)
-                {
-                    messageRepository = new GenericRepository<Message, string>(_context);
-                }
-                return messageRepository;
-            }
-        }
-
         public GenericRepository<Transaction, string> TransactionRepository
         {
             get

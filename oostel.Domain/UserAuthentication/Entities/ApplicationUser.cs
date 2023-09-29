@@ -13,6 +13,7 @@ namespace Oostel.Domain.UserAuthentication.Entities
         public DateTime? LastSeenDate { get; set; }
         public bool IsBlocked { get; set; } = false;
         public int ProfileViewCount { get; set; }
+        public string? ProfilePhotoURL { get; set; }
 
         public ICollection<UserOTP> UserOTPs { get; set; }
         public virtual Landlord Landlord { get; set; }

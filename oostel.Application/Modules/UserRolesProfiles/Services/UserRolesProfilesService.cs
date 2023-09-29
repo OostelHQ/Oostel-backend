@@ -204,28 +204,13 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null) return false;
 
-            if (user.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()))
-            {
-                var landlord = await _unitOfWork.LandlordRepository.GetById(userId);
-                if (landlord is null) return false;
 
-                var landlordPhotoUploadResult = await _mediaUpload.UploadPhoto(file);
-                landlord.ProfilePhotoURL = landlordPhotoUploadResult.Url;
+                var userPictureResult = await _mediaUpload.UploadPhoto(file);
+                user.ProfilePhotoURL = userPictureResult.Url;
 
-                await _unitOfWork.LandlordRepository.UpdateAsync(landlord);
-                await _unitOfWork.SaveAsync();
-            }
-            else
-            {
-                var student = await _unitOfWork.StudentRepository.GetById(userId);
-                var studentPhotoUploadResult = await _mediaUpload.UploadPhoto(file);
-                student.ProfilePhotoURL = studentPhotoUploadResult.Url;
-
-                await _unitOfWork.StudentRepository.UpdateAsync(student);
-                await _unitOfWork.SaveAsync();
-            }
-
-            return true;
+                await _userManager.UpdateAsync(user);
+            
+                return true;
         }
 
 
