@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -9,8 +9,11 @@
   <ItemGroup>
     <Folder Include="Modules\UserAuthentication\Features\Queries\" />
     <Folder Include="Modules\UserMessage\DTOs\" />
-    <Folder Include="Modules\UserMessage\Features\Command\" />
+    <Folder Include="Modules\UserMessage\Features\Commands\" />
     <Folder Include="Modules\UserMessage\Features\Queries\" />
+    <Folder Include="Modules\UserWallet\DTOs\" />
+    <Folder Include="Modules\UserWallet\Features\Commands\" />
+    <Folder Include="Modules\UserWallet\Features\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

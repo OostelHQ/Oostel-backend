@@ -8,6 +8,7 @@ using Oostel.Application.Modules.Hostel.Services;
 using Oostel.Application.Modules.UserAuthentication.Services;
 using Oostel.Application.Modules.UserMessage.Services;
 using Oostel.Application.Modules.UserProfiles.Services;
+using Oostel.Application.Modules.UserWallet.Services;
 using Oostel.Application.UserAccessors;
 using Oostel.Application.Validators.UserAuthentication;
 using Oostel.Infrastructure.EmailService;
@@ -46,6 +47,7 @@ namespace Oostel.Application
             services.AddScoped<IHostelService, HostelService>();
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<IUserWalletService, UserWalletService>();
 
             return services;
         }
