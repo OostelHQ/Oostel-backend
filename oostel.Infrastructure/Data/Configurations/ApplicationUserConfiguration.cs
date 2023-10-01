@@ -44,11 +44,7 @@ namespace Oostel.Infrastructure.Data.Configurations
                 .HasForeignKey<Wallet>(w => w.Id)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Entity<ApplicationUser>()
-                .HasMany(x => x.Transactions)
-                .WithOne(e => e.User)
-                .HasForeignKey(e => e.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+          
         }
     }
 }

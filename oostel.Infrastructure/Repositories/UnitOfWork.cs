@@ -30,7 +30,6 @@ namespace Oostel.Infrastructure.Repositories
         private GenericRepository<StudentLikes, string> studentLikesRepository;
         private GenericRepository<Comment, string> commentRepository;
         private GenericRepository<Wallet, string> walletRepository;
-        private GenericRepository<Transaction, string> transactionRepository;
         private GenericRepository<Message, string> messageRepository;
 
         public IMessageRepository MessageRepository => new MessageRepository(_context, _mapper);
@@ -61,18 +60,6 @@ namespace Oostel.Infrastructure.Repositories
             }
         }
 
-        public GenericRepository<Transaction, string> TransactionRepository
-        {
-            get
-            {
-
-                if (transactionRepository == null)
-                {
-                    transactionRepository = new GenericRepository<Transaction, string>(_context);
-                }
-                return transactionRepository;
-            }
-        }
 
         public GenericRepository<Room, string> RoomRepository
         {

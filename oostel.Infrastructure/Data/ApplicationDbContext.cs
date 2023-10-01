@@ -34,7 +34,7 @@ namespace Oostel.Infrastructure.Data
         public DbSet<Room> Rooms { get; set; }
         public DbSet<OpenToRoommate> OpenToRoommates { get; set; }
         public DbSet<HostelLikes> HostelLikes { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
+ 
         public DbSet<Wallet> Wallets { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Message> Messages { get; set; }
