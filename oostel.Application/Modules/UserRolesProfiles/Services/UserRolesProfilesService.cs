@@ -3,11 +3,15 @@ using MapsterMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserRolesProfiles.DTOs;
+using Oostel.Application.RequestFilters;
 using Oostel.Application.UserAccessors;
+using Oostel.Common.Constants;
 using Oostel.Common.Enums;
 using Oostel.Common.Helpers;
+using Oostel.Common.Types.RequestFeatures;
 using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserRoleProfiles.Entities;
@@ -34,12 +38,64 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             _applicationDbContext = applicationDbContext;
         }
 
-        public async Task<List<GetStudentProfileDTO>> GetAllStudents()
+        public async Task<ResultResponse<PagedList<GetStudentProfileDTO>>> GetAllStudents(StudentTypeParams studentTypeParams)
         {
-            var students = await _unitOfWork.StudentRepository.FindandInclude(x => x.User.RolesCSV.Contains(RoleType.Student.GetEnumDescription()), true);
-            var studentsMapping = _mapper.Map<List<GetStudentProfileDTO>>(students);
+            var studentsQuery = _applicationDbContext.Students
+                .Include(x => x.User)
+                .Include(x => x.OpenToRoomate)
+                .OrderBy(x => x.CreatedDate)
+                .Select(s => new GetStudentProfileDTO
+                {
+                    FullName = s.User.FirstName + "" + s.User.LastName,
+                    Email = s.User.Email,
+                    Denomination = s.Denomination,
+                    SchoolLevel = s.SchoolLevel,
+                    StateOfOrigin = s.StateOfOrigin,
+                    Age = s.Age,
+                    Religion = s.Religion,
+                    Gender = s.Gender,
+                    Hobby = s.Hobby,
+                    IsAvailable = s.IsAvailable,
+                    JoinedDate = s.User.CreatedDate,
+                    PictureUrl = s.User.ProfilePhotoURL,
+                    ProfileViewCount = s.User.ProfileViewCount,
+                    Country = s.Country,
+                    RoomBudgetAmount = s.OpenToRoomate.RoomBudgetAmount,
+                    UserId = s.User.Id
+                })
+                .AsNoTracking()
+                .AsQueryable();
 
-            return studentsMapping;
+            if (!string.IsNullOrWhiteSpace(studentTypeParams.SearchTerm))
+            {
+                studentsQuery = studentsQuery.SearchStudent(studentTypeParams.SearchTerm);
+            }
+            else if (studentTypeParams.GottenHostel != null)
+            {
+                studentsQuery = studentsQuery.Where(o => o.IsAvailable == studentTypeParams.GottenHostel);
+            }
+            else if (studentTypeParams.MinimumPrice != null)
+            {
+                studentsQuery = studentsQuery.Where(r => r.RoomBudgetAmount >= studentTypeParams.MinimumPrice);
+            }
+            else if (studentTypeParams.MaximumPrice != null)
+            {
+                studentsQuery = studentsQuery.Where(x => x.RoomBudgetAmount <= studentTypeParams.MaximumPrice);
+            }
+            else if(studentTypeParams.Level != null)
+            {
+                studentsQuery = studentsQuery.Where(x => x.SchoolLevel == studentTypeParams.Level);
+            }
+
+
+
+            if (studentsQuery is null)
+            {
+                return ResultResponse<PagedList<GetStudentProfileDTO>>.Failure(ResponseMessages.NotFound);
+            }
+
+            return ResultResponse<PagedList<GetStudentProfileDTO>>.Success(await PagedList<GetStudentProfileDTO>.CreateAsync(studentsQuery, studentTypeParams.PageNumber, studentTypeParams.PageSize));
+
         }
 
         public async Task<bool> AvailableForRoommate(OpenToRoommateDTO openToRoommateDTO)

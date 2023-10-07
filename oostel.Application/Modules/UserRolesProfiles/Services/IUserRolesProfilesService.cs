@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserRolesProfiles.DTOs;
+using Oostel.Common.Helpers;
+using Oostel.Common.Types.RequestFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 {
     public interface IUserRolesProfilesService
     {
-        Task<List<GetStudentProfileDTO>> GetAllStudents();
+        Task<ResultResponse<PagedList<GetStudentProfileDTO>>> GetAllStudents(StudentTypeParams studentTypeParams);
         Task<List<GetStudentProfileDTO>> GetStudentById(string studentId);
         Task<bool> UpdateStudentProfile(StudentProfileDTO userProfileDTO);
         Task<List<GetLandlordProfileDTO>> GetLandlordsById(string studentId);

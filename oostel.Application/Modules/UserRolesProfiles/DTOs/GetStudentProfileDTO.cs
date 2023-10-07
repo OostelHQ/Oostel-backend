@@ -11,9 +11,10 @@ namespace Oostel.Application.Modules.UserProfiles.DTOs
         public string UserId { get; set; }
         public string? FullName { get; set; }
         public string Email { get; set; }
-        public DateTime JoinedDate { get; set; }
+        public DateTime? JoinedDate { get; set; }
         public string StateOfOrigin { get; set; }
         public bool IsAvailable { get; set; }
+        public string Area { get; set; }
         public decimal RoomBudgetAmount { get; set; }
         public string? PictureUrl { get; set; }
         public int ProfileViewCount { get; set; }
@@ -22,7 +23,7 @@ namespace Oostel.Application.Modules.UserProfiles.DTOs
         public string SchoolLevel { get; set; }
         public string Religion { get; set; }
         public string Denomination { get; set; }
-        public int RentedHostels { get; set; }
+       // public int RentedHostels { get; set; }
         public string Age { get; set; }
         public string Hobby { get; set; }
     }

@@ -14,9 +14,11 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         public string StateOfOrigin { get; set; }
         public string Gender { get; set; }
         public string SchoolLevel { get; set; }
+        public string Country { get; set; }
         public string Religion { get; set; }
         public bool IsAvailable { get; set; } = false;
         public string Age { get; set; }
+        public string? Area { get; set; }
         public string Denomination { get; set; }
         public string Hobby { get; set; }
         

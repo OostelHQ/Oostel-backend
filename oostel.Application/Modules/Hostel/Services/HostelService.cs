@@ -131,11 +131,12 @@ namespace Oostel.Application.Modules.Hostel.Services
                     TotalRoom = h.TotalRoom,
                     HostelName = h.HostelName,
                 })
+                .AsNoTracking()
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(hostelTypesParam.SearchTerm))
             {
-                hostelsQuery = hostelsQuery.Search(hostelTypesParam.SearchTerm);
+                hostelsQuery = hostelsQuery.SearchHostel(hostelTypesParam.SearchTerm);
             }
             else if (hostelTypesParam.HostelCategory != null)
             {

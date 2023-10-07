@@ -10,5 +10,6 @@ namespace Oostel.Common.Types.RequestFeatures
     public class HostelTypesParam : PagingParams
     {
         public HostelCategory? HostelCategory { get; set; }
+        public string? PriceBudgetRange { get; set; }
     }
 }

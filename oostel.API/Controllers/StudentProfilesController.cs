@@ -6,6 +6,7 @@ using Oostel.Application.Modules.UserProfiles.Features.Commands;
 using Oostel.Application.Modules.UserProfiles.Features.Queries;
 using Oostel.Application.Modules.UserRolesProfiles.Features.Commands;
 using Oostel.Common.Types;
+using Oostel.Common.Types.RequestFeatures;
 
 namespace Oostel.API.Controllers
 {
@@ -33,9 +34,9 @@ namespace Oostel.API.Controllers
 
         [HttpGet]
         [Route(UserProfileRoute.GetAllStudents)]
-        public async Task<ActionResult<APIResponse>> GetAllStudents()
+        public async Task<ActionResult<APIResponse>> GetAllStudents([FromQuery]StudentTypeParams studentTypeParams)
         {
-            return HandleResult(await Mediator.Send(new GetAllStudentsRequest()));
+            return HandlePagedResult(await Mediator.Send(new GetAllStudentsRequest { StudentTypeParams = studentTypeParams}));
         }
 
         [HttpGet]
