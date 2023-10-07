@@ -159,6 +159,21 @@ namespace Oostel.Infrastructure.Repositories
             }
         }
 
+        public async Task<bool> Complete()
+        {
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public bool HasChanges()
+        {
+
+            _context.ChangeTracker.DetectChanges();
+
+            var changes = _context.ChangeTracker.HasChanges();
+
+            return changes;
+        }
+
         public async Task<int> SaveAsync(CancellationToken cancellationToken)
         {
             return await _context.SaveChangesAsync(cancellationToken);
