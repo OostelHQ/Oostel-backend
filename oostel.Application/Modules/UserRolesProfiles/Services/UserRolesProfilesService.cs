@@ -308,7 +308,12 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             return true;
         }
 
+        public async Task<ApplicationUser> GetLastnameAsync(string lastname)
+        {
+            var user = await _userManager.FindByNameAsync(lastname);
 
+            return user;          
+        }
 
     }
 }

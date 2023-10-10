@@ -3,6 +3,7 @@ using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserRolesProfiles.DTOs;
 using Oostel.Common.Helpers;
 using Oostel.Common.Types.RequestFeatures;
+using Oostel.Domain.UserAuthentication.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,5 +26,6 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         Task<bool> ProfileViewsCount(string userId);
         Task<bool> UploadDisplayPictureAsync(IFormFile file, string userId);
         Task<bool> AddStudentLike(string sourceId, string studentLikeId);
+        Task<ApplicationUser> GetLastnameAsync(string lastname);
     }
 }
