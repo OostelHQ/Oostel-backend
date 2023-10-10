@@ -20,6 +20,8 @@ namespace Oostel.Domain.UserAuthentication.Entities
         public virtual Student Student { get; set; }
         public virtual Wallet Wallets { get; set; }
 
+        public ICollection<Transaction> Transactions { get; set; }  
+
         public ApplicationUser()
         {
             CreatedDate = DateTime.UtcNow;
