@@ -1,5 +1,6 @@
 ﻿using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
+using Oostel.Application.Modules.UserWallet.DTOs;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserWallet;
 using Oostel.Domain.UserWallet.Enum;
@@ -47,6 +48,16 @@ namespace Oostel.Application.Modules.UserWallet.Services
         {
             var wallet = await _unitOfWork.WalletRepository.Find(x => x.UserId == userId);
             return wallet;
+        }
+
+
+        public async Task<bool> CreateTransaction(TransactionDTO transactionDTO)
+        {
+            var mapper = _mapper.Map<Transaction>(transactionDTO);
+            var transaction = await _unitOfWork.TransactionRepository.Add(mapper);
+
+            await _unitOfWork.SaveAsync();
+            return true;
         }
 
       

@@ -30,7 +30,7 @@ namespace Oostel.Infrastructure.Repositories
         private GenericRepository<StudentLikes, string> studentLikesRepository;
         private GenericRepository<Comment, string> commentRepository;
         private GenericRepository<Wallet, string> walletRepository;
-        private GenericRepository<Message, string> messageRepository;
+        //private GenericRepository<Message, string> messageRepository;
         private GenericRepository<Transaction, string> transactionRepository;
 
         public IMessageRepository MessageRepository => new MessageRepository(_context, _mapper);

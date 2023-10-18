@@ -55,17 +55,17 @@ namespace Oostel.API.SIgnalR
             {
                 Sender = sender,
                 Recipient = recipient,
-                SenderLastName = sender.UserName,
-                RecipientLastName = recipient.UserName,
+                SenderLastName = sender.LastName,
+                RecipientLastName = recipient.LastName,
                 Content = createMessageDto.Content
             };
 
 
-                var connections = await _tracker.GetConnectionsForUser(recipient.UserName);
+                var connections = await _tracker.GetConnectionsForUser(recipient.LastName);
                 if (connections != null)
                 {
                     await _presenceHub.Clients.Clients(connections).SendAsync("NewMessageReceived",
-                        new { username = sender.LastName, knownAs = sender.LastName });
+                        new { lastname = sender.LastName, knownAs = sender.LastName });
                 }
        
 
