@@ -1,6 +1,10 @@
 ﻿using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
+using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserWallet.DTOs;
+using Oostel.Common.Constants;
+using Oostel.Common.Helpers;
+using Oostel.Common.Types.RequestFeatures;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserWallet;
 using Oostel.Domain.UserWallet.Enum;
@@ -60,6 +64,17 @@ namespace Oostel.Application.Modules.UserWallet.Services
             return true;
         }
 
+        public async Task<ResultResponse<PagedList<Transaction>>> GetTransaction(string userId, TransactionType transactionType, int pageSize, int pageNo)
+        {
+            var transactionQuery = _unitOfWork.TransactionRepository.FindByCondition(x => x.UserId == userId && x.TransactionType == transactionType, true);
+
+            if (transactionQuery is null)
+            {
+                return ResultResponse<PagedList<Transaction>>.Failure(ResponseMessages.NotFound);
+            }
+
+            return ResultResponse<PagedList<Transaction>>.Success(await PagedList<Transaction>.CreateAsync(transactionQuery, pageNo, pageSize));
+        }
       
     }
 

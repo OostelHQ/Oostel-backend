@@ -13,7 +13,6 @@
     <Folder Include="Modules\UserMessage\Features\Queries\" />
     <Folder Include="Modules\UserWallet\DTOs\" />
     <Folder Include="Modules\UserWallet\Features\Commands\" />
-    <Folder Include="Modules\UserWallet\Features\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
