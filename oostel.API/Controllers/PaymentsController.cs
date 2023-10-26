@@ -9,13 +9,6 @@ namespace Oostel.API.Controllers
 {
     public class PaymentsController : BaseController
     {
-        private readonly IMapper _mapper;
-        private readonly UnitOfWork _unitOfWork;
-        public PaymentsController(IMapper mapper, UnitOfWork unitOfWork)
-        {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
-        }
 
         [HttpGet]
         [Route(PaymentRoute.GetNGNBanks)]

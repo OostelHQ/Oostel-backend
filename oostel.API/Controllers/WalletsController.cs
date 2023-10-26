@@ -14,12 +14,8 @@ namespace Oostel.API.Controllers
     public class WalletsController : BaseController
     {
         private readonly IMapper _mapper;
-        private readonly UnitOfWork _unitOfWork;
-        public WalletsController(IMapper mapper, UnitOfWork unitOfWork)
-        {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
-        }
+        public WalletsController(IMapper mapper) => _mapper = mapper;
+
 
         [HttpGet]
         [Route(WalletRoute.GetUserTransaction)]
