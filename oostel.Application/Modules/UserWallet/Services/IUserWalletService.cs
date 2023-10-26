@@ -1,4 +1,5 @@
-﻿using Oostel.Common.Helpers;
+﻿using Oostel.Application.Modules.UserWallet.DTOs;
+using Oostel.Common.Helpers;
 using Oostel.Common.Types.RequestFeatures;
 using Oostel.Domain.UserWallet;
 using Oostel.Domain.UserWallet.Enum;
@@ -15,5 +16,6 @@ namespace Oostel.Application.Modules.UserWallet.Services
         Task UpdateWalletBalance(decimal amount, string userId, TransactionType transactionType);
         Task<Wallet> GetUserWallet(string userId);
         Task<ResultResponse<PagedList<Transaction>>> GetTransaction(string userId, TransactionType transactionType, int pageSize, int pageNo);
+        Task<List<FLBankModel>> GetNigeriaBanks();
     }
 }

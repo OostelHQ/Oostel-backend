@@ -8,6 +8,7 @@ using Oostel.Common.Types.RequestFeatures;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserWallet;
 using Oostel.Domain.UserWallet.Enum;
+using Oostel.Infrastructure.FlutterwaveIntegration;
 using Oostel.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
@@ -22,11 +23,14 @@ namespace Oostel.Application.Modules.UserWallet.Services
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
-        public UserWalletService(UnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager)
+        private readonly IFlutterwaveClient _flutterwaveClient;
+        public UserWalletService(UnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager,
+                            IFlutterwaveClient flutterwaveClient)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
+            _flutterwaveClient = flutterwaveClient;
         }
 
         public async Task UpdateWalletBalance(decimal amount, string userId, TransactionType transactionType)
@@ -74,6 +78,25 @@ namespace Oostel.Application.Modules.UserWallet.Services
             }
 
             return ResultResponse<PagedList<Transaction>>.Success(await PagedList<Transaction>.CreateAsync(transactionQuery, pageNo, pageSize));
+        }
+
+        public async Task<List<FLBankModel>> GetNigeriaBanks()
+        {
+            var allNigeriaBanks = await _flutterwaveClient.GetBanks();
+            List<FLBankModel> listOfBanksToReturn = new();
+            foreach (var bank in allNigeriaBanks.Banks)
+            {
+                var banks = new FLBankModel()
+                {
+                    Id = bank.id.ToString(),
+                    BankCode = bank.code,
+                    BankName = bank.name
+                };
+
+                listOfBanksToReturn.Add(banks);
+            }
+
+            return listOfBanksToReturn;
         }
       
     }

@@ -28,5 +28,7 @@ namespace Oostel.API.Controllers
             return HandlePagedResult(await Mediator.Send(new GetTransactionRequest { UserId = transactionRequest.UserId,
             TransactionType = transactionRequest.TransactionType, PageNo = transactionRequest.PageNo, PageSize = transactionRequest.PageSize }));
         }
+
+
     }
 }

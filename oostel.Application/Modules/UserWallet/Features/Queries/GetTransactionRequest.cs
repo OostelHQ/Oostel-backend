@@ -39,7 +39,6 @@ namespace Oostel.Application.Modules.UserWallet.Features.Queries
                 var transaction = await _userWalletService.GetTransaction(request.UserId, request.TransactionType, request.PageSize, request.PageNo);
 
                 if (transaction.Data is null) return ResultResponse<PagedList<Transaction>>.Failure(ResponseMessages.NotFound);
-               // var mapping = _mapper.Map<ResultResponse<PagedList<TransactionDTO>>>(transaction);
 
                 return ResultResponse<PagedList<Transaction>>.Success(transaction.Data);
             }
