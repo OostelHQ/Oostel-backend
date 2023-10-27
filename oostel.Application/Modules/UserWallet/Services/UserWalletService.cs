@@ -80,6 +80,40 @@ namespace Oostel.Application.Modules.UserWallet.Services
             return ResultResponse<PagedList<Transaction>>.Success(await PagedList<Transaction>.CreateAsync(transactionQuery, pageNo, pageSize));
         }
 
+        public async Task<PayInHistory> CreateAndUpdatePayInHistory(PayInHistory payInHistory)
+        {
+            if (string.IsNullOrEmpty(payInHistory.Id))
+            {
+                await _unitOfWork.PayInHistoryRepository.Add(payInHistory);
+            }
+            else
+            {
+                await _unitOfWork.PayInHistoryRepository.UpdateAsync(payInHistory);
+            }
+
+            await _unitOfWork.SaveAsync();
+
+            return payInHistory;
+        }
+
+        public async Task<PayInHistory> GetPayInHistoryById(string transactionId)
+        {
+            var payInHistory = await _unitOfWork.PayInHistoryRepository.GetById(transactionId);
+            if (payInHistory is null)
+                return null;
+
+            return payInHistory;
+        }
+
+        public async Task<ResultResponse<PagedList<PayInHistory>>> GetPayInHistories(int pageNo, int pageSize)
+        {
+            var payInHistory = _unitOfWork.PayInHistoryRepository.FindByCondition(x => true, false);
+            if (payInHistory is null)
+                return ResultResponse<PagedList<PayInHistory>>.Failure(ResponseMessages.NotFound);
+
+            return ResultResponse<PagedList<PayInHistory>>.Success(await PagedList<PayInHistory>.CreateAsync(payInHistory, pageNo, pageSize));
+        }
+
         public async Task<List<FLBankModel>> GetNigeriaBanks()
         {
             var allNigeriaBanks = await _flutterwaveClient.GetBanks();

@@ -17,5 +17,7 @@ namespace Oostel.Application.Modules.UserWallet.Services
         Task<Wallet> GetUserWallet(string userId);
         Task<ResultResponse<PagedList<Transaction>>> GetTransaction(string userId, TransactionType transactionType, int pageSize, int pageNo);
         Task<List<FLBankModel>> GetNigeriaBanks();
+        Task<PayInHistory> GetPayInHistoryById(string transactionId);
+        Task<ResultResponse<PagedList<PayInHistory>>> GetPayInHistories(int pageNo, int pageSize);
     }
 }

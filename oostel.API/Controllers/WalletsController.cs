@@ -8,6 +8,8 @@ using Oostel.Common.Types;
 using Oostel.Infrastructure.Repositories;
 using Oostel.API.ViewModels.WalletVM;
 using Oostel.Application.Modules.UserWallet.Features.Queries;
+using Oostel.Application.Modules.UserProfiles.Features.Queries;
+using Oostel.Domain.UserRoleProfiles.Entities;
 
 namespace Oostel.API.Controllers
 {
@@ -25,6 +27,18 @@ namespace Oostel.API.Controllers
             TransactionType = transactionRequest.TransactionType, PageNo = transactionRequest.PageNo, PageSize = transactionRequest.PageSize }));
         }
 
+        [HttpGet]
+        [Route(WalletRoute.GetAllPayInHistories)]
+        public async Task<ActionResult<APIResponse>> GetAllPayInHistories([FromQuery] int? pageNumber, int? pageSize)
+        {
+            return HandlePagedResult(await Mediator.Send(new GetAllPayInHistoriesRequest {PageNo = pageNumber, PageSize = pageSize}));
+        }
 
+        [HttpGet]
+        [Route(WalletRoute.GetPayInHistoryId)]
+        public async Task<ActionResult<APIResponse>> GetPayInHistoryById(string transactionId)
+        {
+            return HandleResult(await Mediator.Send(new GetPayInHistoryByIdRequest { TransactionId = transactionId }));
+        }
     }
 }
