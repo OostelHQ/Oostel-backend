@@ -29,7 +29,7 @@ namespace Oostel.API.Controllers
 
         [HttpGet]
         [Route(WalletRoute.GetAllPayInHistories)]
-        public async Task<ActionResult<APIResponse>> GetAllPayInHistories([FromQuery] int? pageNumber, int? pageSize)
+        public async Task<ActionResult<APIResponse>> GetAllPayInHistories([FromQuery] int pageNumber, int pageSize)
         {
             return HandlePagedResult(await Mediator.Send(new GetAllPayInHistoriesRequest {PageNo = pageNumber, PageSize = pageSize}));
         }

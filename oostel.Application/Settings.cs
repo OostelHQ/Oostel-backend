@@ -12,6 +12,7 @@ using Oostel.Application.Modules.UserWallet.Services;
 using Oostel.Application.UserAccessors;
 using Oostel.Application.Validators.UserAuthentication;
 using Oostel.Infrastructure.EmailService;
+using Oostel.Infrastructure.FlutterwaveIntegration;
 using Oostel.Infrastructure.Media;
 using Oostel.Infrastructure.Repositories;
 using System.Reflection;
@@ -48,6 +49,7 @@ namespace Oostel.Application
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IUserWalletService, UserWalletService>();
+            services.AddHttpClient<IFlutterwaveClient, FlutterwaveClient>();
 
             return services;
         }

@@ -15,8 +15,8 @@ namespace Oostel.Application.Modules.UserWallet.Features.Queries
 {
     public class GetAllPayInHistoriesRequest : IRequest<ResultResponse<PagedList<PayInHistory>>>
     {
-        public int? PageNo { get; set; }
-        public int? PageSize { get; set; }
+        public int PageNo { get; set; }
+        public int PageSize { get; set; }
 
         public sealed class GetAllPayInHistoriesRequestCommand : IRequestHandler<GetAllPayInHistoriesRequest, ResultResponse<PagedList<PayInHistory>>>
         {
