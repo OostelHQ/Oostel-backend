@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Oostel.API.APIRoutes;
 using Oostel.API.Extensions;
+using Oostel.Application.Modules.Hostel.Features.Queries;
+using Oostel.Application.Modules.UserMessage.Features.Queries;
 using Oostel.Common.Types;
 using Oostel.Common.Types.RequestFeatures;
+using Oostel.Domain.Hostel.Entities;
 using Oostel.Infrastructure.Repositories;
 
 namespace Oostel.API.Controllers
@@ -28,6 +31,14 @@ namespace Oostel.API.Controllers
                 messages.MetaData.TotalCount, messages.MetaData.TotalPages);
 
             return Ok(messages);
+        }
+
+        [HttpDelete]
+        [Route(MessageRoute.DeleteMessage)]
+        public async Task<ActionResult<APIResponse>> DeleteMessage(string messageId)
+        {
+            var userEmail = User.GetUserEmail();
+            return HandleResult(await Mediator.Send(new DeleteMessageRequest { MessageId = messageId, Email = userEmail}));
         }
 
     }

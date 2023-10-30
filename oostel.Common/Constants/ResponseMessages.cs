@@ -30,6 +30,8 @@ namespace Oostel.Common.Constants
         public const string UserBlockedErrorMessage = "User account is blocked!";
         public const string InvalidOTPRequest = "Invalid OTP";
         public const string FailToUpdateError = "Data failed to update";
+        public const string DeleteMessage = "Object deleted";
+        public const string FailedToDeleteMessage = "Problem deleting an object";
 
     }
 }
