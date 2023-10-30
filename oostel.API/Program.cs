@@ -6,12 +6,20 @@ using Oostel.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Oostel.API.Extensions;
 using Oostel.API.SIgnalR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddApplicationServices(builder.Configuration);
-builder.Services.AddControllers();
+
+builder.Services.AddControllers(
+ opt =>
+ {
+     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+     opt.Filters.Add(new AuthorizeFilter(policy));
+ });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -42,6 +50,7 @@ app.UseAuthorization();
 app.MapControllers();
 app.MapHub<PresenceHub>("hubs/presence");  //We're giving this a root where it's gonna be access from
 app.MapHub<MessageHub>("hubs/message");
+app.MapHub<CommentHub>("hubs/comment");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

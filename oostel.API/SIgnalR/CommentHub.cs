@@ -4,11 +4,11 @@ using Oostel.Application.Modules.Hostel.Features.Commands;
 
 namespace Oostel.API.SIgnalR
 {
-    public class ChatHub : Hub
+    public class CommentHub : Hub
     {
         private readonly IMediator _mediator;
 
-        public ChatHub(IMediator mediator) => _mediator= mediator;
+        public CommentHub(IMediator mediator) => _mediator= mediator;
 
         public async Task SendComment(CreateCommentCommand command)
         {

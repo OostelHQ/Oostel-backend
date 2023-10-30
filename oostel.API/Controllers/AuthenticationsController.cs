@@ -1,4 +1,5 @@
 ﻿using MapsterMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Oostel.API.APIRoutes;
 using Oostel.API.ViewModels.UserAuthenticationsVM;
@@ -7,6 +8,7 @@ using Oostel.Common.Types;
 
 namespace Oostel.API.Controllers
 {
+    [AllowAnonymous]
     public class AuthenticationsController : BaseController
     {
         private readonly IMapper _mapper;

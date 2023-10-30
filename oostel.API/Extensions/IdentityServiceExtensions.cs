@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Infrastructure.Data;
@@ -41,6 +42,23 @@ namespace Oostel.API.Extensions
                        ValidateAudience = false,
                        ValidateLifetime = true,
                        ClockSkew = TimeSpan.Zero
+                   };
+
+                   opt.Events = new JwtBearerEvents
+                   {
+                       OnMessageReceived = context =>
+                       {
+                           var accessToken = context.Request.Query["access_token"];
+
+                           var path = context.HttpContext.Request.Path;
+                           if (!string.IsNullOrEmpty(accessToken) &&
+                               path.StartsWithSegments("/hubs"))
+                           {
+                               context.Token = accessToken;
+                           }
+
+                           return Task.CompletedTask;
+                       }
                    };
                });
 
