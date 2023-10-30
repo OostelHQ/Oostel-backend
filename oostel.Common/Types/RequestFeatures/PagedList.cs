@@ -12,7 +12,7 @@ namespace Oostel.Common.Types.RequestFeatures
 
         public MetaData MetaData { get; set; }
 
-        public PagedList(List<T> items, int count, int pageNumber, int pageSize)
+        public PagedList(IEnumerable<T> items, int count, int pageNumber, int pageSize)
         {
             MetaData = new MetaData
             {

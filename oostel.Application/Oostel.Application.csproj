@@ -10,7 +10,6 @@
     <Folder Include="Modules\UserAuthentication\Features\Queries\" />
     <Folder Include="Modules\UserMessage\DTOs\" />
     <Folder Include="Modules\UserMessage\Features\Commands\" />
-    <Folder Include="Modules\UserMessage\Features\Queries\" />
     <Folder Include="Modules\UserWallet\Features\Commands\" />
   </ItemGroup>
 

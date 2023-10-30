@@ -11,10 +11,10 @@ namespace Oostel.Domain.UserMessage
     public class Message : BaseEntity<string>
     {
         public int SenderId { get; set; }
-        public string SenderLastName { get; set; }
+        public string SenderEmail { get; set; }
         public ApplicationUser Sender { get; set; }
         public int RecipientId { get; set; }
-        public string RecipientLastName { get; set; }
+        public string RecipientEmail { get; set; }
         public ApplicationUser Recipient { get; set; }
         public string Content { get; set; }
         public DateTime? DateRead { get; set; }

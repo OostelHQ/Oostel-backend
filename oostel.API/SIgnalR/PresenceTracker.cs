@@ -5,18 +5,18 @@
         private static readonly Dictionary<string, List<string>> OnlineUsers =
             new Dictionary<string, List<string>>();
 
-        public Task<bool> UserConnected(string lastname, string connectionId)
+        public Task<bool> UserConnected(string email, string connectionId)
         {
             bool isOnline = false;
             lock (OnlineUsers)
             {
-                if (OnlineUsers.ContainsKey(lastname))
+                if (OnlineUsers.ContainsKey(email))
                 {
-                    OnlineUsers[lastname].Add(connectionId);
+                    OnlineUsers[email].Add(connectionId);
                 }
                 else
                 {
-                    OnlineUsers.Add(lastname, new List<string> { connectionId });
+                    OnlineUsers.Add(email, new List<string> { connectionId });
                     isOnline = true;
                 }
             }
@@ -24,17 +24,17 @@
             return Task.FromResult(isOnline);
         }
 
-        public Task<bool> UserDisconnected(string lastname, string connectionId)
+        public Task<bool> UserDisconnected(string email, string connectionId)
         {
             bool isOffline = false;
             lock (OnlineUsers)
             {
-                if (!OnlineUsers.ContainsKey(lastname)) return Task.FromResult(isOffline);
+                if (!OnlineUsers.ContainsKey(email)) return Task.FromResult(isOffline);
 
-                OnlineUsers[lastname].Remove(connectionId);
-                if (OnlineUsers[lastname].Count == 0)
+                OnlineUsers[email].Remove(connectionId);
+                if (OnlineUsers[email].Count == 0)
                 {
-                    OnlineUsers.Remove(lastname);
+                    OnlineUsers.Remove(email);
                     isOffline = true;
                 }
             }
@@ -53,12 +53,12 @@
             return Task.FromResult(onlineUsers);
         }
 
-        public Task<List<string>> GetConnectionsForUser(string lastname)
+        public Task<List<string>> GetConnectionsForUser(string email)
         {
             List<string> connectionIds;
             lock (OnlineUsers)
             {
-                connectionIds = OnlineUsers.GetValueOrDefault(lastname);
+                connectionIds = OnlineUsers.GetValueOrDefault(email);
             }
 
             return Task.FromResult(connectionIds);

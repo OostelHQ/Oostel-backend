@@ -10,8 +10,8 @@ namespace Oostel.Application.Modules.UserMessage.DTOs
     {
         public string Sender { get; set; }
         public string Recipient { get; set; }
-        public string RecipientLastname { get; set; }
-        public string SenderLastname { get; set; }
+        public string RecipientEmail { get; set; }
+        public string SenderLastEmail { get; set; }
         public string Content { get; set; }
     }
 }

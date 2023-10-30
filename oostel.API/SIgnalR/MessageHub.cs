@@ -32,7 +32,7 @@ namespace Oostel.API.SIgnalR
             var otherUser = httpContext.Request.Query["user"].ToString();
 
             var messages = await _unitOfWork.MessageRepository.
-                GetMessageThread(Context.User.GetUsername(), otherUser);
+                GetMessageThread(Context.User.GetUserEmail(), otherUser);
 
             if (_unitOfWork.HasChanges()) await _unitOfWork.Complete();
 
@@ -41,13 +41,13 @@ namespace Oostel.API.SIgnalR
 
         public async Task SendMessage(CreateMessageDTO createMessageDto)
         {
-            var username = Context.User.GetUsername();
+            var username = Context.User.GetUserEmail();
 
-            if (username == createMessageDto.RecipientLastname.ToLower())
+            if (username == createMessageDto.RecipientEmail.ToLower())
                 throw new HubException("You cannot send messages to yourself");
 
             var sender = await _rolesProfilesService.GetLastnameAsync(username);
-            var recipient = await  _rolesProfilesService.GetLastnameAsync(createMessageDto.RecipientLastname);
+            var recipient = await  _rolesProfilesService.GetLastnameAsync(createMessageDto.RecipientEmail);
 
             if (recipient == null) throw new HubException("Not found user");
 
@@ -55,17 +55,17 @@ namespace Oostel.API.SIgnalR
             {
                 Sender = sender,
                 Recipient = recipient,
-                SenderLastName = sender.LastName,
-                RecipientLastName = recipient.LastName,
+                SenderEmail = sender.LastName,
+                RecipientEmail = recipient.LastName,
                 Content = createMessageDto.Content
             };
 
 
-                var connections = await _tracker.GetConnectionsForUser(recipient.LastName);
+                var connections = await _tracker.GetConnectionsForUser(recipient.Email);
                 if (connections != null)
                 {
                     await _presenceHub.Clients.Clients(connections).SendAsync("NewMessageReceived",
-                        new { lastname = sender.LastName, knownAs = sender.LastName });
+                        new { email = sender.Email, knownAs = sender.Email });
                 }
        
 

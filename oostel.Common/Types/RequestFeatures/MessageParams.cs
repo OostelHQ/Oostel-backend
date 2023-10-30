@@ -8,7 +8,7 @@ namespace Oostel.Common.Types.RequestFeatures
 {
     public class MessageParams : PagingParams
     {
-        public string Lastname { get; set; }
+        public string Email { get; set; }
         public string Container { get; set; } = "Unread";
     }
 }

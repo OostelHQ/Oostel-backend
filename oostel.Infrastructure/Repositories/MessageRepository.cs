@@ -70,7 +70,7 @@ namespace Oostel.Infrastructure.Repositories
                 .OrderByDescending(m => m.MessengeSent)
                 .Select(m => new MessageDTO()
                 {
-                    SenderLastname = m.SenderLastName,
+                    SenderEmail = m.SenderEmail,
                     SenderDeleted = m.SenderDeleted,
                     SenderId = m.SenderId,
                     Content = m.Content,
@@ -78,7 +78,7 @@ namespace Oostel.Infrastructure.Repositories
                     MessageSent = m.MessengeSent,
                     RecipientDeleted = m.RecipientDeleted,
                     RecipientId = m.RecipientId,
-                    RecipientLastname = m.RecipientLastName,
+                    RecipientEmail = m.RecipientEmail,
                     RecipientPhotoUrl = m.Recipient.ProfilePhotoURL,
                     SenderPhotoUrl = m.Sender.ProfilePhotoURL
                 })
@@ -86,12 +86,12 @@ namespace Oostel.Infrastructure.Repositories
 
             query = messageParams.Container switch
             {
-                "Inbox" => query.Where(u => u.RecipientLastname == messageParams.Lastname
+                "Inbox" => query.Where(u => u.RecipientEmail == messageParams.Email
                     && u.RecipientDeleted == false),
-                "Outbox" => query.Where(u => u.SenderLastname == messageParams.Lastname
+                "Outbox" => query.Where(u => u.SenderEmail == messageParams.Email
                     && u.SenderDeleted == false),
-                _ => query.Where(u => u.RecipientLastname ==
-                    messageParams.Lastname && u.RecipientDeleted == false && u.DateRead == null)
+                _ => query.Where(u => u.RecipientEmail ==
+                    messageParams.Email && u.RecipientDeleted == false && u.DateRead == null)
             };
 
             return await PagedList<MessageDTO>.CreateAsync(query, messageParams.PageNumber, messageParams.PageSize);
