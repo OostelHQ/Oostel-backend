@@ -2,6 +2,7 @@
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserRolesProfiles.DTOs;
 using Oostel.Common.Helpers;
+using Oostel.Common.Types;
 using Oostel.Common.Types.RequestFeatures;
 using Oostel.Domain.UserAuthentication.Entities;
 using System;
@@ -26,6 +27,9 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         Task<bool> ProfileViewsCount(string userId);
         Task<bool> UploadDisplayPictureAsync(IFormFile file, string userId);
         Task<bool> AddStudentLike(string sourceId, string studentLikeId);
-        Task<ApplicationUser> GetLastnameAsync(string lastname);
+        Task<ApplicationUser> GetEmailAsync(string email);
+        Task<bool> CreateReferralCode(string landlordId);
+        Task<bool> SendAgentInvitationCode(string agentEmail, string referralCode, string landlordName, string shortNote);
+        Task<string> GetLandlordReferralCode(string landlordId);
     }
 }

@@ -1,7 +1,9 @@
 ﻿using Mailjet.Client.Resources;
 using MapsterMapper;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Application.Modules.UserProfiles.DTOs;
@@ -11,6 +13,7 @@ using Oostel.Application.UserAccessors;
 using Oostel.Common.Constants;
 using Oostel.Common.Enums;
 using Oostel.Common.Helpers;
+using Oostel.Common.Types;
 using Oostel.Common.Types.RequestFeatures;
 using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserAuthentication.Entities;
@@ -19,6 +22,7 @@ using Oostel.Domain.UserRolesProfiles.Entities;
 using Oostel.Infrastructure.Data;
 using Oostel.Infrastructure.Media;
 using Oostel.Infrastructure.Repositories;
+using System.Net;
 
 namespace Oostel.Application.Modules.UserProfiles.Services
 {
@@ -29,13 +33,15 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         private readonly IMapper _mapper;
         private readonly IMediaUpload _mediaUpload;
         private readonly ApplicationDbContext _applicationDbContext;
-        public UserRolesProfilesService(UserManager<ApplicationUser> userManager, ApplicationDbContext applicationDbContext, UnitOfWork unitOfWork, IMediaUpload mediaUpload, IMapper mapper)
+        private readonly IEmailSender _emailSender;
+        public UserRolesProfilesService(UserManager<ApplicationUser> userManager, IEmailSender emailSender, ApplicationDbContext applicationDbContext, UnitOfWork unitOfWork, IMediaUpload mediaUpload, IMapper mapper)
         {
             _unitOfWork= unitOfWork;
             _userManager= userManager;
             _mapper= mapper;
             _mediaUpload = mediaUpload;
             _applicationDbContext = applicationDbContext;
+            _emailSender = emailSender;
         }
 
         public async Task<ResultResponse<PagedList<GetStudentProfileDTO>>> GetAllStudents(StudentTypeParams studentTypeParams)
@@ -116,6 +122,25 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
             return true;
 
+        }
+
+        public async Task<bool> CreateReferralCode(string landlordId)
+        {
+            var result = true;
+            var referralInfo = await _unitOfWork.ReferralAgentInfoRepository.Find(x => x.UserId == landlordId.ToString());
+
+            if (referralInfo == null)
+            {
+                var generatedCode = RandomCodeGenerator.GenerateAlphabetAndNumbers();
+                var userreferallInfo = ReferralAgentInfo.CreateUserReferralInfoFactory(landlordId.ToString(), generatedCode);
+                await _unitOfWork.ReferralAgentInfoRepository.Add(userreferallInfo);
+                var commitState = await _unitOfWork.SaveAsync();
+                if(commitState > 0)
+                {
+                    return true; //APIResponse.GetSuccessMessage(HttpStatusCode.OK, data: generatedCode, ResponseMessages.SuccessfulCreation);
+                }
+            }
+            return false; //APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.NotFound);
         }
 
         public async Task<List<GetStudentProfileDTO>> GetStudentById(string studentId)
@@ -204,8 +229,9 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         public async Task<bool> CreateLandLordProfile(CreateLandlordDTO landlordProfileDTO)
         {
-            var user =  _userManager.Users.Any(x => x.Id == landlordProfileDTO.UserId && x.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()));
-            if (!user) return false;
+            // var user =  _userManager.Users.Any(x => x.Id == landlordProfileDTO.UserId && x.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()));
+            var user = await _userManager.FindByIdAsync(landlordProfileDTO.UserId);
+            if (user is null) return false;
 
             var landlord = new Landlord()
             {
@@ -222,6 +248,12 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             var checkIfLandlordExist = await _unitOfWork.LandlordRepository.Find(x => x.Id == landlordProfileDTO.UserId);
             if (checkIfLandlordExist is null)
             {
+                var referralInfo = await CreateReferralCode(landlordProfileDTO.UserId);
+                if (!referralInfo)
+                {
+                    await _userManager.DeleteAsync(user);
+                }
+
                 await _unitOfWork.LandlordRepository.Add(landlord);
                 await _unitOfWork.SaveAsync();
             }
@@ -259,7 +291,6 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         {
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null) return false;
-
 
                 var userPictureResult = await _mediaUpload.UploadPhoto(file);
                 user.ProfilePhotoURL = userPictureResult.Url;
@@ -308,9 +339,32 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             return true;
         }
 
-        public async Task<ApplicationUser> GetLastnameAsync(string lastname)
+        public async Task<string> GetLandlordReferralCode(string landlordId)
         {
-            var user = await _userManager.FindByNameAsync(lastname);
+            var landlord = await _unitOfWork.ReferralAgentInfoRepository.Find(x => x.UserId == landlordId);
+            if (landlord is null)
+                return null;
+
+            return landlord.ReferralCode;
+        }
+
+        public async Task<bool> SendAgentInvitationCode(string agentEmail, string referralCode, string landlordName, string shortNote)
+        {
+
+            var message = $"<p><b>Hello, there!</b></p>" +
+             $"<p>You got this mail because you're invited by {landlordName} to be an agent on his Fynda App account. The below code is the referral code to sign you up as an Agent.</p><p>" +
+             $"<p><b>{referralCode}</b> <br><br><br><br></p>" +
+             $"<p>{shortNote}</p>";
+
+
+            await _emailSender.SendEmailAsync(agentEmail, $"You Got An Invitation", message);
+
+            return true;
+        }
+
+        public async Task<ApplicationUser> GetEmailAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
 
             return user;          
         }

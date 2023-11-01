@@ -41,13 +41,13 @@ namespace Oostel.API.SIgnalR
 
         public async Task SendMessage(CreateMessageDTO createMessageDto)
         {
-            var username = Context.User.GetUserEmail();
+            var email = Context.User.GetUserEmail();
 
-            if (username == createMessageDto.RecipientEmail.ToLower())
+            if (email == createMessageDto.RecipientEmail.ToLower())
                 throw new HubException("You cannot send messages to yourself");
 
-            var sender = await _rolesProfilesService.GetLastnameAsync(username);
-            var recipient = await  _rolesProfilesService.GetLastnameAsync(createMessageDto.RecipientEmail);
+            var sender = await _rolesProfilesService.GetEmailAsync(email);
+            var recipient = await  _rolesProfilesService.GetEmailAsync(createMessageDto.RecipientEmail);
 
             if (recipient == null) throw new HubException("Not found user");
 
@@ -55,8 +55,8 @@ namespace Oostel.API.SIgnalR
             {
                 Sender = sender,
                 Recipient = recipient,
-                SenderEmail = sender.LastName,
-                RecipientEmail = recipient.LastName,
+                SenderEmail = sender.Email,
+                RecipientEmail = recipient.Email,
                 Content = createMessageDto.Content
             };
 

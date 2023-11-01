@@ -5,6 +5,7 @@ using Oostel.API.APIRoutes;
 using Oostel.API.ViewModels.UserProfilesVM;
 using Oostel.Application.Modules.UserProfiles.Features.Commands;
 using Oostel.Application.Modules.UserProfiles.Features.Queries;
+using Oostel.Application.Modules.UserRolesProfiles.Features.Commands;
 using Oostel.Common.Types;
 
 namespace Oostel.API.Controllers
@@ -42,6 +43,14 @@ namespace Oostel.API.Controllers
         public async Task<ActionResult<APIResponse>> GetLandlordById(string landlordId)
         {
             return HandleResult(await Mediator.Send(new GetLandlordByIdRequest { LandlordId = landlordId }));
+        }
+
+        [HttpPost]
+        [Route(UserProfileRoute.SendAgentInvitationCode)]
+        public async Task<ActionResult<APIResponse>> SendAgentInvitationCode(SendInvitationRequest request)
+        {
+            var invitationRequest = _mapper.Map<InviteAgentCommand>(request);
+            return HandleResult(await Mediator.Send(invitationRequest));
         }
     }
 }
