@@ -42,5 +42,7 @@ namespace Oostel.Infrastructure.Data
         public DbSet<Connection> Connections { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<PayInHistory> PayInHistories { get; set; }
+        public DbSet<ReferralAgentInfo> ReferralAgentInfos { get; set; }
+        public DbSet<AgentReferred> AgentReferreds { get; set; }
     }
 }

@@ -33,6 +33,8 @@ namespace Oostel.Infrastructure.Repositories
         private GenericRepository<PayInHistory, string> payInHistoryRepository;
         //private GenericRepository<Message, string> messageRepository;
         private GenericRepository<Transaction, string> transactionRepository;
+        private GenericRepository<ReferralAgentInfo, string> referralAgentInfoRepository;
+        private GenericRepository<AgentReferred, string> agentReferredRepository;
 
         public IMessageRepository MessageRepository => new MessageRepository(_context, _mapper);
 
@@ -50,6 +52,19 @@ namespace Oostel.Infrastructure.Repositories
             }
         }
 
+        public GenericRepository<AgentReferred, string> AgentReferredRepository
+        {
+            get
+            {
+
+                if (agentReferredRepository == null)
+                {
+                    agentReferredRepository = new GenericRepository<AgentReferred, string>(_context);
+                }
+                return agentReferredRepository;
+            }
+        }
+
         public GenericRepository<UserOTP, string> UserOTPRepository
         {
             get
@@ -60,6 +75,19 @@ namespace Oostel.Infrastructure.Repositories
                     userOTPRepository = new GenericRepository<UserOTP, string>(_context);
                 }
                 return userOTPRepository;
+            }
+        }
+
+        public GenericRepository<ReferralAgentInfo, string> ReferralAgentInfoRepository
+        {
+            get
+            {
+
+                if (referralAgentInfoRepository == null)
+                {
+                    referralAgentInfoRepository = new GenericRepository<ReferralAgentInfo, string>(_context);
+                }
+                return referralAgentInfoRepository;
             }
         }
 

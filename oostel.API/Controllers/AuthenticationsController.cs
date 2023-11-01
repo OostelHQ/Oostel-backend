@@ -23,6 +23,14 @@ namespace Oostel.API.Controllers
         }
 
         [HttpPost()]
+        [Route(UserAuthenticationRoute.RegisterAgent)]
+        public async Task<ActionResult<APIResponse>> RegisterAgent([FromForm] RegisterAgentRequest request)
+        {
+            var registerRequest = _mapper.Map<RegisterAgentCommand>(request);
+            return HandleResult(await Mediator.Send(registerRequest));
+        }
+
+        [HttpPost()]
         [Route(UserAuthenticationRoute.LoginUser)]
         public async Task<ActionResult<APIResponse>> LoginUser(LoginUserRequest request)
         {

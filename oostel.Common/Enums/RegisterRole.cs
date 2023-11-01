@@ -7,15 +7,12 @@ using System.Threading.Tasks;
 
 namespace Oostel.Common.Enums
 {
-    public enum RoleType
+    public enum RegisterRole
     {
         [Description("LandLord")]
         LandLord = 1,
 
         [Description("Student")]
         Student = 2,
-
-        [Description("Agent")]
-        Agent = 3
     }
 }

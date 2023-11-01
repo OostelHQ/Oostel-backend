@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Oostel.Common.Helpers
 {
-    public class RoleString
+    public static class RoleString
     {
         public const string Student = "Student";
         public const string LandLord = "LandLord";
+        public const string Agent = "Agent";
     }
 }

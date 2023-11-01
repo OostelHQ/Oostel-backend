@@ -7,5 +7,6 @@
         public const string VerifyOTPEmail = "authenticateuser/verify-otp-email";
         public const string SendResetPasswordOTP = "authenticateuser/Send-reset-password-otp";
         public const string ResetPassword = "authenticateuser/reset-password";
+        public const string RegisterAgent = "authenticateuser/register-agent";
     }
 }

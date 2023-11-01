@@ -6,11 +6,14 @@ using Microsoft.Extensions.Configuration;
 using Oostel.Application.Modules.UserAuthentication.DTOs;
 using Oostel.Common.Helpers;
 using Oostel.Domain.UserAuthentication.Entities;
+using Oostel.Domain.UserAuthentication.Events;
+using Oostel.Domain.UserRolesProfiles.Entities;
 using Oostel.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.UserAuthentication.Services
@@ -93,6 +96,27 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
             return false;
         }
 
+        public async Task<bool> CreateReferralAgent(string userId, string referredCode, CancellationToken cancellationToken)
+        {
+            var result = false;
+            var referralFromDb = await _unitOfWork.ReferralAgentInfoRepository.Find(x => x.ReferralCode == referredCode);
+
+            if (referralFromDb != null)
+            {
+                var userReferral = new AgentReferred(userId, referralFromDb.Id.ToString(), referredCode);
+                await _unitOfWork.AgentReferredRepository.Add(userReferral);
+
+                var commitState = await _unitOfWork.SaveAsync(cancellationToken);
+                if (commitState > 0)
+                {
+                    result = true;
+                    ReferreeAddedEventPublisher.OnReferreeAdded(new ReferreeAddedEventArgs(referralFromDb.UserId.ToString()));
+                };
+            }
+
+            return true;
+        }
+
         public async Task<OtpVerificationResponse> VerifyResetPasswordOTPEmail(ApplicationUser user, string Otp)
         {
             //get the otp
@@ -133,5 +157,7 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
 
             return true;
         }
+
+
     }
 }

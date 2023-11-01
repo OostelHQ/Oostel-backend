@@ -1,38 +1,41 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Oostel.Application.Modules.UserAuthentication.DTOs;
 using Oostel.Application.Modules.UserAuthentication.Services;
 using Oostel.Common.Constants;
-using Oostel.Common.Enums;
 using Oostel.Common.Helpers;
 using Oostel.Common.Types;
 using Oostel.Domain.UserAuthentication.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.UserAuthentication.Features.Commands
 {
-    public class RegisterUserCommand : IRequest<APIResponse>
+    public class RegisterAgentCommand : IRequest<APIResponse>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string EmailAddress { get; set; }
         public string Password { get; set; }
-        public RegisterRole RegisterRole { get; set; }
-        public sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, APIResponse>
+        public string ReferralCode { get; set; }
+
+        public sealed class RegisterAgentCommandHandler : IRequestHandler<RegisterAgentCommand, APIResponse>
         {
             private readonly UserManager<ApplicationUser> _userManager;
-            private readonly ILogger<RegisterUserCommandHandler> _logger;
+            private readonly ILogger<RegisterAgentCommandHandler> _logger;
             private readonly IUserAuthenticationService _userAuthenticationService;
-            public RegisterUserCommandHandler(UserManager<ApplicationUser> userManager, ILogger<RegisterUserCommandHandler> logger,
+            public RegisterAgentCommandHandler(UserManager<ApplicationUser> userManager, ILogger<RegisterAgentCommandHandler> logger,
                      IUserAuthenticationService userAuthenticationService)
             {
                 _userManager = userManager;
                 _logger = logger;
                 _userAuthenticationService = userAuthenticationService;
             }
-            public async Task<APIResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+            public async Task<APIResponse> Handle(RegisterAgentCommand request, CancellationToken cancellationToken)
             {
                 var failedResponse = APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);
 
@@ -41,8 +44,8 @@ namespace Oostel.Application.Modules.UserAuthentication.Features.Commands
                     FirstName = request.FirstName,
                     LastName = request.LastName,
                     UserName = request.EmailAddress,
-                    Email = request.EmailAddress,                   
-                    RolesCSV = request.RegisterRole.GetEnumDescription()
+                    Email = request.EmailAddress,
+                    RolesCSV = RoleString.Agent
                 };
 
                 if (await _userManager.Users.AnyAsync(x => x.Email == request.EmailAddress))
@@ -59,18 +62,29 @@ namespace Oostel.Application.Modules.UserAuthentication.Features.Commands
                     return failedResponse;
                 }
 
-                var addUserRole = await _userManager.AddToRoleAsync(newUser, request.RegisterRole.GetEnumDescription());
+                var addUserRole = await _userManager.AddToRoleAsync(newUser, RoleString.Agent);
                 if (!addUserRole.Succeeded)
                 {
                     failedResponse.Data = addUserRole.Errors.Select(x => x.Code + " : " + x.Description);
                     return failedResponse;
                 }
 
+                if (request.ReferralCode != null)
+                {
+                    var referredData = await _userAuthenticationService.CreateReferralAgent(newUser.Id, request.ReferralCode, cancellationToken);
+
+                    if (!referredData)
+                    {
+                        await _userManager.DeleteAsync(newUser);
+                        return failedResponse;
+                    }
+                }
+
                 var user = await _userManager.FindByEmailAsync(request.EmailAddress);
-                if (user != null)   
+                if (user != null)
                 {
                     var emailVerificationResult = await _userAuthenticationService.SendVerifyOTPToUserEmail(user, cancellationToken);
-                    if(emailVerificationResult)
+                    if (emailVerificationResult)
                         _logger.LogInformation($"Email Verification Send to User : {user.Id} on Email {user.Email} at {DateTime.Now}  ");
                     else
                     {
@@ -79,9 +93,8 @@ namespace Oostel.Application.Modules.UserAuthentication.Features.Commands
 
                 }
 
-                    return APIResponse.GetSuccessMessage(HttpStatusCode.Created, null, ResponseMessages.SuccessfulCreation);
+                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, null, ResponseMessages.SuccessfulCreation);
             }
         }
-
     }
 }
