@@ -14,7 +14,7 @@ namespace Oostel.Infrastructure.Data
 
         public static async Task SeedIdentityRoles(ApplicationDbContext context, RoleManager<ApplicationRole> roleManager)
         {
-            var roles = new string[] { "LandLord", "Student" };
+            var roles = new string[] { "LandLord", "Student", "Agent"};
             foreach (var role in roles)
             {
                 var roleStore = new RoleStore<ApplicationRole>(context);

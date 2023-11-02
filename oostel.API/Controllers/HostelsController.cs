@@ -1,4 +1,5 @@
 ﻿using MapsterMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Oostel.API.APIRoutes;
 using Oostel.API.ViewModels.HostelsVM;
@@ -14,6 +15,7 @@ using Oostel.Infrastructure.Repositories;
 
 namespace Oostel.API.Controllers
 {
+    [AllowAnonymous]
     public class HostelsController : BaseController
     {
         private readonly IMapper _mapper;
@@ -55,8 +57,8 @@ namespace Oostel.API.Controllers
         }
 
         [HttpPost]
-        [Route(HostelRoute.CreateAndUpdateRoomForHostel)]
-        public async Task<ActionResult<APIResponse>> CreateAndUpdateRoomForHostel([FromForm] RoomRequest request)
+        [Route(HostelRoute.CreateRoomForHostel)]
+        public async Task<ActionResult<APIResponse>> CreateRoomForHostel([FromForm] RoomRequest request)
         {
             var roomRequest = (new CreateRoomForHostelCommand
             {

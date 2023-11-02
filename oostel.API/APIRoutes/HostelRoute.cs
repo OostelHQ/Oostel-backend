@@ -7,7 +7,7 @@
         public const string GetHostelById = "hostel/get-hostel-by-id";
         public const string UpdateHostel = "hostel/update-hostel";
 
-        public const string CreateAndUpdateRoomForHostel = "hostel/create-and-update-room-for-hostel";
+        public const string CreateRoomForHostel = "hostel/create-room-for-hostel";
         public const string GetARoomForHostel = "hostel/get-a-room-for-hostel";
         public const string GetAllRoomsForHostel = "hostel/get-all-rooms-for-hostel";
         public const string UpdateRoom = "hostel/update-room";

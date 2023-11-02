@@ -1,5 +1,6 @@
 ﻿using Oostel.Common.Types;
 using Oostel.Domain.UserAuthentication.Entities;
+using Oostel.Domain.UserRolesProfiles.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         public string? Denomination { get; set; }
         public virtual ApplicationUser User { get; set; }
         public ICollection<Domain.Hostel.Entities.Hostel> Hostels { get; set; }
+        //public ReferralAgentInfo ReferralAgentInfo { get; set; }
 
         public Landlord()
         {

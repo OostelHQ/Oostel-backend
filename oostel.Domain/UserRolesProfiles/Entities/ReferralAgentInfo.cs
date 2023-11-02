@@ -1,4 +1,5 @@
 ﻿using Oostel.Common.Types;
+using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserRoleProfiles.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Oostel.Domain.UserRolesProfiles.Entities
         public string UserId { get; set; }
         public string ReferralCode { get; set; }
 
-        public Landlord Landlord { get; set; }
+        public ApplicationUser User { get; set; }
 
         private ReferralAgentInfo(string userId, string referralCode)
         :base(Guid.NewGuid().ToString())

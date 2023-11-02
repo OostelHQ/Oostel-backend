@@ -1,5 +1,6 @@
 ﻿using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Oostel.API.APIRoutes;
 using Oostel.API.ViewModels.UserProfilesVM;
@@ -10,6 +11,8 @@ using Oostel.Common.Types;
 
 namespace Oostel.API.Controllers
 {
+    //[Authorize]//(Policy = "LandlordAndAgent")]
+    [AllowAnonymous]
     public class LandLordProfilesController : BaseController
     {
         private readonly IMapper _mapper;

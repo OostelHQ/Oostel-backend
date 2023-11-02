@@ -8,6 +8,7 @@ using Oostel.API.Extensions;
 using Oostel.API.SIgnalR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Oostel.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,8 @@ builder.Services.AddCors();
 
 var app = builder.Build();
 
+app.UseMiddleware<ExceptionMiddleware>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
@@ -41,16 +44,37 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     app.UseSwaggerUI();
 }
 
-app.UseSerilogRequestLogging();
-
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.UseStaticFiles();
 
+app.UseCors("CorsPolicy");
+
+app.UseAuthentication();
+app.UseAuthorization();
+//app.UseRouting();
+
+/*app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});*/
+
+app.UseSerilogRequestLogging();
+
+
+
+app.UseSwagger();
 app.MapControllers();
+/*app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v2/swagger.json", "v2");
+    options.RoutePrefix = string.Empty;
+});*/
+
 app.MapHub<PresenceHub>("hubs/presence");  //We're giving this a root where it's gonna be access from
 app.MapHub<MessageHub>("hubs/message");
 app.MapHub<CommentHub>("hubs/comment");
+
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

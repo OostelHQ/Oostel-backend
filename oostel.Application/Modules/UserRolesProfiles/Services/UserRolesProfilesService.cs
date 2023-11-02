@@ -341,11 +341,11 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         public async Task<string> GetLandlordReferralCode(string landlordId)
         {
-            var landlord = await _unitOfWork.ReferralAgentInfoRepository.Find(x => x.UserId == landlordId);
+            var landlord = await _unitOfWork.ReferralAgentInfoRepository.FindandInclude(x => x.UserId == landlordId, true);
             if (landlord is null)
                 return null;
 
-            return landlord.ReferralCode;
+            return landlord.ToList()[0].ReferralCode;
         }
 
         public async Task<bool> SendAgentInvitationCode(string agentEmail, string referralCode, string landlordName, string shortNote)

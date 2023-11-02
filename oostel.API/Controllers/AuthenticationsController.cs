@@ -18,8 +18,9 @@ namespace Oostel.API.Controllers
         [Route(UserAuthenticationRoute.RegisterUser)]
         public async Task<ActionResult<APIResponse>> RegisterUser([FromForm] RegisterUserRequest request)
         {
-            var registerRequest = _mapper.Map<RegisterUserCommand>(request);
-            return HandleResult(await Mediator.Send(registerRequest));
+            //var registerRequest = _mapper.Map<RegisterUserCommand>(request);
+            return HandleResult(await Mediator.Send(new RegisterUserCommand { EmailAddress = request.EmailAddress, FirstName = request.FirstName,
+                                        LastName = request.LastName,Password = request.Password, RegisterRole = request.RoleType}));
         }
 
         [HttpPost()]

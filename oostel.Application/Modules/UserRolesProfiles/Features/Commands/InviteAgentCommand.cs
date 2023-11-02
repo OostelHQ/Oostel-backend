@@ -38,10 +38,10 @@ namespace Oostel.Application.Modules.UserRolesProfiles.Features.Commands
 
             public async Task<APIResponse> Handle(InviteAgentCommand request, CancellationToken cancellationToken)
             {
-                var landlord = await _userRolesProfilesService.GetLandlordsById(request.AgentEmail);
+                var landlord = await _userRolesProfilesService.GetLandlordsById(request.LandLordId);
                 if (landlord is null)
                     return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.NotFound);
-
+                
                 var getLandlordReferralCodeFromDb = await _userRolesProfilesService.GetLandlordReferralCode(request.LandLordId);
                 if(getLandlordReferralCodeFromDb is null)
                     return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.NotFound);

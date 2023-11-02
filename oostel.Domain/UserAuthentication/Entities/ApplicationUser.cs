@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Oostel.Domain.UserRoleProfiles.Entities;
+using Oostel.Domain.UserRolesProfiles.Entities;
 using Oostel.Domain.UserWallet;
 
 namespace Oostel.Domain.UserAuthentication.Entities
@@ -20,6 +21,9 @@ namespace Oostel.Domain.UserAuthentication.Entities
         public virtual Student Student { get; set; }
         public virtual Wallet Wallets { get; set; }
 
+        public ReferralAgentInfo ReferralAgentInfo { get; set; }
+
+        public ICollection<AgentReferred> AgentReferreds { get; set; }
         public ICollection<Transaction> Transactions { get; set; }  
 
         public ApplicationUser()

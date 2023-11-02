@@ -14,6 +14,7 @@ namespace Oostel.Application.Mappers.UserAuthenticationsMapping
         public void Register(TypeAdapterConfig config)
         {
             config.NewConfig<ApplicationUser, LoginUserCommand>();
+           // config.NewConfig<RegisterUserCommand, RegisterUserRequest>();
             config.NewConfig<ApplicationUser, RegisterUserCommand>();
         }
     }

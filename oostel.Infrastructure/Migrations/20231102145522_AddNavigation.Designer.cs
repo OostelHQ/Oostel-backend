@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Oostel.Infrastructure.Data;
@@ -12,9 +13,11 @@ using Oostel.Infrastructure.Data;
 namespace Oostel.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231102145522_AddNavigation")]
+    partial class AddNavigation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1035,13 +1038,13 @@ namespace Oostel.Infrastructure.Migrations
 
             modelBuilder.Entity("Oostel.Domain.UserRolesProfiles.Entities.ReferralAgentInfo", b =>
                 {
-                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "User")
+                    b.HasOne("Oostel.Domain.UserRoleProfiles.Entities.Landlord", "Landlord")
                         .WithOne("ReferralAgentInfo")
                         .HasForeignKey("Oostel.Domain.UserRolesProfiles.Entities.ReferralAgentInfo", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Landlord");
                 });
 
             modelBuilder.Entity("Oostel.Domain.UserWallet.Transaction", b =>
@@ -1082,9 +1085,6 @@ namespace Oostel.Infrastructure.Migrations
                     b.Navigation("Landlord")
                         .IsRequired();
 
-                    b.Navigation("ReferralAgentInfo")
-                        .IsRequired();
-
                     b.Navigation("Student")
                         .IsRequired();
 
@@ -1104,6 +1104,9 @@ namespace Oostel.Infrastructure.Migrations
             modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Landlord", b =>
                 {
                     b.Navigation("Hostels");
+
+                    b.Navigation("ReferralAgentInfo")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Student", b =>

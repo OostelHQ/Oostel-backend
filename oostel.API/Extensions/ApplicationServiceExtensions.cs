@@ -40,6 +40,11 @@ namespace Oostel.API.Extensions
 
             services.AddIdentityServices(_config);
 
+           /* services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("LandlordAndAgent", policy => policy.RequireRole("Agent", "Landlord"));
+            });*/
+
             return services;
         }
 

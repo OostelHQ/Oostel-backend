@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Infrastructure.Data;
 using System.Text;
@@ -15,7 +16,7 @@ namespace Oostel.API.Extensions
         {
             services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
-                options.SignIn.RequireConfirmedAccount = false;
+                options.SignIn.RequireConfirmedAccount = true;
                 options.User.RequireUniqueEmail = true;
                 options.User.AllowedUserNameCharacters = null;
                 options.Password.RequireDigit = false;
@@ -61,6 +62,59 @@ namespace Oostel.API.Extensions
                        }
                    };
                });
+
+            services.AddSwaggerGen(s =>
+            {
+                s.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Fynda APP",
+                    Version = "v1",
+                    Description = "Authenticator API by Donkennie",
+                    TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Ajeigbe Kehinde",
+                        Email = "ajeigbekehinde160@gmail.com",
+                        Url = new Uri("https://donkennie.me/"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Fynda API LICX",
+                        Url = new Uri("https://example.com/license"),
+                    }
+                });
+
+                s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Place to add JWT with Bearer",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+                s.AddSecurityRequirement(new OpenApiSecurityRequirement()
+             {
+                 {
+                 new OpenApiSecurityScheme
+                 {
+                     Reference = new OpenApiReference
+                     {
+                     Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                    },
+                    Name = "Bearer",
+
+                },
+
+                 new List<string>()
+
+                    }
+                 });
+
+            });
+
+            services.AddAuthentication();
+
 
             return services;
         }
