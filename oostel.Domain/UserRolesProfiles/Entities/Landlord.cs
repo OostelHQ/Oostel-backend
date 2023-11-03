@@ -20,7 +20,7 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         public string? Denomination { get; set; }
         public virtual ApplicationUser User { get; set; }
         public ICollection<Domain.Hostel.Entities.Hostel> Hostels { get; set; }
-        //public ReferralAgentInfo ReferralAgentInfo { get; set; }
+        public ICollection<ReferralAgentInfo> ReferralAgentInfos { get; set; }
 
         public Landlord()
         {

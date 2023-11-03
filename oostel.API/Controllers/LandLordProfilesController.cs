@@ -11,8 +11,8 @@ using Oostel.Common.Types;
 
 namespace Oostel.API.Controllers
 {
-    //[Authorize]//(Policy = "LandlordAndAgent")]
-    [AllowAnonymous]
+    [Authorize]//(Policy = "LandlordAndAgent")]
+    //[AllowAnonymous]
     public class LandLordProfilesController : BaseController
     {
         private readonly IMapper _mapper;

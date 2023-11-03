@@ -56,7 +56,6 @@ namespace Oostel.Application.Modules.UserAuthentication.Features.Commands
                 }
 
                 user.LastSeenDate = DateTime.UtcNow;
-                //TODO: Fix Update User Issue
                 await _userManager.UpdateAsync(user);
 
                 return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: await _tokenService.CreateUserObject(user), ResponseMessages.LoginMessage);

@@ -9,6 +9,7 @@ using Oostel.API.SIgnalR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Oostel.API.Middlewares;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,10 @@ builder.Services.AddControllers(
  {
      var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
      opt.Filters.Add(new AuthorizeFilter(policy));
+     opt.CacheProfiles.Add("120SecondsDuration", new CacheProfile
+     {
+         Duration = 120
+     });
  });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -36,6 +41,7 @@ builder.Services.AddCors();
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
+app.UseSerilogRequestLogging();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
@@ -49,27 +55,18 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseCors("CorsPolicy");
+app.UseRouting();
+
+app.UseResponseCaching();
+
+app.UseHttpCacheHeaders();
 
 app.UseAuthentication();
 app.UseAuthorization();
-//app.UseRouting();
-
-/*app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});*/
-
-app.UseSerilogRequestLogging();
-
 
 
 app.UseSwagger();
 app.MapControllers();
-/*app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/swagger/v2/swagger.json", "v2");
-    options.RoutePrefix = string.Empty;
-});*/
 
 app.MapHub<PresenceHub>("hubs/presence");  //We're giving this a root where it's gonna be access from
 app.MapHub<MessageHub>("hubs/message");

@@ -8,6 +8,7 @@ using Oostel.Infrastructure.EmailService;
 using Oostel.Infrastructure.Repositories;
 using Oostel.Application.Modules.UserAuthentication.Features.Commands;
 using System.Reflection;
+using Marvin.Cache.Headers;
 
 namespace Oostel.API.Extensions
 {
@@ -36,6 +37,18 @@ namespace Oostel.API.Extensions
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .WithExposedHeaders("X-Pagination"));
+            });
+
+            services.AddResponseCaching();
+
+            services.AddHttpCacheHeaders((expirationOpt) =>
+            {
+                expirationOpt.MaxAge = 65;
+                expirationOpt.CacheLocation = CacheLocation.Private;
+            },
+            (validationOpt) =>
+            {
+                validationOpt.MustRevalidate = true;
             });
 
             services.AddIdentityServices(_config);

@@ -1,4 +1,5 @@
 ﻿using MapsterMapper;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Oostel.API.APIRoutes;
@@ -44,6 +45,9 @@ namespace Oostel.API.Controllers
 
         [HttpGet]
         [Route(HostelRoute.GetAllHostels)]
+        [ResponseCache(Duration = 60)]
+        [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 60)]
+        [HttpCacheValidation(MustRevalidate = false)]
         public async Task<ActionResult<APIResponse>> GetAllHostels([FromQuery] HostelTypesParam hostelTypesParam)
         {
             return HandlePagedResult(await Mediator.Send(new GetAllHostelsRequest{hostelTypesParam = hostelTypesParam}));

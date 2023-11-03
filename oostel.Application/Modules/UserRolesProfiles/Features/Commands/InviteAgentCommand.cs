@@ -7,6 +7,7 @@ using Oostel.Application.Modules.UserRolesProfiles.DTOs;
 using Oostel.Common.Constants;
 using Oostel.Common.Types;
 using Oostel.Domain.UserAuthentication.Entities;
+using Oostel.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,26 +28,24 @@ namespace Oostel.Application.Modules.UserRolesProfiles.Features.Commands
             private readonly UserManager<ApplicationUser> _userManager;
             private readonly ILogger<InviteAgentCommandHandler> _logger;
             private readonly IUserRolesProfilesService _userRolesProfilesService;
+            private readonly UnitOfWork _unitOfWork;
 
             public InviteAgentCommandHandler(UserManager<ApplicationUser> userManager, ILogger<InviteAgentCommandHandler> logger,
-                IUserRolesProfilesService userRolesProfilesService)
+                IUserRolesProfilesService userRolesProfilesService, UnitOfWork unitOfWork)
             {
                 _userManager= userManager;
                 _logger= logger;
-                _userRolesProfilesService= userRolesProfilesService;    
+                _userRolesProfilesService= userRolesProfilesService;
+                _unitOfWork = unitOfWork;
             }
 
             public async Task<APIResponse> Handle(InviteAgentCommand request, CancellationToken cancellationToken)
             {
-                var landlord = await _userRolesProfilesService.GetLandlordsById(request.LandLordId);
-                if (landlord is null)
-                    return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.NotFound);
-                
-                var getLandlordReferralCodeFromDb = await _userRolesProfilesService.GetLandlordReferralCode(request.LandLordId);
-                if(getLandlordReferralCodeFromDb is null)
+                var referralCode = await _unitOfWork.ReferralAgentInfoRepository.FindandInclude(x => x.UserId == request.LandLordId, true);
+                if (referralCode is null)
                     return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.NotFound);
 
-                 await _userRolesProfilesService.SendAgentInvitationCode(request.AgentEmail, getLandlordReferralCodeFromDb, landlord.ToList()[0].FullName, request.ShortNote);
+                 await _userRolesProfilesService.SendAgentInvitationCode(request.AgentEmail, referralCode.ToList()[0].ReferralCode, referralCode.ToList()[0].User.FirstName, request.ShortNote);
 
                 return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: null, ResponseMessages.InvitationMessage);
             }
