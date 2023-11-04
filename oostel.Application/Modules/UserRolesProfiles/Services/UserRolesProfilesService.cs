@@ -104,6 +104,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         }
 
+
         public async Task<bool> AvailableForRoommate(OpenToRoommateDTO openToRoommateDTO)
         {
             var student = await _unitOfWork.StudentRepository.FindandInclude(x => x.Id == openToRoommateDTO.StudentId,true);
@@ -151,7 +152,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             var studentMapping = _mapper.Map<List<GetStudentProfileDTO>>(student);
             return studentMapping;
         }
-        public async Task<bool> UpdateStudentProfile(StudentProfileDTO userProfileDTO)
+        public async Task<bool> UpdateStudentProfile(UpdateStudentDTO userProfileDTO)
         {
             var studentProfile =  _unitOfWork.StudentRepository.FindandInclude(x => x.Id == userProfileDTO.UserId && x.User.RolesCSV.Contains(RoleType.Student.GetEnumDescription()), true).Result.FirstOrDefault();
             if (studentProfile is null) return false;
@@ -166,7 +167,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             studentProfile.User.PhoneNumber = userProfileDTO.PhoneNumber ?? studentProfile.User.PhoneNumber;
             studentProfile.User.FirstName = userProfileDTO.FirstName ?? studentProfile.User.FirstName;
             studentProfile.User.LastName = userProfileDTO.LastName ?? studentProfile.User.LastName;
-            studentProfile.User.Email = userProfileDTO.Email ?? studentProfile.User.Email;
+           // studentProfile.User.Email = userProfileDTO.Email ?? studentProfile.User.Email;
             studentProfile.LastModifiedDate = DateTime.UtcNow;
 
               await _unitOfWork.StudentRepository.UpdateAsync(studentProfile);
@@ -264,7 +265,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
             return true;
         }
-        public async Task<bool> UpdateLandLordProfile(LandlordProfileDTO landlordProfileDTO)
+        public async Task<bool> UpdateLandLordProfile(UpdateLandlordDTO landlordProfileDTO)
         {
             var landlordProfile = _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == landlordProfileDTO.UserId && x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()), true).Result.SingleOrDefault();
             if (landlordProfile is null) return false;
@@ -277,7 +278,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             landlordProfile.User.PhoneNumber = landlordProfileDTO.PhoneNumber ?? landlordProfile.User.PhoneNumber;
             landlordProfile.User.FirstName = landlordProfileDTO.FirstName ?? landlordProfile.User.FirstName;
             landlordProfile.User.LastName = landlordProfileDTO.LastName ?? landlordProfile.User.LastName;
-            landlordProfile.User.Email = landlordProfileDTO.Email ?? landlordProfile.User.Email;
+           // landlordProfile.User.Email = landlordProfileDTO.Email ?? landlordProfile.User.Email;
             landlordProfile.LastModifiedDate = DateTime.UtcNow;
 
             await _unitOfWork.LandlordRepository.UpdateAsync(landlordProfile);
@@ -300,6 +301,15 @@ namespace Oostel.Application.Modules.UserProfiles.Services
                 return true;
         }
 
+        public async Task<bool> AcceptLandlordInvitation(string agentId, string landlordId)
+        {
+            var landlord = await _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == landlordId, true);
+            if (landlord is null)
+                return false;
+            return true;
+            //var agent = await _unitOfWork.ReferralAgentInfoRepository.
+        }
+ 
 
         public async Task<bool> ProfileViewsCount(string userId)
         {

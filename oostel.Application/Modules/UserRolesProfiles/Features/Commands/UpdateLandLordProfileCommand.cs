@@ -1,6 +1,7 @@
 ﻿using MapsterMapper;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserProfiles.Services;
+using Oostel.Application.Modules.UserRolesProfiles.DTOs;
 using Oostel.Common.Constants;
 using Oostel.Common.Types;
 using System;
@@ -17,7 +18,6 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
         public string UserId { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public string? Email { get; set; }
         public string? StateOfOrigin { get; set; }
         public string? Country { get; set; }
         public string? PhoneNumber { get; set; }
@@ -36,11 +36,11 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
             }
             public async Task<APIResponse> Handle(UpdateLandLordProfileCommand request, CancellationToken cancellationToken)
             {
-                var mapData = _mapper.Map<LandlordProfileDTO>(request);
+                var mapData = _mapper.Map<UpdateLandlordDTO>(request);
                 var landlordProfile = await _userProfilesService.UpdateLandLordProfile(mapData);
                 if (!landlordProfile) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailToUpdateError);
 
-                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: null, ResponseMessages.SuccessfulCreation);
+                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: null, ResponseMessages.UpdateMessage);
             }
         }
     }

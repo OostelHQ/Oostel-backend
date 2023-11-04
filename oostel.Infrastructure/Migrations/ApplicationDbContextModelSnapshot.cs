@@ -23,19 +23,19 @@ namespace Oostel.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("LandlordReferralAgentInfo", b =>
+            modelBuilder.Entity("AgentLandlord", b =>
                 {
+                    b.Property<string>("AgentsId")
+                        .HasColumnType("text");
+
                     b.Property<string>("LandlordsId")
                         .HasColumnType("text");
 
-                    b.Property<string>("ReferralAgentInfosId")
-                        .HasColumnType("text");
+                    b.HasKey("AgentsId", "LandlordsId");
 
-                    b.HasKey("LandlordsId", "ReferralAgentInfosId");
+                    b.HasIndex("LandlordsId");
 
-                    b.HasIndex("ReferralAgentInfosId");
-
-                    b.ToTable("LandlordReferralAgentInfo");
+                    b.ToTable("AgentLandlord");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -656,6 +656,46 @@ namespace Oostel.Infrastructure.Migrations
                     b.ToTable("Students");
                 });
 
+            modelBuilder.Entity("Oostel.Domain.UserRolesProfiles.Entities.Agent", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Denomination")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Religion")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("StateOfOrigin")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Agents");
+                });
+
             modelBuilder.Entity("Oostel.Domain.UserRolesProfiles.Entities.AgentReferred", b =>
                 {
                     b.Property<string>("Id")
@@ -858,17 +898,17 @@ namespace Oostel.Infrastructure.Migrations
                     b.ToTable("Wallets");
                 });
 
-            modelBuilder.Entity("LandlordReferralAgentInfo", b =>
+            modelBuilder.Entity("AgentLandlord", b =>
                 {
-                    b.HasOne("Oostel.Domain.UserRoleProfiles.Entities.Landlord", null)
+                    b.HasOne("Oostel.Domain.UserRolesProfiles.Entities.Agent", null)
                         .WithMany()
-                        .HasForeignKey("LandlordsId")
+                        .HasForeignKey("AgentsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Oostel.Domain.UserRolesProfiles.Entities.ReferralAgentInfo", null)
+                    b.HasOne("Oostel.Domain.UserRoleProfiles.Entities.Landlord", null)
                         .WithMany()
-                        .HasForeignKey("ReferralAgentInfosId")
+                        .HasForeignKey("LandlordsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1041,6 +1081,17 @@ namespace Oostel.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Oostel.Domain.UserRolesProfiles.Entities.Agent", b =>
+                {
+                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "User")
+                        .WithOne("Agent")
+                        .HasForeignKey("Oostel.Domain.UserRolesProfiles.Entities.Agent", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Oostel.Domain.UserRolesProfiles.Entities.AgentReferred", b =>
                 {
                     b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "User")
@@ -1107,6 +1158,9 @@ namespace Oostel.Infrastructure.Migrations
 
             modelBuilder.Entity("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", b =>
                 {
+                    b.Navigation("Agent")
+                        .IsRequired();
+
                     b.Navigation("AgentReferreds");
 
                     b.Navigation("Landlord")

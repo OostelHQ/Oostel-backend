@@ -1,6 +1,7 @@
 ﻿using MapsterMapper;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserProfiles.Services;
+using Oostel.Application.Modules.UserRolesProfiles.DTOs;
 using Oostel.Common.Constants;
 using Oostel.Common.Types;
 using System.Net;
@@ -12,7 +13,7 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
         public string UserId { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public string? Email { get; set; }
+      //  public string? Email { get; set; }
         public string? PhoneNumber { get; set; }
         public string? StateOfOrigin { get; set; }
         public string? Gender { get; set; }
@@ -33,11 +34,11 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
             }
             public async Task<APIResponse> Handle(UpdateStudentProfileCommand request, CancellationToken cancellationToken)
             {
-                var mapData = _mapper.Map<StudentProfileDTO>(request);
+                var mapData = _mapper.Map<UpdateStudentDTO>(request);
                 var studentProfile = await _userProfilesService.UpdateStudentProfile(mapData);
                 if (!studentProfile) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailToUpdateError);
 
-                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: null, ResponseMessages.SuccessfulCreation);
+                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: null, ResponseMessages.UpdateMessage);
             }
         }
     }

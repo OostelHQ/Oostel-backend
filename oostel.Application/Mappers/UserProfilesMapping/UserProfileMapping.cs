@@ -11,6 +11,7 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
         public void Register(TypeAdapterConfig config)
         {
             config.NewConfig<Student, StudentProfileDTO>();
+            config.NewConfig<Student, UpdateStudentDTO>();
             config.NewConfig<Student, GetStudentProfileDTO>()
                 .Map(dest => dest.UserId, src => src.Id)
                 .Map(dest => dest.Email, src => src.User.Email)
@@ -23,6 +24,7 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
 
 
             config.NewConfig<Landlord, LandlordProfileDTO>();
+            config.NewConfig<Landlord, UpdateLandlordDTO>();
             config.NewConfig<Landlord, GetLandlordProfileDTO>()
                 .Map(dest => dest.UserId, src => src.Id)
                 .Map(dest => dest.Email, src => src.User.Email)

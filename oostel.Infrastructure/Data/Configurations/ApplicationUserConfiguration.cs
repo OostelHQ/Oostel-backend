@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserRoleProfiles.Entities;
+using Oostel.Domain.UserRolesProfiles.Entities;
 using Oostel.Domain.UserWallet;
 
 namespace Oostel.Infrastructure.Data.Configurations
@@ -28,6 +29,16 @@ namespace Oostel.Infrastructure.Data.Configurations
                 .HasOne(u => u.Landlord)
                 .WithOne(a => a.User)
                 .HasForeignKey<Landlord>(k => k.Id);
+
+            builder.Entity<ApplicationUser>()
+                .HasOne(a => a.Agent)
+                .WithOne(a => a.User)
+                .HasForeignKey<Agent>(p => p.Id);
+
+           /* builder.Entity<ApplicationUser>()
+                .HasOne(a => a.ReferralAgentInfo)
+                .WithOne(a => a.User)
+                .HasForeignKey<ReferralAgentInfo>(p => p.Id);*/
 
             builder.Entity<ApplicationUser>()
                 .HasOne(u => u.Student)

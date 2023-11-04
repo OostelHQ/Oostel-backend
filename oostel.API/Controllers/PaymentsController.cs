@@ -1,4 +1,5 @@
 ﻿using MapsterMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Oostel.API.APIRoutes;
 using Oostel.Application.Modules.UserWallet.Features.Queries;
@@ -9,7 +10,7 @@ namespace Oostel.API.Controllers
 {
     public class PaymentsController : BaseController
     {
-
+        [Authorize]
         [HttpGet]
         [Route(PaymentRoute.GetNGNBanks)]
         public async Task<ActionResult<APIResponse>> GetNGNBanks()

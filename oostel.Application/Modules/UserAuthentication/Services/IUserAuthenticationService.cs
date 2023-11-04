@@ -15,6 +15,7 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
         Task<OtpVerificationResponse> VerifyResetPasswordOTPEmail(ApplicationUser user, string Otp);
         Task<bool> SendVerifyResetPasswordOTPToUserEmail(ApplicationUser user, CancellationToken cancellationToken);
         Task<bool> CreateReferralAgent(string userId, string referredCode, CancellationToken cancellationToken);
+        Task<string> ValidateReferralCode(string referralCode);
 
     }
 }

@@ -10,9 +10,11 @@ using Oostel.API.ViewModels.WalletVM;
 using Oostel.Application.Modules.UserWallet.Features.Queries;
 using Oostel.Application.Modules.UserProfiles.Features.Queries;
 using Oostel.Domain.UserRoleProfiles.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Oostel.API.Controllers
 {
+    [Authorize]
     public class WalletsController : BaseController
     {
         private readonly IMapper _mapper;

@@ -31,8 +31,10 @@ namespace Oostel.Common.Constants
         public const string InvalidOTPRequest = "Invalid OTP";
         public const string FailToUpdateError = "Data failed to update";
         public const string DeleteMessage = "Object deleted";
+        public const string UpdateMessage = "Data updated successfull!y";
         public const string FailedToDeleteMessage = "Problem deleting an object";
         public const string InvitationMessage = "Invitation sent successfully!";
+        public const string InValidReferralCode = "Invalid Referral Code";
       
 
     }

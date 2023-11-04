@@ -1,4 +1,5 @@
 ﻿using MapsterMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Oostel.API.APIRoutes;
 using Oostel.API.Extensions;
@@ -11,6 +12,7 @@ using Oostel.Infrastructure.Repositories;
 
 namespace Oostel.API.Controllers
 {
+    [Authorize]
     public class MessagesController : BaseController
     {
         private readonly IMapper _mapper;

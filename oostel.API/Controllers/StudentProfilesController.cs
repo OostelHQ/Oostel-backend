@@ -1,4 +1,5 @@
 ﻿using MapsterMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Oostel.API.APIRoutes;
 using Oostel.API.ViewModels.UserProfilesVM;
@@ -10,6 +11,7 @@ using Oostel.Common.Types.RequestFeatures;
 
 namespace Oostel.API.Controllers
 {
+    [Authorize]
     public class StudentProfilesController : BaseController
     {
 
@@ -34,6 +36,7 @@ namespace Oostel.API.Controllers
 
         [HttpGet]
         [Route(UserProfileRoute.GetAllStudents)]
+        [ResponseCache(Duration = 60)]
         public async Task<ActionResult<APIResponse>> GetAllStudents([FromQuery]StudentTypeParams studentTypeParams)
         {
             return HandlePagedResult(await Mediator.Send(new GetAllStudentsRequest { StudentTypeParams = studentTypeParams}));
@@ -41,6 +44,7 @@ namespace Oostel.API.Controllers
 
         [HttpGet]
         [Route(UserProfileRoute.GetStudentById)]
+        [ResponseCache(Duration = 60)]
         public async Task<ActionResult<APIResponse>> GetUserProfileById(string studentId)
         {
             return HandleResult(await Mediator.Send(new GetStudentByIdRequest { StudentId = studentId }));

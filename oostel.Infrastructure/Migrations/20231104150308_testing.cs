@@ -5,21 +5,13 @@
 namespace Oostel.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddNavigation : Migration
+    public partial class testing : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_ReferralAgentInfos_Landlords_LandlordId",
-                table: "ReferralAgentInfos");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ReferralAgentInfos_LandlordId",
-                table: "ReferralAgentInfos");
-
-            migrationBuilder.DropColumn(
-                name: "LandlordId",
+                name: "FK_ReferralAgentInfos_AspNetUsers_Id",
                 table: "ReferralAgentInfos");
 
             migrationBuilder.CreateIndex(
@@ -29,10 +21,10 @@ namespace Oostel.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ReferralAgentInfos_Landlords_UserId",
+                name: "FK_ReferralAgentInfos_AspNetUsers_UserId",
                 table: "ReferralAgentInfos",
                 column: "UserId",
-                principalTable: "Landlords",
+                principalTable: "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -41,30 +33,18 @@ namespace Oostel.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_ReferralAgentInfos_Landlords_UserId",
+                name: "FK_ReferralAgentInfos_AspNetUsers_UserId",
                 table: "ReferralAgentInfos");
 
             migrationBuilder.DropIndex(
                 name: "IX_ReferralAgentInfos_UserId",
                 table: "ReferralAgentInfos");
 
-            migrationBuilder.AddColumn<string>(
-                name: "LandlordId",
-                table: "ReferralAgentInfos",
-                type: "text",
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ReferralAgentInfos_LandlordId",
-                table: "ReferralAgentInfos",
-                column: "LandlordId");
-
             migrationBuilder.AddForeignKey(
-                name: "FK_ReferralAgentInfos_Landlords_LandlordId",
+                name: "FK_ReferralAgentInfos_AspNetUsers_Id",
                 table: "ReferralAgentInfos",
-                column: "LandlordId",
-                principalTable: "Landlords",
+                column: "Id",
+                principalTable: "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }

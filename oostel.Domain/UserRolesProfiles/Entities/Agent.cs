@@ -1,15 +1,15 @@
 ﻿using Oostel.Common.Types;
 using Oostel.Domain.UserAuthentication.Entities;
-using Oostel.Domain.UserRolesProfiles.Entities;
+using Oostel.Domain.UserRoleProfiles.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Oostel.Domain.UserRoleProfiles.Entities
+namespace Oostel.Domain.UserRolesProfiles.Entities
 {
-    public class Landlord : BaseEntity<string>
+    public class Agent : BaseEntity<string>
     {
         public string StateOfOrigin { get; set; }
         public string Religion { get; set; }
@@ -18,17 +18,16 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         public DateTime? DateOfBirth { get; set; }
         public int Age { get; set; }
         public string? Denomination { get; set; }
-        public virtual ApplicationUser User { get; set; }
-        public ICollection<Domain.Hostel.Entities.Hostel> Hostels { get; set; }
-        public ICollection<Agent> Agents { get; set; }
+        public ICollection<Landlord> Landlords { get; set; }
+        public ApplicationUser User { get; set; }
 
-        public Landlord()
+        public Agent()
         {
             LastModifiedDate = DateTime.UtcNow;
             CreatedDate = DateTime.UtcNow;
         }
 
-        public Landlord(string userId) : base(userId)
+        public Agent(string userId) : base(userId)
         {
             LastModifiedDate = DateTime.UtcNow;
             CreatedDate = DateTime.UtcNow;

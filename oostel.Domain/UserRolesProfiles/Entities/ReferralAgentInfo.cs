@@ -13,9 +13,6 @@ namespace Oostel.Domain.UserRolesProfiles.Entities
     {
         public string UserId { get; set; }
         public string ReferralCode { get; set; }
-
-        public ICollection<Landlord> Landlords { get; set; }
-
         public ApplicationUser User { get; set; }
 
         private ReferralAgentInfo(string userId, string referralCode)

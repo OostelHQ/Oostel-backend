@@ -39,6 +39,10 @@ namespace Oostel.Application.Modules.UserAuthentication.Features.Commands
             {
                 var failedResponse = APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);
 
+                var checkAndValidateTheReferralCode = await _userAuthenticationService.ValidateReferralCode(request.ReferralCode);
+                if (checkAndValidateTheReferralCode is null)
+                    return APIResponse.GetSuccessMessage(HttpStatusCode.BadRequest, null, ResponseMessages.InValidReferralCode);
+
                 var newUser = new ApplicationUser()
                 {
                     FirstName = request.FirstName,

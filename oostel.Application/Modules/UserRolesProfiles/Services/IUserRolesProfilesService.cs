@@ -17,13 +17,13 @@ namespace Oostel.Application.Modules.UserProfiles.Services
     {
         Task<ResultResponse<PagedList<GetStudentProfileDTO>>> GetAllStudents(StudentTypeParams studentTypeParams);
         Task<List<GetStudentProfileDTO>> GetStudentById(string studentId);
-        Task<bool> UpdateStudentProfile(StudentProfileDTO userProfileDTO);
+        Task<bool> UpdateStudentProfile(UpdateStudentDTO userProfileDTO);
         Task<List<GetLandlordProfileDTO>> GetLandlordsById(string studentId);
         Task<bool> AvailableForRoommate(OpenToRoommateDTO openToRoommateDTO);
         Task<List<GetLandlordProfileDTO>> GetAllLandlords();
         Task<bool> CreateLandLordProfile(CreateLandlordDTO landlordProfileDTO);
         Task<bool> CreateStudentProfile(CreateStudentDTO userProfileDTO);
-        Task<bool> UpdateLandLordProfile(LandlordProfileDTO updateLandlordProfileDTO);
+        Task<bool> UpdateLandLordProfile(UpdateLandlordDTO updateLandlordProfileDTO);
         Task<bool> ProfileViewsCount(string userId);
         Task<bool> UploadDisplayPictureAsync(IFormFile file, string userId);
         Task<bool> AddStudentLike(string sourceId, string studentLikeId);

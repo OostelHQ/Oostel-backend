@@ -13,8 +13,8 @@ using Oostel.Infrastructure.Data;
 namespace Oostel.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230922233458_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20231104150308_testing")]
+    partial class testing
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,21 @@ namespace Oostel.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("AgentLandlord", b =>
+                {
+                    b.Property<string>("AgentsId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LandlordsId")
+                        .HasColumnType("text");
+
+                    b.HasKey("AgentsId", "LandlordsId");
+
+                    b.HasIndex("LandlordsId");
+
+                    b.ToTable("AgentLandlord");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
@@ -129,6 +144,41 @@ namespace Oostel.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Oostel.Domain.Hostel.Entities.Comment", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("HostelId")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UserComment")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("rating")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("HostelId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("Oostel.Domain.Hostel.Entities.Hostel", b =>
                 {
                     b.Property<string>("Id")
@@ -200,6 +250,35 @@ namespace Oostel.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Hostels");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.Hostel.Entities.HostelLikes", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("LikedHostelId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SourceUserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LikedHostelId");
+
+                    b.HasIndex("SourceUserId");
+
+                    b.ToTable("HostelLikes");
                 });
 
             modelBuilder.Entity("Oostel.Domain.Hostel.Entities.Room", b =>
@@ -332,6 +411,12 @@ namespace Oostel.Infrastructure.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("ProfilePhotoURL")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ProfileViewCount")
+                        .HasColumnType("integer");
+
                     b.Property<string>("RolesCSV")
                         .IsRequired()
                         .HasColumnType("text");
@@ -391,6 +476,94 @@ namespace Oostel.Infrastructure.Migrations
                     b.ToTable("UserOTPs");
                 });
 
+            modelBuilder.Entity("Oostel.Domain.UserMessage.Connection", b =>
+                {
+                    b.Property<string>("ConnectionId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("GroupName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("ConnectionId");
+
+                    b.HasIndex("GroupName");
+
+                    b.ToTable("Connections");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserMessage.Group", b =>
+                {
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Name");
+
+                    b.ToTable("Groups");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserMessage.Message", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DateRead")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("MessengeSent")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("RecipientDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("RecipientEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("RecipientId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("RecipientId1")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("SenderDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("SenderEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SenderId1")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecipientId1");
+
+                    b.HasIndex("SenderId1");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Landlord", b =>
                 {
                     b.Property<string>("Id")
@@ -418,12 +591,6 @@ namespace Oostel.Infrastructure.Migrations
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProfilePhotoURL")
-                        .HasColumnType("text");
-
                     b.Property<string>("Religion")
                         .IsRequired()
                         .HasColumnType("text");
@@ -444,6 +611,13 @@ namespace Oostel.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Age")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Area")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -468,12 +642,6 @@ namespace Oostel.Infrastructure.Migrations
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ProfilePhotoURL")
-                        .HasColumnType("text");
-
                     b.Property<string>("Religion")
                         .IsRequired()
                         .HasColumnType("text");
@@ -489,6 +657,263 @@ namespace Oostel.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Students");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserRolesProfiles.Entities.Agent", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<int>("Age")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Denomination")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsVerified")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Religion")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("StateOfOrigin")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Agents");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserRolesProfiles.Entities.AgentReferred", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ReferrerCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ReferrerId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AgentReferreds");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserRolesProfiles.Entities.OpenToRoommate", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("HostelAddress")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("HostelName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("RoomBudgetAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("StudentId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId")
+                        .IsUnique();
+
+                    b.ToTable("OpenToRoommates");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserRolesProfiles.Entities.ReferralAgentInfo", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ReferralCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("ReferralAgentInfos");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserWallet.PayInHistory", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ProviderName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ReferenceNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TransactionId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PayInHistories");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserWallet.Transaction", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FromLastname")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Transactions");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserWallet.Wallet", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("AvailableBalance")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("LastTransactionDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Wallets");
+                });
+
+            modelBuilder.Entity("AgentLandlord", b =>
+                {
+                    b.HasOne("Oostel.Domain.UserRolesProfiles.Entities.Agent", null)
+                        .WithMany()
+                        .HasForeignKey("AgentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Oostel.Domain.UserRoleProfiles.Entities.Landlord", null)
+                        .WithMany()
+                        .HasForeignKey("LandlordsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -542,6 +967,23 @@ namespace Oostel.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Oostel.Domain.Hostel.Entities.Comment", b =>
+                {
+                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Oostel.Domain.Hostel.Entities.Hostel", "Hostel")
+                        .WithMany("Comments")
+                        .HasForeignKey("HostelId");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Hostel");
+                });
+
             modelBuilder.Entity("Oostel.Domain.Hostel.Entities.Hostel", b =>
                 {
                     b.HasOne("Oostel.Domain.UserRoleProfiles.Entities.Landlord", "Landlord")
@@ -551,6 +993,25 @@ namespace Oostel.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Landlord");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.Hostel.Entities.HostelLikes", b =>
+                {
+                    b.HasOne("Oostel.Domain.Hostel.Entities.Hostel", "LikedHostel")
+                        .WithMany("HostelLikes")
+                        .HasForeignKey("LikedHostelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "SourceUser")
+                        .WithMany()
+                        .HasForeignKey("SourceUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LikedHostel");
+
+                    b.Navigation("SourceUser");
                 });
 
             modelBuilder.Entity("Oostel.Domain.Hostel.Entities.Room", b =>
@@ -575,6 +1036,32 @@ namespace Oostel.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Oostel.Domain.UserMessage.Connection", b =>
+                {
+                    b.HasOne("Oostel.Domain.UserMessage.Group", null)
+                        .WithMany("Connections")
+                        .HasForeignKey("GroupName");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserMessage.Message", b =>
+                {
+                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "Recipient")
+                        .WithMany()
+                        .HasForeignKey("RecipientId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recipient");
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Landlord", b =>
                 {
                     b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "User")
@@ -597,25 +1084,119 @@ namespace Oostel.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Oostel.Domain.UserRolesProfiles.Entities.Agent", b =>
+                {
+                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "User")
+                        .WithOne("Agent")
+                        .HasForeignKey("Oostel.Domain.UserRolesProfiles.Entities.Agent", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserRolesProfiles.Entities.AgentReferred", b =>
+                {
+                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "User")
+                        .WithMany("AgentReferreds")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserRolesProfiles.Entities.OpenToRoommate", b =>
+                {
+                    b.HasOne("Oostel.Domain.UserRoleProfiles.Entities.Student", "Student")
+                        .WithOne("OpenToRoomate")
+                        .HasForeignKey("Oostel.Domain.UserRolesProfiles.Entities.OpenToRoommate", "StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserRolesProfiles.Entities.ReferralAgentInfo", b =>
+                {
+                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "User")
+                        .WithOne("ReferralAgentInfo")
+                        .HasForeignKey("Oostel.Domain.UserRolesProfiles.Entities.ReferralAgentInfo", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserWallet.Transaction", b =>
+                {
+                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "User")
+                        .WithMany("Transactions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserWallet.Wallet", b =>
+                {
+                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "User")
+                        .WithOne("Wallets")
+                        .HasForeignKey("Oostel.Domain.UserWallet.Wallet", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Oostel.Domain.Hostel.Entities.Hostel", b =>
                 {
+                    b.Navigation("Comments");
+
+                    b.Navigation("HostelLikes");
+
                     b.Navigation("Rooms");
                 });
 
             modelBuilder.Entity("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", b =>
                 {
+                    b.Navigation("Agent")
+                        .IsRequired();
+
+                    b.Navigation("AgentReferreds");
+
                     b.Navigation("Landlord")
+                        .IsRequired();
+
+                    b.Navigation("ReferralAgentInfo")
                         .IsRequired();
 
                     b.Navigation("Student")
                         .IsRequired();
 
+                    b.Navigation("Transactions");
+
                     b.Navigation("UserOTPs");
+
+                    b.Navigation("Wallets")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserMessage.Group", b =>
+                {
+                    b.Navigation("Connections");
                 });
 
             modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Landlord", b =>
                 {
                     b.Navigation("Hostels");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Student", b =>
+                {
+                    b.Navigation("OpenToRoomate")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

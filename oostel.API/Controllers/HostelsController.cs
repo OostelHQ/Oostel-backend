@@ -16,7 +16,7 @@ using Oostel.Infrastructure.Repositories;
 
 namespace Oostel.API.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     public class HostelsController : BaseController
     {
         private readonly IMapper _mapper;
@@ -29,6 +29,7 @@ namespace Oostel.API.Controllers
 
         [HttpPost]
         [Route(HostelRoute.CreateHostel)]
+        [Authorize(Policy = "LandlordAndAgent")]
         public async Task<ActionResult<APIResponse>> CreateHostel([FromForm]HostelRequest request)
         {
             var hostelRequest = _mapper.Map<CreateHostelCommand>(request);
@@ -37,6 +38,7 @@ namespace Oostel.API.Controllers
 
         [HttpPut]
         [Route(HostelRoute.UpdateHostel)]
+        [Authorize(Policy = "LandlordAndAgent")]
         public async Task<ActionResult<APIResponse>> UpdateHostel([FromForm] HostelRequest request)
         {
             var hostelRequest = _mapper.Map<UpdateHostelCommand>(request);
@@ -46,8 +48,7 @@ namespace Oostel.API.Controllers
         [HttpGet]
         [Route(HostelRoute.GetAllHostels)]
         [ResponseCache(Duration = 60)]
-        [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 60)]
-        [HttpCacheValidation(MustRevalidate = false)]
+        [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> GetAllHostels([FromQuery] HostelTypesParam hostelTypesParam)
         {
             return HandlePagedResult(await Mediator.Send(new GetAllHostelsRequest{hostelTypesParam = hostelTypesParam}));
@@ -55,6 +56,8 @@ namespace Oostel.API.Controllers
 
         [HttpGet]
         [Route(HostelRoute.GetHostelById)]
+        [ResponseCache(Duration = 60)]
+        [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> GetHostelById(string hostelId)
         {
             return HandleResult(await Mediator.Send(new GetHostelByIdRequest { HostelId = hostelId}));
@@ -62,6 +65,7 @@ namespace Oostel.API.Controllers
 
         [HttpPost]
         [Route(HostelRoute.CreateRoomForHostel)]
+        [Authorize(Policy = "LandlordAndAgent")]
         public async Task<ActionResult<APIResponse>> CreateRoomForHostel([FromForm] RoomRequest request)
         {
             var roomRequest = (new CreateRoomForHostelCommand
@@ -81,6 +85,7 @@ namespace Oostel.API.Controllers
 
         [HttpPut]
         [Route(HostelRoute.UpdateRoom)]
+        [Authorize(Policy = "LandlordAndAgent")]
         public async Task<ActionResult<APIResponse>> UpdateRoom([FromForm] RoomRequest request)
         {
             var roomRequest = _mapper.Map<UpdateRoomCommand>(request);
@@ -88,7 +93,9 @@ namespace Oostel.API.Controllers
         }
 
         [HttpGet]
+        [ResponseCache(Duration = 60)]
         [Route(HostelRoute.GetARoomForHostel)]
+        [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> GetARoomForHostel(string hostelId, string roomId)
         {
             return HandleResult(await Mediator.Send(new GetARoomForHostelRequest { HostelId = hostelId, RoomId = roomId}));
@@ -96,12 +103,17 @@ namespace Oostel.API.Controllers
 
         [HttpGet]
         [Route(HostelRoute.GetAllRoomsForHostel)]
+        [ResponseCache(Duration = 60)]
+        [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> GetAllRoomsForHostel(string hostelId)
         {
             return HandleResult(await Mediator.Send(new GetAllRoomsForHostelRequest { HostelId = hostelId }));
         }
 
         [HttpGet]
+        [Route(HostelRoute.GetAvailableRoomsPerHostel)]
+        [ResponseCache(Duration = 60)]
+        [AllowAnonymous]
         public async Task<ActionResult<int>> GetAvailableRoomsPerHostel(string hostelId)
         {
             int availableRoomsCount = await _unitOfWork.RoomRepository.CountAsync(x => x.IsRented && x.HostelId == hostelId);

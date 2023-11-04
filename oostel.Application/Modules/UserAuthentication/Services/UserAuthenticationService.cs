@@ -117,6 +117,14 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
             return true;
         }
 
+        public async Task<string> ValidateReferralCode(string referralCode)
+        {
+            var checkCodeExist = await _unitOfWork.ReferralAgentInfoRepository.Find(x => x.ReferralCode == referralCode);
+            if (checkCodeExist is null) return null;
+
+            return checkCodeExist.ReferralCode;
+        }
+
         public async Task<OtpVerificationResponse> VerifyResetPasswordOTPEmail(ApplicationUser user, string Otp)
         {
             //get the otp

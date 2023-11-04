@@ -32,7 +32,7 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
                     return APIResponse.GetFailureMessage(HttpStatusCode.NotFound, null, ResponseMessages.NotFound);
                 }
 
-                return APIResponse.GetSuccessMessage(HttpStatusCode.OK, data: ResponseMessages.SuccessfulCreation, ResponseMessages.SuccessfulCreation);
+                return APIResponse.GetSuccessMessage(HttpStatusCode.OK, data: null, ResponseMessages.UpdateMessage);
             }
         }
     }
