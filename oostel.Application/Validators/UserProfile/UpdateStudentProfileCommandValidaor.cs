@@ -2,9 +2,9 @@
 
 namespace Oostel.Application.Validators.UserProfile
 {
-    public class UpdateUserProfileCommandValidaor : AbstractValidator<UpdateStudentProfileCommand>
+    public class UpdateStudentProfileCommandValidaor : AbstractValidator<UpdateStudentProfileCommand>
     {
-        public UpdateUserProfileCommandValidaor()
+        public UpdateStudentProfileCommandValidaor()
         {
             RuleFor(u => u.UserId).NotEmpty().WithMessage("UserId is required");
             RuleFor(w => w.SchoolLevel).MaximumLength(100);
