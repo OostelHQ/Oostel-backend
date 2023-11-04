@@ -61,5 +61,41 @@ namespace Oostel.API.Controllers
             var invitationRequest = _mapper.Map<InviteAgentCommand>(request);
             return HandleResult(await Mediator.Send(invitationRequest));
         }
+
+
+        [HttpPost]
+        [Route(UserProfileRoute.CreateAgentProfile)]
+        [Authorize(Roles = "Agent")]
+        public async Task<ActionResult<APIResponse>> CreateAgentProfile(CreateAgentRequest request)
+        {
+            var agentProfileRequest = _mapper.Map<CreateAgentProfileCommand>(request);
+            return HandleResult(await Mediator.Send(agentProfileRequest));
+        }
+
+        [HttpPut]
+        [Route(UserProfileRoute.UpdateAgentProfile)]
+        [Authorize(Roles = "Agent")]
+        public async Task<ActionResult<APIResponse>> UpdateAgentProfile(AgentProfileRequest request)
+        {
+            var agentProfileRequest = _mapper.Map<UpdateAgentProfileCommand>(request);
+            return HandleResult(await Mediator.Send(agentProfileRequest));
+        }
+
+        [HttpGet]
+        [Route(UserProfileRoute.GetAllAgents)]
+        [ResponseCache(Duration = 60)]
+        public async Task<ActionResult<APIResponse>> GetAllAgents()
+        {
+            return HandleResult(await Mediator.Send(new GetAllAgentsRequest()));
+        }
+
+        [HttpGet]
+        [Route(UserProfileRoute.GetAgentById)]
+        [HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge = 60)]
+        [HttpCacheValidation(MustRevalidate = false)]
+        public async Task<ActionResult<APIResponse>> GetAgentById(string agentId)
+        {
+            return HandleResult(await Mediator.Send(new GetAgentByIdRequest { AgentId = agentId }));
+        }
     }
 }

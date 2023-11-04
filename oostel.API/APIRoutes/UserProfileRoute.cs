@@ -20,5 +20,11 @@
 
         public const string UploadUserProfilePicture = "user-profile/upload-user-profile-picture";
         public const string SendAgentInvitationCode = "user-profile/send-an-invitation-code";
+
+
+        public const string CreateAgentProfile = "user-profile/create-agent-profile";
+        public const string UpdateAgentProfile = "user-profile/update-agent-profile";
+        public const string GetAllAgents = "user-profile/get-all-agents";
+        public const string GetAgentById = "user-profile/get-agent-by-id";
     }
 }
