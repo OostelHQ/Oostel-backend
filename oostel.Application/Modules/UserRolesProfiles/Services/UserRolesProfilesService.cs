@@ -104,7 +104,6 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         }
 
-
         public async Task<bool> AvailableForRoommate(OpenToRoommateDTO openToRoommateDTO)
         {
             var student = await _unitOfWork.StudentRepository.FindandInclude(x => x.Id == openToRoommateDTO.StudentId,true);
@@ -138,10 +137,10 @@ namespace Oostel.Application.Modules.UserProfiles.Services
                 var commitState = await _unitOfWork.SaveAsync();
                 if(commitState > 0)
                 {
-                    return true; //APIResponse.GetSuccessMessage(HttpStatusCode.OK, data: generatedCode, ResponseMessages.SuccessfulCreation);
+                    return true; 
                 }
             }
-            return false; //APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.NotFound);
+            return false;
         }
 
         public async Task<List<GetStudentProfileDTO>> GetStudentById(string studentId)
@@ -167,7 +166,6 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             studentProfile.User.PhoneNumber = userProfileDTO.PhoneNumber ?? studentProfile.User.PhoneNumber;
             studentProfile.User.FirstName = userProfileDTO.FirstName ?? studentProfile.User.FirstName;
             studentProfile.User.LastName = userProfileDTO.LastName ?? studentProfile.User.LastName;
-           // studentProfile.User.Email = userProfileDTO.Email ?? studentProfile.User.Email;
             studentProfile.LastModifiedDate = DateTime.UtcNow;
 
               await _unitOfWork.StudentRepository.UpdateAsync(studentProfile);
@@ -219,6 +217,14 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             return landlordMapping;
         }
 
+        public async Task<List<GetAgentProfileDTO>> GetAllAgents()
+        {
+            var agents = await _unitOfWork.AgentRepository.FindandInclude(x => x.User.RolesCSV.Contains(RoleType.Agent.GetEnumDescription()), true);
+            var agentMapping = _mapper.Map<List<GetAgentProfileDTO>>(agents);
+
+            return agentMapping;
+        }
+
         public async Task<List<GetLandlordProfileDTO>> GetLandlordsById(string landlordId)
         {
             var landlord = await _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == landlordId && x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()), true);
@@ -228,9 +234,17 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             return landlordMapping;
         }
 
+        public async Task<List<GetAgentProfileDTO>> GetAgentById(string agentId)
+        {
+            var agent = await _unitOfWork.AgentRepository.FindandInclude(x => x.Id == agentId && x.User.RolesCSV.Contains(RoleType.Agent.GetEnumDescription()), true);
+            if (agent is null) return null;
+
+            var agentMapping = _mapper.Map<List<GetAgentProfileDTO>>(agent);
+            return agentMapping;
+        }
+
         public async Task<bool> CreateLandLordProfile(CreateLandlordDTO landlordProfileDTO)
         {
-            // var user =  _userManager.Users.Any(x => x.Id == landlordProfileDTO.UserId && x.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()));
             var user = await _userManager.FindByIdAsync(landlordProfileDTO.UserId);
             if (user is null) return false;
 
@@ -265,9 +279,41 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
             return true;
         }
+
+        public async Task<bool> CreateAgentProfile(CreateAgentProfileDTO createAgentProfileDTO)
+        {
+            var user = await _userManager.FindByIdAsync(createAgentProfileDTO.UserId);
+            if (user is null) return false;
+
+            var agent = new Agent()
+            {
+                Id = createAgentProfileDTO.UserId,
+                Age = createAgentProfileDTO.Age,
+                Religion = createAgentProfileDTO.Religion,
+                DateOfBirth = createAgentProfileDTO.DateOfBirth,
+                StateOfOrigin = createAgentProfileDTO.StateOfOrigin,
+                Country = createAgentProfileDTO.Country,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow,
+            };
+
+            var checkIfAgentExist = await _unitOfWork.AgentRepository.Find(x => x.Id == createAgentProfileDTO.UserId);
+            if (checkIfAgentExist is null)
+            {
+                await _unitOfWork.AgentRepository.Add(agent);
+                await _unitOfWork.SaveAsync();
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public async Task<bool> UpdateLandLordProfile(UpdateLandlordDTO landlordProfileDTO)
         {
-            var landlordProfile = _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == landlordProfileDTO.UserId && x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()), true).Result.SingleOrDefault();
+            var landlordProfile = _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == landlordProfileDTO.UserId, true).Result.SingleOrDefault();
             if (landlordProfile is null) return false;
 
             landlordProfile.Age = landlordProfileDTO.Age;
@@ -278,10 +324,31 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             landlordProfile.User.PhoneNumber = landlordProfileDTO.PhoneNumber ?? landlordProfile.User.PhoneNumber;
             landlordProfile.User.FirstName = landlordProfileDTO.FirstName ?? landlordProfile.User.FirstName;
             landlordProfile.User.LastName = landlordProfileDTO.LastName ?? landlordProfile.User.LastName;
-           // landlordProfile.User.Email = landlordProfileDTO.Email ?? landlordProfile.User.Email;
             landlordProfile.LastModifiedDate = DateTime.UtcNow;
 
             await _unitOfWork.LandlordRepository.UpdateAsync(landlordProfile);
+            var saveState = await _unitOfWork.SaveAsync() > 0;
+            if (!saveState) return false;
+
+            return true;
+        }
+
+        public async Task<bool> UpdateAgentProfile(UpdateAgentProfileDTO updateAgentProfileDTO)
+        {
+            var agentProfile = _unitOfWork.AgentRepository.FindandInclude(x => x.Id == updateAgentProfileDTO.UserId, true).Result.SingleOrDefault();
+            if (agentProfile is null) return false;
+
+            agentProfile.Age = updateAgentProfileDTO.Age;
+            agentProfile.Religion = updateAgentProfileDTO.Religion ?? agentProfile.Religion;
+            agentProfile.StateOfOrigin = updateAgentProfileDTO.StateOfOrigin ?? agentProfile.StateOfOrigin;
+            agentProfile.DateOfBirth = updateAgentProfileDTO.DateOfBirth;
+            agentProfile.Country = updateAgentProfileDTO.Country ?? agentProfile.Country;
+            agentProfile.User.PhoneNumber = updateAgentProfileDTO.PhoneNumber ?? agentProfile.User.PhoneNumber;
+            agentProfile.User.FirstName = updateAgentProfileDTO.FirstName ?? agentProfile.User.FirstName;
+            agentProfile.User.LastName = updateAgentProfileDTO.LastName ?? agentProfile.User.LastName;
+            agentProfile.LastModifiedDate = DateTime.UtcNow;
+
+            await _unitOfWork.AgentRepository.UpdateAsync(agentProfile);
             var saveState = await _unitOfWork.SaveAsync() > 0;
             if (!saveState) return false;
 

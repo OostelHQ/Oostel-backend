@@ -20,14 +20,18 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         Task<bool> UpdateStudentProfile(UpdateStudentDTO userProfileDTO);
         Task<List<GetLandlordProfileDTO>> GetLandlordsById(string studentId);
         Task<bool> AvailableForRoommate(OpenToRoommateDTO openToRoommateDTO);
+        Task<List<GetAgentProfileDTO>> GetAllAgents();
         Task<List<GetLandlordProfileDTO>> GetAllLandlords();
         Task<bool> CreateLandLordProfile(CreateLandlordDTO landlordProfileDTO);
         Task<bool> CreateStudentProfile(CreateStudentDTO userProfileDTO);
+        Task<List<GetAgentProfileDTO>> GetAgentById(string agentId);
         Task<bool> UpdateLandLordProfile(UpdateLandlordDTO updateLandlordProfileDTO);
         Task<bool> ProfileViewsCount(string userId);
         Task<bool> UploadDisplayPictureAsync(IFormFile file, string userId);
         Task<bool> AddStudentLike(string sourceId, string studentLikeId);
+        Task<bool> UpdateAgentProfile(UpdateAgentProfileDTO updateAgentProfileDTO);
         Task<ApplicationUser> GetEmailAsync(string email);
+        Task<bool> CreateAgentProfile(CreateAgentProfileDTO createAgentProfileDTO);
         Task<bool> CreateReferralCode(string landlordId);
         Task<bool> SendAgentInvitationCode(string agentEmail, string referralCode, string landlordName, string shortNote);
         Task<string> GetLandlordReferralCode(string landlordId);
