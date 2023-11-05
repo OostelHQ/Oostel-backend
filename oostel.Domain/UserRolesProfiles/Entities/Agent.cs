@@ -18,7 +18,7 @@ namespace Oostel.Domain.UserRolesProfiles.Entities
         public DateTime? DateOfBirth { get; set; }
         public int Age { get; set; }
         public string? Denomination { get; set; }
-        public ICollection<Landlord> Landlords { get; set; }
+        public ICollection<LandlordAgent> LandlordAgents { get; set; } = new List<LandlordAgent>(); 
         public ApplicationUser User { get; set; }
 
         public Agent()

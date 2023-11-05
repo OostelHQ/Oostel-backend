@@ -45,5 +45,6 @@ namespace Oostel.Infrastructure.Data
         public DbSet<ReferralAgentInfo> ReferralAgentInfos { get; set; }
         public DbSet<AgentReferred> AgentReferreds { get; set; }
         public DbSet<Agent> Agents { get; set; }
+        public DbSet<LandlordAgent> LandlordAgents { get; set; }
     }
 }

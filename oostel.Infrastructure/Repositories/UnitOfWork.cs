@@ -36,7 +36,7 @@ namespace Oostel.Infrastructure.Repositories
         private GenericRepository<ReferralAgentInfo, string> referralAgentInfoRepository;
         private GenericRepository<AgentReferred, string> agentReferredRepository;
         private GenericRepository<Agent, string> agentRepository;
-
+        
         public IMessageRepository MessageRepository => new MessageRepository(_context, _mapper);
 
 

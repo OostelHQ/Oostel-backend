@@ -16,7 +16,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
     public interface IUserRolesProfilesService
     {
         Task<ResultResponse<PagedList<GetStudentProfileDTO>>> GetAllStudents(StudentTypeParams studentTypeParams);
-        Task<List<GetStudentProfileDTO>> GetStudentById(string studentId);
+        Task<GetAllStudentDetailsResponse> GetStudentById(string studentId);
         Task<bool> UpdateStudentProfile(UpdateStudentDTO userProfileDTO);
         Task<List<GetLandlordProfileDTO>> GetLandlordsById(string studentId);
         Task<bool> AvailableForRoommate(OpenToRoommateDTO openToRoommateDTO);
@@ -28,6 +28,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         Task<bool> UpdateLandLordProfile(UpdateLandlordDTO updateLandlordProfileDTO);
         Task<bool> ProfileViewsCount(string userId);
         Task<bool> UploadDisplayPictureAsync(IFormFile file, string userId);
+        Task<bool> AcceptLandlordInvitation(string agentId, string landlordId);
         Task<bool> AddStudentLike(string sourceId, string studentLikeId);
         Task<bool> UpdateAgentProfile(UpdateAgentProfileDTO updateAgentProfileDTO);
         Task<ApplicationUser> GetEmailAsync(string email);

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserRolesProfiles.DTOs;
+using Oostel.Application.Modules.UserWallet.DTOs;
 using Oostel.Application.RequestFilters;
 using Oostel.Application.UserAccessors;
 using Oostel.Common.Constants;
@@ -143,13 +144,19 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             return false;
         }
 
-        public async Task<List<GetStudentProfileDTO>> GetStudentById(string studentId)
+        public async Task<GetAllStudentDetailsResponse> GetStudentById(string studentId)
         {
             var student = await _unitOfWork.StudentRepository.FindandInclude(x => x.Id == studentId && x.User.RolesCSV.Contains(RoleType.Student.GetEnumDescription()), true);
             if (student is null) return null;
 
-            var studentMapping = _mapper.Map<List<GetStudentProfileDTO>>(student);
-            return studentMapping;
+            GetAllStudentDetailsResponse studentDetailsResponse = new();
+
+            studentDetailsResponse.UserDto = _mapper.Map<UserDto>(student.ToList()[0].User);
+            studentDetailsResponse.UserWalletBalanceDTO = _mapper.Map<UserWalletBalanceDTO>(student.ToList()[0].User.Wallets);
+            studentDetailsResponse.StudentProfile = _mapper.Map<StudentProfile>(student.ToList()[0]);
+
+           // var studentMapping = _mapper.Map<List<GetStudentProfileDTO>>(student);  
+            return studentDetailsResponse; //it may returns null because i remove it from list data
         }
         public async Task<bool> UpdateStudentProfile(UpdateStudentDTO userProfileDTO)
         {
@@ -370,11 +377,29 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         public async Task<bool> AcceptLandlordInvitation(string agentId, string landlordId)
         {
-            var landlord = await _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == landlordId, true);
+            var landlord = _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == landlordId, true).Result.FirstOrDefault();
             if (landlord is null)
                 return false;
+
+            //var agent = await _userManager.FindByIdAsync(agentId);
+            var agent = _unitOfWork.AgentRepository.FindandInclude(x => x.Id == agentId, true).Result.FirstOrDefault();
+
+            var la = new LandlordAgent()
+            {
+                Agent = agent,
+                Landlord = landlord
+            };
+            agent.LandlordAgents.Add(la);
+            landlord.LandlordAgents.Add(la);
+
+            await _unitOfWork.SaveAsync();
+
+           // await _unitOfWork.AgentRepository.Add(la)
+
+          //  await _unitOfWork.AgentRepository.UpdateAsync(agent);
+           // var r = await _userManager.UpdateAsync(agent);
+            
             return true;
-            //var agent = await _unitOfWork.ReferralAgentInfoRepository.
         }
  
 

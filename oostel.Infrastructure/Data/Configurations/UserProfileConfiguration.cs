@@ -9,6 +9,7 @@ namespace Oostel.Infrastructure.Data.Configurations
         public static void ConfigureUserProfile(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Landlord>().HasKey(u => u.Id);
+            modelBuilder.Entity<Agent>().HasKey(u => u.Id);
 
             modelBuilder.Entity<Landlord>()
                 .HasMany(h => h.Hostels)
@@ -16,10 +17,18 @@ namespace Oostel.Infrastructure.Data.Configurations
                 .HasForeignKey(u => u.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-           /* modelBuilder.Entity<Landlord>()
-            .HasOne(u => u.ReferralAgentInfo)
-            .WithOne(r => r.Landlord).HasForeignKey<ReferralAgentInfo>(r => r.UserId)
-            .OnDelete(DeleteBehavior.Cascade);*/
+            modelBuilder.Entity<LandlordAgent>(x => x.HasKey(aa => new { aa.LandlordId, aa.AgentId }));
+
+            modelBuilder.Entity<LandlordAgent>()
+                .HasOne(u => u.Landlord)
+                .WithMany(a => a.LandlordAgents)
+                .HasForeignKey(u => u.LandlordId);
+
+            modelBuilder.Entity<LandlordAgent>()
+                .HasOne(u => u.Agent)
+                .WithMany(a => a.LandlordAgents)
+                .HasForeignKey(u => u.AgentId);
+
         }
     }
 }

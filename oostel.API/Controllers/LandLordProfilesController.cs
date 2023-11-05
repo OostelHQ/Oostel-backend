@@ -97,5 +97,12 @@ namespace Oostel.API.Controllers
         {
             return HandleResult(await Mediator.Send(new GetAgentByIdRequest { AgentId = agentId }));
         }
+
+        [HttpPost]
+        [Route(UserProfileRoute.AcceptLanlordInvitation)]
+        public async Task<ActionResult<APIResponse>> AcceptLanlordInvitation(string agentId, string landlordId)
+        {
+            return HandleResult(await Mediator.Send(new AcceptLandlordInvitationCommand { AgentId = agentId, LandlordId = landlordId }));
+        }
     }
 }

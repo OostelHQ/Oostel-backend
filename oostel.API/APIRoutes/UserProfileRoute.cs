@@ -26,5 +26,7 @@
         public const string UpdateAgentProfile = "user-profile/update-agent-profile";
         public const string GetAllAgents = "user-profile/get-all-agents";
         public const string GetAgentById = "user-profile/get-agent-by-id";
+
+        public const string AcceptLanlordInvitation = "user-profile/accept-landlord-invitation";
     }
 }
