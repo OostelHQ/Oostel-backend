@@ -51,6 +51,13 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
                 .Map(dest => dest.PictureUrl, src => src.User.ProfilePhotoURL)
                 .Map(dest => dest.FullName, src => $"{src.User.FirstName} {src.User.LastName}");
 
+            config.NewConfig<Landlord, LandlordProfile>()
+                .Map(dest => dest.Email, src => src.User.Email)
+                .Map(dest => dest.PictureUrl, src => src.User.ProfilePhotoURL)
+                .Map(dest => dest.LastName, src => src.User.LastName)
+                .Map(dest => dest.FirstName, src => src.User.FirstName)
+                .Map(dest => dest.ProfileViewCount, src => src.User.ProfileViewCount);
+                
 
             config.NewConfig<Agent, AgentProfileDTO>();
             config.NewConfig<Agent, UpdateAgentProfileDTO>();
@@ -63,6 +70,13 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
                 .Map(dest => dest.ProfileViewCount, src => src.User.ProfileViewCount)
                 .Map(dest => dest.PictureUrl, src => src.User.ProfilePhotoURL)
                 .Map(dest => dest.FullName, src => $"{src.User.FirstName} {src.User.LastName}");
+
+            config.NewConfig<Agent, AgentProfile>()
+                .Map(dest => dest.Email, src => src.User.Email)
+                .Map(dest => dest.PictureUrl, src => src.User.ProfilePhotoURL)
+                .Map(dest => dest.LastName, src => src.User.LastName)
+                .Map(dest => dest.FirstName, src => src.User.FirstName)
+                .Map(dest => dest.ProfileViewCount, src => src.User.ProfileViewCount);
 
             config.NewConfig<OpenToRoommate, OpenToRoommateDTO>();
         }

@@ -155,8 +155,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             studentDetailsResponse.UserWalletBalanceDTO = _mapper.Map<UserWalletBalanceDTO>(student.ToList()[0].User.Wallets);
             studentDetailsResponse.StudentProfile = _mapper.Map<StudentProfile>(student.ToList()[0]);
 
-           // var studentMapping = _mapper.Map<List<GetStudentProfileDTO>>(student);  
-            return studentDetailsResponse; //it may returns null because i remove it from list data
+            return studentDetailsResponse;
         }
         public async Task<bool> UpdateStudentProfile(UpdateStudentDTO userProfileDTO)
         {
@@ -232,22 +231,30 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             return agentMapping;
         }
 
-        public async Task<List<GetLandlordProfileDTO>> GetLandlordsById(string landlordId)
+        public async Task<GetAllLandlordProfileDetails> GetLandlordsById(string landlordId)
         {
             var landlord = await _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == landlordId && x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()), true);
             if (landlord is null) return null;
 
-            var landlordMapping = _mapper.Map<List<GetLandlordProfileDTO>>(landlord);
-            return landlordMapping;
+            GetAllLandlordProfileDetails studentDetailsResponse = new();
+
+            studentDetailsResponse.UserDto = _mapper.Map<UserDto>(landlord.ToList()[0].User);
+            studentDetailsResponse.UserWalletBalanceDTO = _mapper.Map<UserWalletBalanceDTO>(landlord.ToList()[0].User.Wallets);
+            studentDetailsResponse.LandlordProfile = _mapper.Map<LandlordProfile>(landlord.ToList()[0]);
+
+            return studentDetailsResponse;
         }
 
-        public async Task<List<GetAgentProfileDTO>> GetAgentById(string agentId)
+        public async Task<GetAllAgentProfileDetailsResponse> GetAgentById(string agentId)
         {
             var agent = await _unitOfWork.AgentRepository.FindandInclude(x => x.Id == agentId && x.User.RolesCSV.Contains(RoleType.Agent.GetEnumDescription()), true);
             if (agent is null) return null;
 
-            var agentMapping = _mapper.Map<List<GetAgentProfileDTO>>(agent);
-            return agentMapping;
+            GetAllAgentProfileDetailsResponse studentDetailsResponse = new();
+
+            studentDetailsResponse.UserDto = _mapper.Map<UserDto>(agent.ToList()[0].User);
+            studentDetailsResponse.LandlordProfile = _mapper.Map<AgentProfile>(agent.ToList()[0]);
+            return studentDetailsResponse;
         }
 
         public async Task<bool> CreateLandLordProfile(CreateLandlordDTO landlordProfileDTO)
