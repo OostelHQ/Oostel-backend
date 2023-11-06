@@ -13,7 +13,7 @@ namespace Oostel.Application.Modules.Hostel.Services
     {
         Task<bool> CreateHostel(HostelDTO hostelDTO);
         Task<ResultResponse<PagedList<HostelsResponse>>> GetAllHostels(HostelTypesParam hostelTypesParam);
-        Task<AHostelResponse> GetHostelById(string hostelId);
+        Task<HostelDetailsResponse> GetHostelById(string hostelId);
         Task<List<RoomToReturn>> GetAllRoomsForHostel(string hostelId);
         Task<RoomToReturn> GetARoomForHostel(string hostelId, string roomId);
         Task<bool> AddHostelLike(string sourceId, string hostelLikeId);

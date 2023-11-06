@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Oostel.Infrastructure.Data;
@@ -12,9 +13,11 @@ using Oostel.Infrastructure.Data;
 namespace Oostel.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231106101124_changeFieldName")]
+    partial class changeFieldName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -555,10 +558,6 @@ namespace Oostel.Infrastructure.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Area")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Country")
                         .HasColumnType("text");
 
@@ -578,10 +577,6 @@ namespace Oostel.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Religion")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("State")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -658,10 +653,6 @@ namespace Oostel.Infrastructure.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Area")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Country")
                         .HasColumnType("text");
 
@@ -681,10 +672,6 @@ namespace Oostel.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Religion")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("State")
                         .IsRequired()
                         .HasColumnType("text");
 

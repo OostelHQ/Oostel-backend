@@ -4,7 +4,7 @@ namespace Oostel.Application.Modules.Hostel.DTOs
 {
     public class HostelDTO
     {
-        public string UserId { get; set; }
+        public string LandlordId { get; set; }
         public string HostelName { get; set; }
         public string HostelDescription { get; set; }
         public int TotalRoom { get; set; }

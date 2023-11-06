@@ -16,6 +16,8 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         public string? Country { get; set; }
         public bool IsVerified { get; set; }
         public DateTime? DateOfBirth { get; set; }
+        public string Area { get; set; }
+        public string State { get; set; }
         public int Age { get; set; }
         public string? Denomination { get; set; }
         public virtual ApplicationUser User { get; set; }

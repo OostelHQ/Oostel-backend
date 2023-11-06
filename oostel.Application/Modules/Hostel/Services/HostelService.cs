@@ -39,14 +39,14 @@ namespace Oostel.Application.Modules.Hostel.Services
 
         public async Task<bool> CreateHostel(HostelDTO hostelDTO)
         {
-            var user = await _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == hostelDTO.UserId, true);
+            var user = await _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == hostelDTO.LandlordId, true);
             if (user is null) return false;
 
             var rooms = new List<Room>();
 
             foreach (var roomDto in hostelDTO.Rooms)
             {
-                bool roomCreated = await CreateRoomForHostel(hostelDTO.UserId, roomDto);
+                bool roomCreated = await CreateRoomForHostel(hostelDTO.LandlordId, roomDto);
 
                 if (!roomCreated)
                 {
@@ -55,7 +55,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             }
 
             var hostel = Domain.Hostel.Entities.Hostel.CreateHostelFactory(
-                hostelDTO.UserId,
+                hostelDTO.LandlordId,
                 hostelDTO.HostelName,
                 hostelDTO.HostelDescription,
                 hostelDTO.TotalRoom,
@@ -80,7 +80,7 @@ namespace Oostel.Application.Modules.Hostel.Services
         }        
         public async Task<bool> UpdateHostel(string hostelId, HostelDTO hostelDTO)
         {
-            var user = await _userAccessor.CheckIfTheUserExist(hostelDTO.UserId);
+            var user = await _userAccessor.CheckIfTheUserExist(hostelDTO.LandlordId);
             if (user is null) return false;
 
             var existinghostel = await _unitOfWork.HostelRepository.Find(h => h.Id == hostelId);
@@ -114,7 +114,7 @@ namespace Oostel.Application.Modules.Hostel.Services
                 .Include(r => r.Rooms)
                 .OrderBy(d => d.CreatedDate)
                 .Select(h => new HostelsResponse {
-                    UserId = h.UserId,
+                    UserId = h.LandlordId,
                     HostelId = h.Id,
                     HostelCategory = h.HostelCategory,
                     Country = h.Country,
@@ -157,15 +157,24 @@ namespace Oostel.Application.Modules.Hostel.Services
             return ResultResponse<PagedList<HostelsResponse>>.Success(await PagedList<HostelsResponse>.CreateAsync(hostelsQuery, hostelTypesParam.PageNumber, hostelTypesParam.PageSize));
         }
 
-        public async Task<AHostelResponse> GetHostelById(string hostelId)
+        public async Task<HostelDetailsResponse> GetHostelById(string hostelId)
         {
-            var hostel = _unitOfWork.HostelRepository.FindandInclude(x => x.Id == hostelId, true).Result.SingleOrDefault();
+            var hostel = await _applicationDbContext.Hostels
+                .Include(x => x.Rooms)
+                .Include(x => x.HostelLikes)
+                .Include(x => x.Comments)
+                .Include(x => x.Landlord)
+                .ThenInclude(x => x.LandlordAgents)
+                .Include(x => x.Landlord.User)
+                .FirstOrDefaultAsync(x => x.Id == hostelId);
+                
+           // var hostel = _unitOfWork.HostelRepository.FindandInclude(x => x.Id == hostelId, true).Result.SingleOrDefault();
 
             if (hostel is not null)
             {
+                var hostelDetailsToReturn = new HostelDetailsResponse();
 
-               var rooms = _mapper.Map<List<RoomToReturn>>(hostel.Rooms);
-                var hostelDto = new AHostelResponse()
+                hostelDetailsToReturn.HostelDetails = new HostelDetails()
                 {
                     HostelDescription = hostel.HostelDescription,
                     State = hostel.State,
@@ -178,13 +187,15 @@ namespace Oostel.Application.Modules.Hostel.Services
                     HostelLikesCount = hostel.HostelLikes.Count(x => x.LikedHostelId == hostel.Id),
                     NumberOfRoomsLeft = hostel.Rooms.Count(x => !x.IsRented && x.HostelId == hostel.Id),
                     Junction = hostel.Junction,
-                    Rooms = rooms,
                     RulesAndRegulation = hostel.RulesAndRegulation,
                     Street = hostel.Street,
                     TotalRoom = hostel.TotalRoom,
-                    UserId = hostel.UserId
                 };
-                return hostelDto;
+                hostelDetailsToReturn.Rooms = _mapper.Map<List<RoomToReturn>>(hostel.Rooms);
+                hostelDetailsToReturn.CommentDTO = _mapper.Map<List<CommentDTO>>(hostel.Comments);
+                hostelDetailsToReturn.AgentProfileToDisplay = _mapper.Map<AgentProfileToDisplay>(hostel.Landlord.LandlordAgents.ToList()[0].Agent);
+                hostelDetailsToReturn.LandlordProfile = _mapper.Map<LandlordProfileToDisplay>(hostel.Landlord);
+                return hostelDetailsToReturn;
             }
             
             return null;          

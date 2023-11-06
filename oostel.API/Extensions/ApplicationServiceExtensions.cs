@@ -55,7 +55,7 @@ namespace Oostel.API.Extensions
 
             services.AddAuthorization(opt =>
             {
-                opt.AddPolicy("LandlordAndAgent", policy => policy.RequireRole("Landlord", "Agent"));
+                opt.AddPolicy("LandlordAndAgent", policy => policy.RequireRole("LandLord", "Agent"));
             });
 
             return services;

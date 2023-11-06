@@ -14,7 +14,7 @@ namespace Oostel.Infrastructure.Data.Configurations
             modelBuilder.Entity<Landlord>()
                 .HasMany(h => h.Hostels)
                 .WithOne(u => u.Landlord)
-                .HasForeignKey(u => u.UserId)
+                .HasForeignKey(u => u.LandlordId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<LandlordAgent>(x => x.HasKey(aa => new { aa.LandlordId, aa.AgentId }));

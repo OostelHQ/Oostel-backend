@@ -5,7 +5,7 @@ namespace Oostel.Domain.Hostel.Entities
 {
     public class Hostel: BaseEntity<string>
     {
-        public string UserId { get; set; }
+        public string LandlordId { get; set; }
         public string HostelName { get; set; }
         public string HostelDescription { get; set; }
         public int TotalRoom { get; set; }
@@ -35,8 +35,8 @@ namespace Oostel.Domain.Hostel.Entities
             string street, string junction, string hostelCategory, string state, string priceBudgetRange, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
             bool isAnyRoomVacant, ICollection<Room> rooms) : base(Guid.NewGuid().ToString())
         {
-            UserId = userId;
-            HostelName = hostelName;
+            LandlordId = userId;
+            HostelName = hostelName;    
             HostelDescription = hostelDescription;
             TotalRoom = totalRoom;
             HomeSize= homeSize;
