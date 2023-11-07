@@ -22,7 +22,7 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
         public string State { get; set; }
         public string PriceBudgetRange { get; set; }
         public string Country { get; set; }
-        public List<RoomToCreate>? Rooms { get; set; }
+        public IEnumerable<RoomToCreate>? Rooms { get; set; }
         public List<string> RulesAndRegulation { get; set; }
         public IFormFile HostelFrontViewPicture { get; set; }
         public List<string> HostelFacilities { get; set; }
@@ -40,6 +40,25 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
             public async Task<APIResponse> Handle(CreateHostelCommand request, CancellationToken cancellationToken)
             {
                 var mapData = _mapper.Map<HostelDTO>(request);
+                var hostelRequest = (new HostelDTO()
+                {
+                    Country = request.Country,
+                    HomeSize = request.HomeSize,
+                    HostelCategory = request.HostelCategory,
+                    Rooms = _mapper.Map<List<RoomDTO>>(request?.Rooms),
+                    Junction = request.Junction,
+                    HostelDescription = request.HostelDescription,
+                    HostelFacilities = request.HostelFacilities,
+                    HostelFrontViewPicture = request.HostelFrontViewPicture,
+                    HostelName = request.HostelName,
+                    IsAnyRoomVacant = request.IsAnyRoomVacant,
+                    PriceBudgetRange = request.PriceBudgetRange,
+                    RulesAndRegulation = request.RulesAndRegulation,
+                    State = request.State,
+                    Street = request.Street,
+                    TotalRoom = request.TotalRoom,
+                    LandlordId = request.LandlordId
+                });
                 var createhostel = await _hostelService.CreateHostel(mapData);
 
                 if (!createhostel) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);
