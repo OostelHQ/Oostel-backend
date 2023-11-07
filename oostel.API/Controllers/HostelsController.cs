@@ -32,7 +32,26 @@ namespace Oostel.API.Controllers
         [Authorize(Policy = "LandlordAndAgent")]
         public async Task<ActionResult<APIResponse>> CreateHostel([FromForm]HostelRequest request)
         {
-            var hostelRequest = _mapper.Map<CreateHostelCommand>(request);
+            var hostelRequest = (new CreateHostelCommand()
+            {
+                Country = request.Country,
+                HomeSize = request.HomeSize,
+                HostelCategory = request.HostelCategory,
+                Rooms = request.Rooms,
+                Junction = request.Junction,
+                HostelDescription= request.HostelDescription,
+                HostelFacilities = request.HostelFacilities,
+                HostelFrontViewPicture = request.HostelFrontViewPicture,
+                HostelName = request.HostelName,
+                IsAnyRoomVacant = request.IsAnyRoomVacant,
+                PriceBudgetRange= request.PriceBudgetRange,
+                RulesAndRegulation = request.RulesAndRegulation,
+                State = request.State,
+                Street = request.Street,
+                TotalRoom = request.TotalRoom,
+                LandlordId = request.LandlordId
+            });
+            //var hostelRequest = _mapper.Map<CreateHostelCommand>(request);
             return HandleResult(await Mediator.Send(hostelRequest));
         }
 

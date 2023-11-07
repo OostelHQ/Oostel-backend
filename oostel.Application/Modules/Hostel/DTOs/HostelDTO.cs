@@ -1,4 +1,5 @@
-﻿using Oostel.Common.Enums;
+﻿using Microsoft.AspNetCore.Http;
+using Oostel.Common.Enums;
 
 namespace Oostel.Application.Modules.Hostel.DTOs
 {
@@ -13,6 +14,7 @@ namespace Oostel.Application.Modules.Hostel.DTOs
         public string Street { get; set; }
         public string Junction { get; set; }
         public HostelCategory HostelCategory { get; set; }
+        public IFormFile HostelFrontViewPicture { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
         public IEnumerable<RoomDTO>? Rooms { get; set; }

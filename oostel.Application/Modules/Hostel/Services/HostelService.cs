@@ -54,6 +54,8 @@ namespace Oostel.Application.Modules.Hostel.Services
                 }
             }
 
+            var hostelFrontViewPicture = await _mediaUpload.UploadPhoto(hostelDTO.HostelFrontViewPicture);
+           
             var hostel = Domain.Hostel.Entities.Hostel.CreateHostelFactory(
                 hostelDTO.LandlordId,
                 hostelDTO.HostelName,
@@ -68,6 +70,7 @@ namespace Oostel.Application.Modules.Hostel.Services
                 hostelDTO.Country,
                 hostelDTO.RulesAndRegulation,
                 hostelDTO.HostelFacilities,
+                hostelFrontViewPicture.Url,
                 hostelDTO.IsAnyRoomVacant,
                 rooms
                 );
@@ -209,15 +212,15 @@ namespace Oostel.Application.Modules.Hostel.Services
             var hostel =  await _unitOfWork.HostelRepository.FindandInclude(x => x.Id == roomDTO.HostelId, true); 
             if (hostel is null) return false;
 
-                var room = Room.CreateRoomForHostelFactory(roomDTO.RoomNumber, roomDTO.Price, roomDTO.Duration,
+            var room = Room.CreateRoomForHostelFactory(roomDTO.RoomNumber, roomDTO.Price, roomDTO.Duration,
                                                           roomDTO.RoomFacilities, roomDTO.IsRented, roomDTO.HostelId, new List<string>());
             var photoUploadResults = await _mediaUpload.UploadPhotos(roomDTO.Files);
             room.RoomPictures?.AddRange(photoUploadResults.Select(result => result.Url));
 
             await _unitOfWork.RoomRepository.Add(room);
-                await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveAsync();
             
-                return true;
+            return true;
         }   
 
         public async Task<bool> UpdateARoomForHostel(string userId, RoomDTO roomDTO)

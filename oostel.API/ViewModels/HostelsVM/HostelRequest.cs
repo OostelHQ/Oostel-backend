@@ -15,6 +15,7 @@ namespace Oostel.API.ViewModels.HostelsVM
         public string PriceBudgetRange { get; set; }
         public HostelCategory HostelCategory { get; set; }
         public string State { get; set; }
+        public IFormFile HostelFrontViewPicture { get; set; }
         public string Country { get; set; }
         public List<RoomToCreate>? Rooms { get; set; }
         public List<string>? RulesAndRegulation { get; set; }

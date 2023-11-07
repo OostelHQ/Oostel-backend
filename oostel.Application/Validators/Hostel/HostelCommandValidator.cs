@@ -12,11 +12,12 @@ namespace Oostel.Application.Validators.Hostel
     {
         public HostelCommandValidator() 
         {
-            RuleFor(x => x.UserId).NotEmpty().WithMessage("UserId is required");
+            RuleFor(x => x.LandlordId).NotEmpty().WithMessage("UserId is required");
             RuleFor(x => x.HostelName).NotEmpty().MaximumLength(100).WithMessage("Hostel Name is required");
             RuleFor(x => x.Street).NotEmpty().MaximumLength(100).WithMessage("Street Name is required");
             RuleFor(x => x.Country).NotEmpty().MaximumLength(100).WithMessage("Country is required");
             RuleFor(x => x.State).NotEmpty().MaximumLength(100).WithMessage("State is required");
+            RuleFor(x => x.HostelFrontViewPicture).NotEmpty().WithMessage("Hostel front picture is required");
             RuleFor(x => x.HomeSize).NotEmpty().WithMessage("Home size is required");
             RuleFor(x => x.HostelDescription).NotEmpty().MaximumLength(500).WithMessage("Hostel Description is required");
             RuleFor(x => x.Junction).NotEmpty().MaximumLength(200).WithMessage("Junction is required");

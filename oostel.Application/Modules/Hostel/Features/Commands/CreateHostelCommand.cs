@@ -1,4 +1,5 @@
 ﻿using MapsterMapper;
+using Microsoft.AspNetCore.Http;
 using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Application.Modules.Hostel.Services;
 using Oostel.Common.Constants;
@@ -10,7 +11,7 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
 {
     public class CreateHostelCommand : IRequest<APIResponse>
     {
-        public string UserId { get; set; }
+        public string LandlordId { get; set; }
         public string HostelName { get; set; }
         public string HostelDescription { get; set; }
         public int TotalRoom { get; set; }
@@ -23,6 +24,7 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
         public string Country { get; set; }
         public List<RoomToCreate>? Rooms { get; set; }
         public List<string> RulesAndRegulation { get; set; }
+        public IFormFile HostelFrontViewPicture { get; set; }
         public List<string> HostelFacilities { get; set; }
         public bool IsAnyRoomVacant { get; set; }
 
