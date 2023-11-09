@@ -30,7 +30,25 @@ namespace Oostel.API.Controllers
             return HandleResult(await _mediator.Send(new GetNGNBanksRequest()));
         }
 
-      
+        [HttpGet]
+        [Route(PaymentRoute.GetAllPayInHistories)]
+        public async Task<ActionResult<APIResponse>> GetAllPayInHistory([FromQuery] int pageNo, int pageSize)
+        {
+            var payInHistoryRequest = new GetAllPayInHistoriesRequest{ PageNo = pageNo, PageSize = pageSize };
+            var result = await _mediator.Send(payInHistoryRequest);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route(PaymentRoute.GetPayInHistoryById)]
+        public async Task<ActionResult<APIResponse>> GetPayInHistoryById(string transactionId)
+        {
+            var payInHistoryRequest = new GetPayInHistoryByIdRequest{ TransactionId = transactionId };
+            var result = await _mediator.Send(payInHistoryRequest);
+            return Ok(result);
+        }
+
+
         [HttpGet]
         [Route(PaymentRoute.GeneratePaymentLink)]
         public async Task<ActionResult<APIResponse>> GeneratePaymentLink(PayInRequest payInRequest)
