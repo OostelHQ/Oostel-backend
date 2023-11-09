@@ -12,6 +12,7 @@ using Oostel.Infrastructure.Repositories;
 namespace Oostel.API.Controllers
 {
     [Authorize]
+    
     public class PaymentsController : BaseController
     {
         public readonly IMapper _mapper;
@@ -22,7 +23,7 @@ namespace Oostel.API.Controllers
             _mediator = mediator;
         }
 
-        [Authorize]
+        
         [HttpGet]
         [Route(PaymentRoute.GetNGNBanks)]
         public async Task<ActionResult<APIResponse>> GetNGNBanks()
@@ -49,7 +50,7 @@ namespace Oostel.API.Controllers
         }
 
 
-        [HttpGet]
+        [HttpPost]
         [Route(PaymentRoute.GeneratePaymentLink)]
         public async Task<ActionResult<APIResponse>> GeneratePaymentLink(PayInRequest payInRequest)
         {
@@ -65,7 +66,7 @@ namespace Oostel.API.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route(PaymentRoute.VerifyTransactionPayment)]
         public async Task<ActionResult<APIResponse>> VerifyTransactionPayment(VerifyTransactionPaymentRequest verifyTransaction)
         {
