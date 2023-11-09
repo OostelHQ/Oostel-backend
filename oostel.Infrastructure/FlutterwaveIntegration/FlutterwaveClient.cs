@@ -33,8 +33,6 @@ namespace Oostel.Infrastructure.FlutterwaveIntegration
             string secretKey = _configuration.GetValue<string>("SecretKey");
             string url = _appSettings.BaseUrl + "banks/NG";
 
-          //  var json = JsonConvert.SerializeObject(countryIso2Code);
-          //  var data = new StringContent(json, Encoding.UTF8, "application/json");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", secretKey);
             var response = await _httpClient.GetAsync(url);
 

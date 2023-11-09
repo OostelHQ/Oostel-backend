@@ -11,5 +11,7 @@ namespace Oostel.Infrastructure.FlutterwaveIntegration
     {
         Task<BankTransferResponseData> ProcessTransfer(BankTransferRequest transferRequest);
         Task<GetBanksResponse> GetBanks();
+        Task<VerifyTransactionResponse> VerifyTransactionPayment(VerifyTransactionRequest verifyTransactionRequest);
+        Task<GeneratePaymentResponse> GeneratePaymentLink(GeneratePaymentRequest generatePaymentRequest);
     }
 }

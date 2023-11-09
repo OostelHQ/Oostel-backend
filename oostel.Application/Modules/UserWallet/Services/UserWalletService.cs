@@ -1,5 +1,6 @@
 ﻿using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserWallet.DTOs;
 using Oostel.Common.Constants;
@@ -9,6 +10,7 @@ using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserWallet;
 using Oostel.Domain.UserWallet.Enum;
 using Oostel.Infrastructure.FlutterwaveIntegration;
+using Oostel.Infrastructure.FlutterwaveIntegration.Models;
 using Oostel.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
@@ -24,8 +26,9 @@ namespace Oostel.Application.Modules.UserWallet.Services
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IFlutterwaveClient _flutterwaveClient;
+        private readonly AppSettings _appSettings;
         public UserWalletService(UnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager,
-                            IFlutterwaveClient flutterwaveClient)
+                            IFlutterwaveClient flutterwaveClient, IOptions<AppSettings> appSettings)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -132,7 +135,78 @@ namespace Oostel.Application.Modules.UserWallet.Services
 
             return listOfBanksToReturn;
         }
-      
+
+        public async Task<BasePaymentResponse> GeneratePaymentDetails(CustomerPaymentInfo customerPaymentInfo)
+        {
+            var paymentRedirectUrl = _appSettings.WebhookUrl;
+
+            var payload = new GeneratePaymentRequest
+            {
+                TransactionReference = customerPaymentInfo.PaymentData.ReferenceNumber,
+                Amount = customerPaymentInfo.PaymentData.Amount,
+                Currency = customerPaymentInfo.PaymentData.Currency,
+                RedirectURL = paymentRedirectUrl,
+                Customer = new PaymentRequestCustomer()
+                {
+                    Email = customerPaymentInfo.Email,
+                    PhoneNumber = customerPaymentInfo.PhoneNumber,
+                    Name = string.Concat(customerPaymentInfo.FirstName, "", customerPaymentInfo.LastName)
+
+                },
+                PaymentOptionsCSV = null,
+                PaymentPlan = null
+            };
+
+            var result = await _flutterwaveClient.GeneratePaymentLink(payload);
+            if (result != null)
+            {
+                var response = BasePaymentResponse.GetSuccessMessage("Success : Use the link to make payment");
+                var dataToReturn = new PaymentGenerationData
+                {
+                    PaymentLink = result.Data.Link,
+                    Id = "nil"
+                };
+                response.PaymentProvider = "FlutterWave-Rave";
+                response.PaymentGenerationData = dataToReturn;
+                return response;
+            }
+            else
+            {
+                return BasePaymentResponse.GetFailureMessage("Failed : something went wrong");
+            }
+        }
+
+        public async Task<BasePaymentResponse> VerifyTransactionPayment(VerifyRequestModel verifyRequestModel)
+        {
+            var payload = new VerifyTransactionRequest
+            {
+                TransactionId = verifyRequestModel.TransactionId
+            };
+
+            var result = await _flutterwaveClient.VerifyTransactionPayment(payload);
+            if (result != null)
+            {
+                var response = BasePaymentResponse.GetSuccessMessage("Verification Successful");
+
+                var verificationDataToReturn = new VerificationResponse
+                {
+                    Status = result.data.status,
+                    Id = result.data.id.ToString(),
+                    Amount = result.data.amount,
+                    ChargedAmount = result.data.charged_amount,
+                    Currency = result.data.currency,
+                    ProcessorResponse = result.data.processor_response,
+                };
+                response.VerificationData = verificationDataToReturn;
+                return response;
+            }
+            else
+            {
+                return BasePaymentResponse.GetFailureMessage("Failed : something went wrong");
+            }
+        }
+
+
     }
 
 
