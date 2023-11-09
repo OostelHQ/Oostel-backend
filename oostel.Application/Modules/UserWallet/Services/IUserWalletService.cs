@@ -3,6 +3,7 @@ using Oostel.Common.Helpers;
 using Oostel.Common.Types.RequestFeatures;
 using Oostel.Domain.UserWallet;
 using Oostel.Domain.UserWallet.Enum;
+using Oostel.Infrastructure.FlutterwaveIntegration.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,9 @@ namespace Oostel.Application.Modules.UserWallet.Services
         Task<PayInHistory> GetPayInHistoryById(string transactionId);
         Task<ResultResponse<PagedList<PayInHistory>>> GetPayInHistories(int pageNo, int pageSize);
         Task<BasePaymentResponse> GeneratePaymentDetails(CustomerPaymentInfo customerPaymentInfo);
+        Task<PayInHistory> CreateAndUpdatePayInHistory(PayInHistory payInHistory);
+        Task<bool> CreateTransaction(string senderId, string title, decimal amount, string lastname, TransactionType type);
+        Task<BasePaymentResponse> VerifyTransactionPayment(VerifyRequestModel verifyRequestModel);
+        string GenerateReferenceNumber();
     }
 }

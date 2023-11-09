@@ -35,7 +35,8 @@ namespace Oostel.Common.Constants
         public const string FailedToDeleteMessage = "Problem deleting an object";
         public const string InvitationMessage = "Invitation sent successfully!";
         public const string InValidReferralCode = "Invalid Referral Code";
-      
+        public const string PayInPayment = "Pay In Payment";
+
 
     }
 }

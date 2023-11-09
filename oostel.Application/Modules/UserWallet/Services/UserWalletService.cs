@@ -62,10 +62,19 @@ namespace Oostel.Application.Modules.UserWallet.Services
         }
 
 
-        public async Task<bool> CreateTransaction(TransactionDTO transactionDTO)
+        public async Task<bool> CreateTransaction(string senderId, string title, decimal amount, string lastname, TransactionType type)
         {
-            var mapper = _mapper.Map<Transaction>(transactionDTO);
-            var transaction = await _unitOfWork.TransactionRepository.Add(mapper);
+            Transaction transaction = new Transaction
+            {
+                UserId = senderId,
+                Title = title,
+                TransactionType = type,
+                CreatedDate = DateTime.UtcNow,
+                Amount = amount,
+                FromLastname = lastname,
+                LastModifiedDate = DateTime.UtcNow
+            };
+             await _unitOfWork.TransactionRepository.Add(transaction);
 
             await _unitOfWork.SaveAsync();
             return true;
@@ -204,6 +213,14 @@ namespace Oostel.Application.Modules.UserWallet.Services
             {
                 return BasePaymentResponse.GetFailureMessage("Failed : something went wrong");
             }
+        }
+
+        public string GenerateReferenceNumber()
+        {
+            var prefix = "Fynda-Ref-";
+            var timestamp = DateTime.UtcNow.Ticks;
+            var randomAlphabets = RandomCodeGenerator.GenerateAlphabet().Substring(0, 4);
+            return string.Concat(prefix, "-", timestamp.ToString(), "-", randomAlphabets);
         }
 
 
