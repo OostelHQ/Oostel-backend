@@ -217,7 +217,12 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         public async Task<List<GetLandlordProfileDTO>> GetAllLandlords()
         {
-            var landlords = await _unitOfWork.LandlordRepository.FindandInclude(x => x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()), true);
+            var landlords = await _applicationDbContext.Landlords
+                    .Include(x => x.User)
+                    .Include(x => x.Hostels)
+                    .ThenInclude(x => x.Rooms)
+                    .ToListAsync();
+
             var landlordMapping = _mapper.Map<List<GetLandlordProfileDTO>>(landlords);
 
             return landlordMapping;
