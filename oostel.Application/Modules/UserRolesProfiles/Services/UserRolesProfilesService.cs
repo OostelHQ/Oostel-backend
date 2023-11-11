@@ -265,10 +265,9 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             var landlord = new Landlord()
             {
                 Id = landlordProfileDTO.UserId,
-                Age = landlordProfileDTO.Age,
                 Religion = landlordProfileDTO.Religion,
                 DateOfBirth = landlordProfileDTO.DateOfBirth,
-                StateOfOrigin = landlordProfileDTO.StateOfOrigin,
+                State = landlordProfileDTO.State,
                 Country = landlordProfileDTO.Country,
                 CreatedDate = DateTime.UtcNow,
                 LastModifiedDate = DateTime.UtcNow,
@@ -302,10 +301,9 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             var agent = new Agent()
             {
                 Id = createAgentProfileDTO.UserId,
-                Age = createAgentProfileDTO.Age,
                 Religion = createAgentProfileDTO.Religion,
                 DateOfBirth = createAgentProfileDTO.DateOfBirth,
-                StateOfOrigin = createAgentProfileDTO.StateOfOrigin,
+                State = createAgentProfileDTO.State,
                 Country = createAgentProfileDTO.Country,
                 CreatedDate = DateTime.UtcNow,
                 LastModifiedDate = DateTime.UtcNow,
@@ -330,9 +328,8 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             var landlordProfile = _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == landlordProfileDTO.UserId, true).Result.SingleOrDefault();
             if (landlordProfile is null) return false;
 
-            landlordProfile.Age = landlordProfileDTO.Age;
             landlordProfile.Religion = landlordProfileDTO.Religion ?? landlordProfile.Religion;
-            landlordProfile.StateOfOrigin = landlordProfileDTO.StateOfOrigin ?? landlordProfile.StateOfOrigin;
+            landlordProfile.State = landlordProfileDTO.State ?? landlordProfile.State;
             landlordProfile.DateOfBirth = landlordProfileDTO.DateOfBirth;
             landlordProfile.Country = landlordProfileDTO.Country ?? landlordProfile.Country;
             landlordProfile.User.PhoneNumber = landlordProfileDTO.PhoneNumber ?? landlordProfile.User.PhoneNumber;
@@ -352,9 +349,8 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             var agentProfile = _unitOfWork.AgentRepository.FindandInclude(x => x.Id == updateAgentProfileDTO.UserId, true).Result.SingleOrDefault();
             if (agentProfile is null) return false;
 
-            agentProfile.Age = updateAgentProfileDTO.Age;
             agentProfile.Religion = updateAgentProfileDTO.Religion ?? agentProfile.Religion;
-            agentProfile.StateOfOrigin = updateAgentProfileDTO.StateOfOrigin ?? agentProfile.StateOfOrigin;
+            agentProfile.State = updateAgentProfileDTO.State ?? agentProfile.State;
             agentProfile.DateOfBirth = updateAgentProfileDTO.DateOfBirth;
             agentProfile.Country = updateAgentProfileDTO.Country ?? agentProfile.Country;
             agentProfile.User.PhoneNumber = updateAgentProfileDTO.PhoneNumber ?? agentProfile.User.PhoneNumber;
@@ -391,13 +387,13 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             //var agent = await _userManager.FindByIdAsync(agentId);
             var agent = _unitOfWork.AgentRepository.FindandInclude(x => x.Id == agentId, true).Result.FirstOrDefault();
 
-            var la = new LandlordAgent()
+            var landlordAgent = new LandlordAgent()
             {
                 Agent = agent,
                 Landlord = landlord
             };
-            agent.LandlordAgents.Add(la);
-            landlord.LandlordAgents.Add(la);
+            agent?.LandlordAgents.Add(landlordAgent);
+            landlord.LandlordAgents.Add(landlordAgent);
 
             await _unitOfWork.SaveAsync();
 

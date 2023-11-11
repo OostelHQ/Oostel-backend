@@ -11,14 +11,12 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
 {
     public class Landlord : BaseEntity<string>
     {
-        public string StateOfOrigin { get; set; }
+        public string State { get; set; }
         public string Religion { get; set; }
         public string? Country { get; set; }
         public bool IsVerified { get; set; }
         public DateTime? DateOfBirth { get; set; }
-        public string Area { get; set; }
-        public string State { get; set; }
-        public int Age { get; set; }
+        public string? Street { get; set; }
         public string? Denomination { get; set; }
         public virtual ApplicationUser User { get; set; }
         public ICollection<Domain.Hostel.Entities.Hostel> Hostels { get; set; }

@@ -167,7 +167,9 @@ namespace Oostel.Application.Modules.Hostel.Services
                 .Include(x => x.HostelLikes)
                 .Include(x => x.Comments)
                 .Include(x => x.Landlord)
-                .ThenInclude(x => x.LandlordAgents)
+                    .ThenInclude(x => x.LandlordAgents)
+                        .ThenInclude(x => x.Agent)
+                            .ThenInclude(X => X.User)
                 .Include(x => x.Landlord.User)
                 .FirstOrDefaultAsync(x => x.Id == hostelId);
                 

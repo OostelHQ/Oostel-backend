@@ -39,7 +39,7 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
             }
             public async Task<APIResponse> Handle(CreateHostelCommand request, CancellationToken cancellationToken)
             {
-                var mapData = _mapper.Map<HostelDTO>(request);
+                //var mapData = _mapper.Map<HostelDTO>(request);
                 var hostelRequest = (new HostelDTO()
                 {
                     Country = request.Country,
@@ -59,7 +59,7 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
                     TotalRoom = request.TotalRoom,
                     LandlordId = request.LandlordId
                 });
-                var createhostel = await _hostelService.CreateHostel(mapData);
+                var createhostel = await _hostelService.CreateHostel(hostelRequest);
 
                 if (!createhostel) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);
 

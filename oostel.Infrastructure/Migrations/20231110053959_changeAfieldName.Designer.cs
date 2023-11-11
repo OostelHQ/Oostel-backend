@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Oostel.Infrastructure.Data;
@@ -12,9 +13,11 @@ using Oostel.Infrastructure.Data;
 namespace Oostel.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231110053959_changeAfieldName")]
+    partial class changeAfieldName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -553,6 +556,9 @@ namespace Oostel.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
+                    b.Property<int>("Age")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Country")
                         .HasColumnType("text");
 
@@ -576,6 +582,10 @@ namespace Oostel.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("StateOfOrigin")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -648,6 +658,9 @@ namespace Oostel.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
+                    b.Property<int>("Age")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Country")
                         .HasColumnType("text");
 
@@ -671,6 +684,10 @@ namespace Oostel.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("StateOfOrigin")
                         .IsRequired()
                         .HasColumnType("text");
 

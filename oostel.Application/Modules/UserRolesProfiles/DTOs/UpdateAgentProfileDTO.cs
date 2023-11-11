@@ -9,13 +9,12 @@ namespace Oostel.Application.Modules.UserRolesProfiles.DTOs
     public class UpdateAgentProfileDTO
     {
         public string UserId { get; set; }
-        public string? FirstName { get; set; }
+        public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string StateOfOrigin { get; set; }
+        public string State { get; set; }
         public string Country { get; set; }
         public string PhoneNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Religion { get; set; }
-        public int Age { get; set; }
     }
 }

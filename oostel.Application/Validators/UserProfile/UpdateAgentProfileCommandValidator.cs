@@ -12,7 +12,7 @@ namespace Oostel.Application.Validators.UserProfile
         public UpdateAgentProfileCommandValidator()
         {
             RuleFor(u => u.UserId).NotEmpty().WithMessage("UserId is required");
-            RuleFor(p => p.StateOfOrigin).MaximumLength(100);
+            RuleFor(p => p.State).MaximumLength(100);
             RuleFor(p => p.Country).MaximumLength(100);
             RuleFor(r => r.Religion).MaximumLength(50);
         }

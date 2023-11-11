@@ -13,8 +13,7 @@ namespace Oostel.Application.Validators.UserProfile
         {
             RuleFor(u => u.UserId).NotEmpty().WithMessage("UserId is required");
             RuleFor(w => w.Country).MaximumLength(100);
-            RuleFor(p => p.StateOfOrigin).MaximumLength(100);
-            RuleFor(a => a.Age);
+            RuleFor(p => p.State).MaximumLength(100);
             RuleFor(r => r.Religion).MaximumLength(50);
         }
     }

@@ -23,6 +23,7 @@ namespace Oostel.Application.Modules.UserRolesProfiles.DTOs
         public string? PictureUrl { get; set; }
         public int ProfileViewCount { get; set; }
         public DateTime DateOfBirth { get; set; }
+        public string? Street { get; set; }
         public string Religion { get; set; }
         public int Age { get; set; }
     }

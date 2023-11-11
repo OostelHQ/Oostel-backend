@@ -16,14 +16,13 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
     public class UpdateLandLordProfileCommand : IRequest<APIResponse>
     {
         public string UserId { get; set; }
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
-        public string? StateOfOrigin { get; set; }
-        public string? Country { get; set; }
-        public string? PhoneNumber { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string State { get; set; }
+        public string Country { get; set; }
+        public string PhoneNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public string? Religion { get; set; }
-        public string? Age { get; set; }
+        public string Religion { get; set; }
 
         public sealed class UpdateLandLordProfileCommandHandler : IRequestHandler<UpdateLandLordProfileCommand, APIResponse>
         {

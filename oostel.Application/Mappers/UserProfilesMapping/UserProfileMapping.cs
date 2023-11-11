@@ -44,7 +44,7 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
             config.NewConfig<Landlord, LandlordProfileToDisplay>()
                 .Map(dest => dest.LandlordId, src => src.Id)
                 .Map(dest => dest.RegisterdOn, src => src.User.CreatedDate)
-                .Map(dest => dest.Location, src => src.Area)
+                .Map(dest => dest.Location, src => src.Street)
                 .Map(dest => dest.ProfilePicture, src => src.User.ProfilePhotoURL)
                 .Map(dest => dest.FullName, src => $"{src.User.FirstName} {src.User.LastName}")
                 .Map(dest => dest.RoleCVS, src => src.User.RolesCSV);
@@ -73,7 +73,7 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
             config.NewConfig<Agent, AgentProfileToDisplay>()
                 .Map(dest => dest.AgentId, src => src.Id)
                 .Map(dest => dest.RegisterdOn, src => src.User.CreatedDate)
-                .Map(dest => dest.Location, src => src.Area)
+                .Map(dest => dest.Location, src => src.Street)
                 .Map(dest => dest.ProfilePicture, src => src.User.ProfilePhotoURL)
                 .Map(dest => dest.RoleCVS, src => src.User.RolesCSV)
                 .Map(dest => dest.FullName, src => $"{src.User.FirstName} {src.User.LastName}");
