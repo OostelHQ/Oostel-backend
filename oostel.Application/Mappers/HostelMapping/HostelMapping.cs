@@ -18,8 +18,17 @@ namespace Oostel.Application.Mappers.HostelMapping
                 .Map(dest => dest.Country, src => src.Country);
             config.NewConfig<Room, RoomDTO>()
                 .Map(dest => dest.Files, src => src.RoomPictures);
-            
 
+
+            config.NewConfig<HostelFacilities, HostelFacilitiesDTO>()
+                .Map(dest => dest.FacilityName, src => src.FacilityName);
+            config.NewConfig<HostelRulesAndRegulations, HostelRulesAndRegulationsDTO>()
+                .Map(dest => dest.RuleAndRegulation, src => src.RuleAndRegulation);
+
+            config.NewConfig<RoomFacilities, RoomFacilitiesDTO>()
+                .Map(dest => dest.FacilityName, src => src.FacilityName);
+            config.NewConfig<RoomPictures, RoomPicturesDTO>()
+                .Map(dest => dest.PictureUrl, src => src.PictureUrl);
 
             config.NewConfig<Hostel, RoomDTO>()
                 .Map(dest => dest.Files, src => src.Rooms.ToList()[0].RoomPictures);

@@ -4,6 +4,7 @@ using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Application.Modules.Hostel.Services;
 using Oostel.Common.Constants;
 using Oostel.Common.Types;
+using Oostel.Domain.Hostel.Entities;
 using System.Net;
 
 namespace Oostel.Application.Modules.Hostel.Features.Commands
@@ -15,7 +16,7 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
         public string RoomNumber { get; set; }
         public decimal Price { get; set; }
         public string Duration { get; set; }
-        public List<string> RoomFacilities { get; set; }
+        public List<RoomFacilitiesDTO> RoomFacilities { get; set; }
         public bool IsRented { get; set; }
         public List<IFormFile> Files { get; set; }
 

@@ -5,6 +5,7 @@ using Oostel.Application.Modules.Hostel.Services;
 using Oostel.Common.Constants;
 using Oostel.Common.Enums;
 using Oostel.Common.Types;
+using Oostel.Domain.Hostel.Entities;
 using System.Net;
 
 namespace Oostel.Application.Modules.Hostel.Features.Commands
@@ -23,9 +24,9 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
         public string PriceBudgetRange { get; set; }
         public string Country { get; set; }
         public IEnumerable<RoomToCreate>? Rooms { get; set; }
-        public List<string> RulesAndRegulation { get; set; }
+        public List<HostelRulesAndRegulationsDTO> RulesAndRegulation { get; set; }
         public IFormFile HostelFrontViewPicture { get; set; }
-        public List<string> HostelFacilities { get; set; }
+        public List<HostelFacilitiesDTO> HostelFacilities { get; set; }
         public bool IsAnyRoomVacant { get; set; }
 
         public sealed class CreateHostelCommandHandler : IRequestHandler<CreateHostelCommand, APIResponse>
