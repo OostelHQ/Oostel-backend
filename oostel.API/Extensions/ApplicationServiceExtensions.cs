@@ -25,7 +25,7 @@ namespace Oostel.API.Extensions
 
             services.AddDbContext<ApplicationDbContext>(Options =>
             {
-                Options.UseNpgsql(_config.GetConnectionString("DefaultConnection"));
+                Options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(RegisterUserCommand).GetTypeInfo().Assembly));

@@ -22,7 +22,8 @@ namespace Oostel.Infrastructure.Data.Configurations
             modelBuilder.Entity<LandlordAgent>()
                 .HasOne(u => u.Landlord)
                 .WithMany(a => a.LandlordAgents)
-                .HasForeignKey(u => u.LandlordId);
+                .HasForeignKey(u => u.LandlordId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<LandlordAgent>()
                 .HasOne(u => u.Agent)

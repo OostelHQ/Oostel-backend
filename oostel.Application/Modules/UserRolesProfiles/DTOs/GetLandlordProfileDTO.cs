@@ -19,7 +19,7 @@ namespace Oostel.Application.Modules.UserProfiles.DTOs
         public string? Street { get; set; }
         public string Country { get; set; }
         public int NumberOfHostelsCreated { get; set; }
-        public int NumberRoomsCreated { get; set; }
+        public int? NumberRoomsCreated { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Religion { get; set; }
     }

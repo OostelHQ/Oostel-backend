@@ -2,7 +2,6 @@
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Npgsql.BackendMessages;
 using System;
 using System.Collections.Generic;
 using System.Linq;

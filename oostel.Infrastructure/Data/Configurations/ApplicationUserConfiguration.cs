@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Mailjet.Client.Resources;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Oostel.Domain.UserAuthentication.Entities;
+using Oostel.Domain.UserMessage;
 using Oostel.Domain.UserRoleProfiles.Entities;
 using Oostel.Domain.UserRolesProfiles.Entities;
 using Oostel.Domain.UserWallet;
+using System.Reflection.Emit;
 
 namespace Oostel.Infrastructure.Data.Configurations
 {
@@ -35,11 +38,6 @@ namespace Oostel.Infrastructure.Data.Configurations
                 .WithOne(a => a.User)
                 .HasForeignKey<Agent>(p => p.Id);
 
-           /* builder.Entity<ApplicationUser>()
-                .HasOne(a => a.ReferralAgentInfo)
-                .WithOne(a => a.User)
-                .HasForeignKey<ReferralAgentInfo>(p => p.Id);*/
-
             builder.Entity<ApplicationUser>()
                 .HasOne(u => u.Student)
                 .WithOne(a => a.User)
@@ -55,7 +53,17 @@ namespace Oostel.Infrastructure.Data.Configurations
                 .HasForeignKey<Wallet>(w => w.Id)
                 .OnDelete(DeleteBehavior.Cascade);
 
-          
+             builder.Entity<Domain.UserMessage.Message>()
+               .HasOne(u => u.Recipient)
+               .WithMany(m => m.MessagesReceived)
+               .OnDelete(DeleteBehavior.Restrict);
+
+             builder.Entity<Domain.UserMessage.Message>()
+                 .HasOne(u => u.Sender)
+                 .WithMany(m => m.MessagesSent)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+           
         }
     }
 }
