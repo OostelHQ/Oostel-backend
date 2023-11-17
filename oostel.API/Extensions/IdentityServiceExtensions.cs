@@ -74,7 +74,7 @@ namespace Oostel.API.Extensions
                 {
                     Title = "Fynda APP",
                     Version = "v1",
-                    Description = "Authenticator API by Donkennie",
+                    Description = "Fynda API by Donkennie",
                     TermsOfService = new Uri("https://example.com/terms"),
                     Contact = new OpenApiContact
                     {
@@ -89,10 +89,6 @@ namespace Oostel.API.Extensions
                     }
 
                 });
-
-                /*var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                s.IncludeXmlComments(xmlPath);*/
 
                 s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {

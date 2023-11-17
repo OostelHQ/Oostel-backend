@@ -9,6 +9,7 @@ using Oostel.Infrastructure.Repositories;
 using Oostel.Application.Modules.UserAuthentication.Features.Commands;
 using System.Reflection;
 using Marvin.Cache.Headers;
+using Microsoft.Extensions.Configuration;
 
 namespace Oostel.API.Extensions
 {
@@ -27,6 +28,8 @@ namespace Oostel.API.Extensions
             {
                 Options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
+
+            services.Configure<MailjetSettings>(_config.GetSection("Mailjet"));
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(RegisterUserCommand).GetTypeInfo().Assembly));
 

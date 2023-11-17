@@ -2,6 +2,7 @@
 using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace Oostel.Infrastructure.EmailService
@@ -9,16 +10,17 @@ namespace Oostel.Infrastructure.EmailService
     public class EmailSender : IEmailSender
     {
 
-        private readonly IConfiguration _config;
+        //private readonly IConfiguration _config;
+        private readonly MailjetSettings _mailjetSettings;
 
-        public EmailSender(IConfiguration config)
+        public EmailSender(IOptions<MailjetSettings> mailjetSettings)
         {
-            _config = config;
+            _mailjetSettings = mailjetSettings.Value;
         }
 
         public async Task SendEmailAsync(string email, string subject, string body)
         {
-            MailjetClient client = new MailjetClient("61ad72cb57d19e529e18f9340ea6730b", "ded532f83c336c0cf6a6273cfbaa38d4")//_config["Mailjet : APIKey"], _config["Mailjet : SecretKey"])
+            MailjetClient client = new MailjetClient(_mailjetSettings.ApplicationKey, _mailjetSettings.ApplicationSecret);//"61ad72cb57d19e529e18f9340ea6730b", "ded532f83c336c0cf6a6273cfbaa38d4")//_config["Mailjet : APIKey"], _config["Mailjet : SecretKey"])
             {
 
             };
