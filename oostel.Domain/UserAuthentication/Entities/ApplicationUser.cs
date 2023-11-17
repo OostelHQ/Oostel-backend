@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Oostel.Domain.UserMessage;
 using Oostel.Domain.UserRoleProfiles.Entities;
 using Oostel.Domain.UserRolesProfiles.Entities;
 using Oostel.Domain.UserWallet;
@@ -25,7 +26,9 @@ namespace Oostel.Domain.UserAuthentication.Entities
         public virtual ReferralAgentInfo ReferralAgentInfo { get; set; }
 
         public ICollection<AgentReferred> AgentReferreds { get; set; }
-        public ICollection<Transaction> Transactions { get; set; }  
+        public ICollection<Transaction> Transactions { get; set; }
+        public ICollection<Message> MessagesSent { get; set; }
+        public ICollection<Message> MessagesReceived { get; set; }
 
 
         public ApplicationUser()

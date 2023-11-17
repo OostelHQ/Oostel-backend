@@ -54,7 +54,7 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
                 .Map(dest => dest.UserId, src => src.Id)
                 .Map(dest => dest.Email, src => src.User.Email)
                 .Map(dest => dest.NumberOfHostelsCreated, src => src.Hostels.Count(x => x.LandlordId == src.Id))
-                .Map(dest => dest.NumberRoomsCreated, src => src.Hostels.ToList()[0].Rooms.Count(x => x.HostelId == src.Hostels.ToList()[0].Id))
+                .Map(dest => dest.NumberRoomsCreated, src => src.Hostels.Sum(hostel => hostel.Rooms.Count))
                 .Map(dest => dest.JoinedDate, src => src.User.CreatedDate)
                 .Map(dest => dest.ProfileViewCount, src => src.User.ProfileViewCount)
                 .Map(dest => dest.PictureUrl, src => src.User.ProfilePhotoURL)
@@ -64,8 +64,9 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
                 .Map(dest => dest.Email, src => src.User.Email)
                 .Map(dest => dest.NumberOfHostelsCreated, src => src.Hostels.Count(x => x.LandlordId == src.Id))
                 .Map(dest => dest.PictureUrl, src => src.User.ProfilePhotoURL)
-                .Map(dest => dest.LastName, src => src.User.LastName)
+                .Map(dest => dest.NumberRoomsCreated, src => src.Hostels.Sum(hostel => hostel.Rooms.Count))
                 .Map(dest => dest.FirstName, src => src.User.FirstName)
+                .Map(dest => dest.LastName, src => src.User.LastName)
                 .Map(dest => dest.ProfileViewCount, src => src.User.ProfileViewCount);
                 
 

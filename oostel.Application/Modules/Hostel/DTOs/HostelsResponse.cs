@@ -18,7 +18,7 @@ namespace Oostel.Application.Modules.Hostel.DTOs
         public string Country { get; set; }
         public int NumberOfRoomsLeft { get; set; }
         public int HostelLikesCount { get; set; }
-        public List<HostelRulesAndRegulationsDTO> RulesAndRegulation { get; set; }
-        public List<HostelFacilitiesDTO> HostelFacilities { get; set; }
+        public List<string> RulesAndRegulation { get; set; }
+        public List<string> HostelFacilities { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Infrastructure.Data;
+using System.Reflection;
 using System.Text;
 
 namespace Oostel.API.Extensions
@@ -86,7 +87,12 @@ namespace Oostel.API.Extensions
                         Name = "Fynda API LICX",
                         Url = new Uri("https://example.com/license"),
                     }
+
                 });
+
+                /*var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                s.IncludeXmlComments(xmlPath);*/
 
                 s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {

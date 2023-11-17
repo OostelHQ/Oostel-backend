@@ -23,6 +23,7 @@ namespace Oostel.Infrastructure.Data
 
             builder.ConfigureApplicationUser();
             builder.ConfigureUserProfile();
+            builder.ConfigureHostelSystem();
         }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }

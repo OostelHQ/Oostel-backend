@@ -37,15 +37,15 @@ namespace Oostel.API.Controllers
                 Country = request.Country,
                 HomeSize = request.HomeSize,
                 HostelCategory = request.HostelCategory,
-                Rooms = request.Rooms,
+                //Rooms = request.Rooms,
                 Junction = request.Junction,
                 HostelDescription= request.HostelDescription,
-                HostelFacilities = request.HostelFacilities,
+                HostelFacilities = request.FacilityName,
                 HostelFrontViewPicture = request.HostelFrontViewPicture,
                 HostelName = request.HostelName,
                 IsAnyRoomVacant = request.IsAnyRoomVacant,
                 PriceBudgetRange= request.PriceBudgetRange,
-                RulesAndRegulation = request.RulesAndRegulation,
+                RulesAndRegulation = request.RuleAndRegulation,
                 State = request.State,
                 Street = request.Street,
                 TotalRoom = request.TotalRoom,
@@ -68,7 +68,7 @@ namespace Oostel.API.Controllers
         [Route(HostelRoute.GetAllHostels)]
         [ResponseCache(Duration = 60)]
         [AllowAnonymous]
-        public async Task<ActionResult<APIResponse>> GetAllHostels([FromQuery] HostelTypesParam hostelTypesParam)
+        public async Task<ActionResult<APIResponse>> GetAllHostels([FromQuery] HostelTypesParam? hostelTypesParam)
         {
             return HandlePagedResult(await Mediator.Send(new GetAllHostelsRequest{hostelTypesParam = hostelTypesParam}));
         }

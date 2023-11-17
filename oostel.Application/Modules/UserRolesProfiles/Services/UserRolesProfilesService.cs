@@ -238,14 +238,20 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         public async Task<GetAllLandlordProfileDetails> GetLandlordsById(string landlordId)
         {
-            var landlord = await _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == landlordId && x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()), true);
+            // var landlord = await _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == landlordId && x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()), true);
+            var landlord = await _applicationDbContext.Landlords
+                     .Include(x => x.User)
+                     .Include(x => x.Hostels)
+                     .ThenInclude(x => x.Rooms)
+                     .FirstOrDefaultAsync();
+
             if (landlord is null) return null;
 
             GetAllLandlordProfileDetails studentDetailsResponse = new();
 
-            studentDetailsResponse.UserDto = _mapper.Map<UserDto>(landlord.ToList()[0].User);
-            studentDetailsResponse.UserWalletBalanceDTO = _mapper.Map<UserWalletBalanceDTO>(landlord.ToList()[0].User.Wallets);
-            studentDetailsResponse.LandlordProfile = _mapper.Map<LandlordProfile>(landlord.ToList()[0]);
+            studentDetailsResponse.UserDto = _mapper.Map<UserDto>(landlord.User);
+            studentDetailsResponse.UserWalletBalanceDTO = _mapper.Map<UserWalletBalanceDTO>(landlord.User.Wallets);
+            studentDetailsResponse.LandlordProfile = _mapper.Map<LandlordProfile>(landlord);
 
             return studentDetailsResponse;
         }
