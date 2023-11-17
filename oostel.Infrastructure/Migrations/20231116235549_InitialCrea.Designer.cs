@@ -12,8 +12,8 @@ using Oostel.Infrastructure.Data;
 namespace Oostel.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231116174818_Onee")]
-    partial class Onee
+    [Migration("20231116235549_InitialCrea")]
+    partial class InitialCrea
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

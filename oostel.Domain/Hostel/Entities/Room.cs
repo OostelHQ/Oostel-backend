@@ -12,9 +12,9 @@ namespace Oostel.Domain.Hostel.Entities
         public string RoomNumber { get; set; }
         public decimal Price { get; set; }
         public string Duration { get; set; }
-        public List<string> RoomPictures { get; set; } 
+        public List<string> RoomPictures { get; set; } = new List<string>();
         public bool IsRented { get; set; }
-        public List<string> RoomFacilities { get; set; }
+        public List<string> RoomFacilities { get; set; } = new List<string>();
         public string HostelId { get; set; }
         public Hostel Hostel { get; set; }
 

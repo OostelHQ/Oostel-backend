@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Oostel.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class workLikeCharm : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -454,6 +454,8 @@ namespace Oostel.Infrastructure.Migrations
                     State = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PriceBudgetRange = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RulesAndRegulation = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HostelFacilities = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HostelFrontViewPicture = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsAnyRoomVacant = table.Column<bool>(type: "bit", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -545,25 +547,6 @@ namespace Oostel.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HostelFacilities",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FacilityName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HostelId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HostelFacilities", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_HostelFacilities_Hostels_HostelId",
-                        column: x => x.HostelId,
-                        principalTable: "Hostels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "HostelLikes",
                 columns: table => new
                 {
@@ -596,25 +579,6 @@ namespace Oostel.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HostelRulesAndRegulations",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RuleAndRegulation = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HostelId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HostelRulesAndRegulations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_HostelRulesAndRegulations_Hostels_HostelId",
-                        column: x => x.HostelId,
-                        principalTable: "Hostels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Rooms",
                 columns: table => new
                 {
@@ -622,7 +586,9 @@ namespace Oostel.Infrastructure.Migrations
                     RoomNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Duration = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RoomPictures = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsRented = table.Column<bool>(type: "bit", nullable: false),
+                    RoomFacilities = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HostelId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -634,44 +600,6 @@ namespace Oostel.Infrastructure.Migrations
                         name: "FK_Rooms_Hostels_HostelId",
                         column: x => x.HostelId,
                         principalTable: "Hostels",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RoomFacilities",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FacilityName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RoomId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RoomFacilities", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RoomFacilities_Rooms_RoomId",
-                        column: x => x.RoomId,
-                        principalTable: "Rooms",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RoomPictures",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RoomId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RoomPictures", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RoomPictures_Rooms_RoomId",
-                        column: x => x.RoomId,
-                        principalTable: "Rooms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -745,11 +673,6 @@ namespace Oostel.Infrastructure.Migrations
                 column: "GroupName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HostelFacilities_HostelId",
-                table: "HostelFacilities",
-                column: "HostelId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_HostelLikes_HostelId",
                 table: "HostelLikes",
                 column: "HostelId");
@@ -763,11 +686,6 @@ namespace Oostel.Infrastructure.Migrations
                 name: "IX_HostelLikes_SourceUserId",
                 table: "HostelLikes",
                 column: "SourceUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HostelRulesAndRegulations_HostelId",
-                table: "HostelRulesAndRegulations",
-                column: "HostelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Hostels_LandlordId",
@@ -800,16 +718,6 @@ namespace Oostel.Infrastructure.Migrations
                 table: "ReferralAgentInfos",
                 column: "UserId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RoomFacilities_RoomId",
-                table: "RoomFacilities",
-                column: "RoomId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RoomPictures_RoomId",
-                table: "RoomPictures",
-                column: "RoomId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rooms_HostelId",
@@ -855,13 +763,7 @@ namespace Oostel.Infrastructure.Migrations
                 name: "Connections");
 
             migrationBuilder.DropTable(
-                name: "HostelFacilities");
-
-            migrationBuilder.DropTable(
                 name: "HostelLikes");
-
-            migrationBuilder.DropTable(
-                name: "HostelRulesAndRegulations");
 
             migrationBuilder.DropTable(
                 name: "LandlordAgents");
@@ -879,10 +781,7 @@ namespace Oostel.Infrastructure.Migrations
                 name: "ReferralAgentInfos");
 
             migrationBuilder.DropTable(
-                name: "RoomFacilities");
-
-            migrationBuilder.DropTable(
-                name: "RoomPictures");
+                name: "Rooms");
 
             migrationBuilder.DropTable(
                 name: "Transactions");
@@ -904,9 +803,6 @@ namespace Oostel.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Students");
-
-            migrationBuilder.DropTable(
-                name: "Rooms");
 
             migrationBuilder.DropTable(
                 name: "Hostels");
