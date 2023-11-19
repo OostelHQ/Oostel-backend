@@ -1,13 +1,12 @@
-﻿using Mailjet.Client.Resources;
-using Mapster;
+﻿using Mapster;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Oostel.Application.Modules.UserAuthentication.DTOs;
 using Oostel.Common.Helpers;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserAuthentication.Events;
 using Oostel.Domain.UserRolesProfiles.Entities;
+using Oostel.Infrastructure.EmailService;
 using Oostel.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
@@ -149,7 +148,9 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
              $"<p>You're welcome on board! Before you take any step further, do well to first verify your email</p><p>" +
              $"<p><b>{generatedCode}</b></p>";
 
-            await _emailSender.SendEmailAsync(email, $"Please Verify Your Email", message);
+            var emailParams = new EmailParameter(email, $"Please Verify Your Email", message);
+
+            await _emailSender.SendEmailAsync(emailParams);
 
             return true;
         }
@@ -161,7 +162,9 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
              $"<p>Kindly reset your password with verified OTP below</p><p>" +
              $"<p><b>{generatedCode}</b></p>";
 
-            await _emailSender.SendEmailAsync(email, $"Reset Your Password", message);
+            var emailParams = new EmailParameter(email, $"Reset Password", message);
+
+            await _emailSender.SendEmailAsync(emailParams);
 
             return true;
         }

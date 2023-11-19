@@ -1,4 +1,4 @@
-﻿using Mailjet.Client.Resources;
+﻿
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Oostel.Domain.UserAuthentication.Entities;

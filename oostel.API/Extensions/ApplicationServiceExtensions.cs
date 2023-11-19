@@ -28,8 +28,11 @@ namespace Oostel.API.Extensions
             {
                 Options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
-
-            services.Configure<MailjetSettings>(_config.GetSection("Mailjet"));
+           /* var emailConfig = _config
+                            .GetSection("EmailConfiguration")
+                            .Get<EmailConfiguration>(*/
+            services.Configure<EmailConfiguration>(_config.GetSection("EmailConfiguration"));
+            //services.AddSingleton()
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(RegisterUserCommand).GetTypeInfo().Assembly));
 

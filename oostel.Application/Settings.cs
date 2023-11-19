@@ -1,7 +1,6 @@
 ﻿using FluentValidation.AspNetCore;
 using Mapster;
 using MapsterMapper;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Oostel.Application.Modules.Hostel.Services;

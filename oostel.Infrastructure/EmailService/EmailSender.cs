@@ -1,8 +1,10 @@
-﻿using Mailjet.Client;
-using Mailjet.Client.Resources;
+﻿
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using MimeKit;
 using Newtonsoft.Json.Linq;
 
 namespace Oostel.Infrastructure.EmailService
@@ -11,16 +13,16 @@ namespace Oostel.Infrastructure.EmailService
     {
 
         //private readonly IConfiguration _config;
-        private readonly MailjetSettings _mailjetSettings;
+        private readonly EmailConfiguration _mailjetSettings;
 
-        public EmailSender(IOptions<MailjetSettings> mailjetSettings)
+        public EmailSender(IOptions<EmailConfiguration> mailjetSettings)
         {
             _mailjetSettings = mailjetSettings.Value;
         }
 
-        public async Task SendEmailAsync(string email, string subject, string body)
+       /* public async Task SendEmailAsync(string email, string subject, string body)
         {
-            MailjetClient client = new MailjetClient(_mailjetSettings.ApplicationKey, _mailjetSettings.ApplicationSecret);//"61ad72cb57d19e529e18f9340ea6730b", "ded532f83c336c0cf6a6273cfbaa38d4")//_config["Mailjet : APIKey"], _config["Mailjet : SecretKey"])
+            MailjetClient client = new MailjetClient("61ad72cb57d19e529e18f9340ea6730b", "ded532f83c336c0cf6a6273cfbaa38d4");//"61ad72cb57d19e529e18f9340ea6730b", "ded532f83c336c0cf6a6273cfbaa38d4")//_config["Mailjet : APIKey"], _config["Mailjet : SecretKey"])
             {
 
             };
@@ -41,7 +43,23 @@ namespace Oostel.Infrastructure.EmailService
                 });
 
             MailjetResponse response = await client.PostAsync(request);
-        }
+        }*/
 
+        public async Task SendEmailAsync(EmailParameter emailParameter)
+        {
+            var message = new MimeMessage();
+            message.From.Add(MailboxAddress.Parse(_mailjetSettings.UserName));
+            message.To.Add(MailboxAddress.Parse(emailParameter.To));
+            message.Subject = emailParameter.Subject;
+
+            var builder = new BodyBuilder { HtmlBody = emailParameter.Content };
+            message.Body = builder.ToMessageBody();
+
+            using var client = new SmtpClient();
+            await client.ConnectAsync(_mailjetSettings.SmtpServer, _mailjetSettings.Port, SecureSocketOptions.StartTls);
+            await client.AuthenticateAsync(_mailjetSettings.UserName, _mailjetSettings.Password);
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
+        }
     }
 }

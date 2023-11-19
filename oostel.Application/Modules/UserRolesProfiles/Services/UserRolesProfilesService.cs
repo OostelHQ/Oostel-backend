@@ -1,9 +1,7 @@
-﻿using Mailjet.Client.Resources;
-using MapsterMapper;
+﻿using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Application.Modules.UserProfiles.DTOs;
@@ -21,6 +19,7 @@ using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserRoleProfiles.Entities;
 using Oostel.Domain.UserRolesProfiles.Entities;
 using Oostel.Infrastructure.Data;
+using Oostel.Infrastructure.EmailService;
 using Oostel.Infrastructure.Media;
 using Oostel.Infrastructure.Repositories;
 using System.Net;
@@ -472,8 +471,9 @@ namespace Oostel.Application.Modules.UserProfiles.Services
              $"<p><b>{referralCode}</b> <br><br><br><br></p>" +
              $"<p>{shortNote}</p>";
 
+            var emailParams = new EmailParameter(agentEmail, $"You Got An Invitation", message);
 
-            await _emailSender.SendEmailAsync(agentEmail, $"You Got An Invitation", message);
+            await _emailSender.SendEmailAsync(emailParams);
 
             return true;
         }

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Oostel.Infrastructure.EmailService
 {
-    public class MailjetSettings
+    public interface IEmailSender
     {
-        public string ApplicationKey { get; set; }
-        public string ApplicationSecret { get; set; }
+        Task SendEmailAsync(EmailParameter emailParameter);
     }
 }

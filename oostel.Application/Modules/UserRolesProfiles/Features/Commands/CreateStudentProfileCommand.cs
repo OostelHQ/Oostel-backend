@@ -1,5 +1,4 @@
-﻿using Mailjet.Client.Resources;
-using MapsterMapper;
+﻿using MapsterMapper;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserProfiles.Services;
 using Oostel.Application.Modules.UserRolesProfiles.DTOs;
