@@ -45,7 +45,7 @@ namespace Oostel.Application.Modules.UserRolesProfiles.Features.Commands
                 if (referralCode is null)
                     return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.NotFound);
 
-                 await _userRolesProfilesService.SendAgentInvitationCode(request.AgentEmail, referralCode.ToList()[0].ReferralCode, referralCode.ToList()[0].User.FirstName, request.ShortNote);
+                // await _userRolesProfilesService.SendAgentInvitationCode(request.AgentEmail, referralCode.ToList()[0].ReferralCode, referralCode.ToList()[0].User.FirstName, request.ShortNote);
 
                 return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: null, ResponseMessages.InvitationMessage);
             }

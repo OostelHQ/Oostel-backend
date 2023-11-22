@@ -33,15 +33,15 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         private readonly IMapper _mapper;
         private readonly IMediaUpload _mediaUpload;
         private readonly ApplicationDbContext _applicationDbContext;
-        private readonly IEmailSender _emailSender;
-        public UserRolesProfilesService(UserManager<ApplicationUser> userManager, IEmailSender emailSender, ApplicationDbContext applicationDbContext, UnitOfWork unitOfWork, IMediaUpload mediaUpload, IMapper mapper)
+        //private readonly IEmailSender _emailSender;
+        public UserRolesProfilesService(UserManager<ApplicationUser> userManager, ApplicationDbContext applicationDbContext, UnitOfWork unitOfWork, IMediaUpload mediaUpload, IMapper mapper)
         {
             _unitOfWork= unitOfWork;
             _userManager= userManager;
             _mapper= mapper;
             _mediaUpload = mediaUpload;
             _applicationDbContext = applicationDbContext;
-            _emailSender = emailSender;
+            //_emailSender = emailSender;
         }
 
         public async Task<ResultResponse<PagedList<GetStudentProfileDTO>>> GetAllStudents(StudentTypeParams studentTypeParams)
@@ -463,7 +463,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             return landlord.ToList()[0].ReferralCode;
         }
 
-        public async Task<bool> SendAgentInvitationCode(string agentEmail, string referralCode, string landlordName, string shortNote)
+        /*public async Task<bool> SendAgentInvitationCode(string agentEmail, string referralCode, string landlordName, string shortNote)
         {
 
             var message = $"<p><b>Hello, there!</b></p>" +
@@ -476,7 +476,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             await _emailSender.SendEmailAsync(emailParams);
 
             return true;
-        }
+        }*/
 
         public async Task<ApplicationUser> GetEmailAsync(string email)
         {

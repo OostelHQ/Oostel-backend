@@ -34,7 +34,7 @@ namespace Oostel.Application
                 s.RegisterValidatorsFromAssemblyContaining<RegisterUserCommandValidator>();
             });
 
-            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped< EmailSender>();
             services.AddScoped<ITokenService, TokenService>();
 
             services.Configure<CloudinarySettings>(_configuration.GetSection("CloudinarySettings"));

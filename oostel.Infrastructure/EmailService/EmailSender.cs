@@ -1,12 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
-using RestSharp;
-using RestSharp.Authenticators;
-
 namespace Oostel.Infrastructure.EmailService
 {
-    public class EmailSender : IEmailSender
+    public class EmailSender //: IEmailSender
     {
 
         private readonly IConfiguration _config;
@@ -62,58 +59,6 @@ namespace Oostel.Infrastructure.EmailService
             await client.SendAsync(message);
             await client.DisconnectAsync(true);
         }*/
-
-
-        public bool SendEmailAsync(string email, string subject, string body)
-        {
-            var client = new RestClientOptions(baseUrl: "https://api.mailgun.net/v3");
-
-            RestRequest request = new RestRequest(resource: "", Method.Post);
-
-            client.Authenticator =
-                new HttpBasicAuthenticator(username:"", password:_config.GetSection(key: "API_KEY").Value);
-
-            request.AddParameter(name: "domain", value: "sandbox2a974a37475a4fb38760dfbc1898ac89.mailgun.org");
-            request.Resource = "{domain}/messages";
-            request.AddParameter(name: "from", value: "Excited User <postmaster@sandbox2a974a37475a4fb38760dfbc1898ac89.mailgun.org>");
-            request.AddParameter(name: "to", value: email);
-            request.AddParameter(name: "subject", value: subject);
-            request.AddParameter(name: "text", value: body);
-            request.Method = Method.Post;
-
-            var response = client.Execute(client);
-
-        }
-
-        public async Task SendEmailAsync(string email, string subject, string body)
-        {
-            var client = new RestClient("https://api.mailgun.net/v3");
-
-            var request = new RestRequest("{domain}/messages", Method.Post)
-                .AddUrlSegment("domain", "sandbox2a974a37475a4fb38760dfbc1898ac89.mailgun.org")
-                .AddParameter("from", "Excited User <postmaster@sandbox2a974a37475a4fb38760dfbc1898ac89.mailgun.org>")
-                .AddParameter("to", email)
-                .AddParameter("subject", subject)
-                .AddParameter("text", body);
-
-            // Manually set the Authorization header
-            var apiKey = _config.GetSection("API_KEY").Value;
-            request.AddHeader("Authorization", "Basic " + Convert.ToBase64String(System.Text.Encoding.Default.GetBytes($"api:{apiKey}")));
-
-            var response = await client.ExecuteAsync(request);
-
-            if (response.IsSuccessful)
-            {
-                Console.WriteLine($"Message sent! Response: {response.Content}");
-            }
-            else
-            {
-                Console.WriteLine($"An error occurred: {response.ErrorMessage}");
-            }
-        }
-
-
-
 
 
 

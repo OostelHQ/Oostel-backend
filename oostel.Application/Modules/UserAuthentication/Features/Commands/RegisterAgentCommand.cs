@@ -84,7 +84,7 @@ namespace Oostel.Application.Modules.UserAuthentication.Features.Commands
                     }
                 }
 
-                var user = await _userManager.FindByEmailAsync(request.EmailAddress);
+              /*  var user = await _userManager.FindByEmailAsync(request.EmailAddress);
                 if (user != null)
                 {
                     var emailVerificationResult = await _userAuthenticationService.SendVerifyOTPToUserEmail(user, cancellationToken);
@@ -95,7 +95,7 @@ namespace Oostel.Application.Modules.UserAuthentication.Features.Commands
                         _logger.LogError($"Email Verification failed to Send to User : {user.Id} on Email {user.Email} at {DateTime.Now}  ");
                     }
 
-                }
+                }*/
 
                 return APIResponse.GetSuccessMessage(HttpStatusCode.Created, null, ResponseMessages.SuccessfulCreation);
             }
