@@ -12,7 +12,7 @@ using Oostel.Infrastructure.Data;
 namespace Oostel.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231118035333_InitialCreate")]
+    [Migration("20231122150112_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
