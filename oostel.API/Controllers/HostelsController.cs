@@ -16,7 +16,8 @@ using Oostel.Infrastructure.Repositories;
 
 namespace Oostel.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
+    [AllowAnonymous]
     public class HostelsController : BaseController
     {
         private readonly IMapper _mapper;
@@ -29,7 +30,7 @@ namespace Oostel.API.Controllers
 
         [HttpPost]
         [Route(HostelRoute.CreateHostel)]
-        [Authorize(Policy = "LandlordAndAgent")]
+        //[Authorize(Policy = "LandlordAndAgent")]
         public async Task<ActionResult<APIResponse>> CreateHostel([FromForm]HostelRequest request)
         {
             var hostelRequest = (new CreateHostelCommand()
@@ -37,7 +38,7 @@ namespace Oostel.API.Controllers
                 Country = request.Country,
                 HomeSize = request.HomeSize,
                 HostelCategory = request.HostelCategory,
-                //Rooms = request.Rooms,
+               // Rooms = request.Rooms,
                 Junction = request.Junction,
                 HostelDescription= request.HostelDescription,
                 HostelFacilities = request.FacilityName,

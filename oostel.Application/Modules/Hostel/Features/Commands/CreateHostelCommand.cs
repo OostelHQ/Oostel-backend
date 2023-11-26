@@ -23,7 +23,7 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
         public string State { get; set; }
         public string PriceBudgetRange { get; set; }
         public string Country { get; set; }
-      //  public IEnumerable<RoomToCreate>? Rooms { get; set; }
+        public List<RoomToCreate>? Rooms { get; set; }
         public List<string> RulesAndRegulation { get; set; }
         public IFormFile HostelFrontViewPicture { get; set; }
         public List<string> HostelFacilities { get; set; }
@@ -46,7 +46,7 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
                     Country = request.Country,
                     HomeSize = request.HomeSize,
                     HostelCategory = request.HostelCategory,
-                   // Rooms = _mapper.Map<List<RoomDTO>>(request?.Rooms),
+                    Rooms = _mapper.Map<List<RoomDTO>>(request.Rooms),
                     Junction = request.Junction,
                     HostelDescription = request.HostelDescription,
                     HostelFacilities = request.HostelFacilities,

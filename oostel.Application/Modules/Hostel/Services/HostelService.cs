@@ -44,7 +44,7 @@ namespace Oostel.Application.Modules.Hostel.Services
 
             var rooms = new List<Room>();
 
-           /* foreach (var roomDto in hostelDTO.Rooms)
+            foreach (var roomDto in hostelDTO?.Rooms)
             {
                 bool roomCreated = await CreateRoomForHostel(hostelDTO.LandlordId, roomDto);
 
@@ -52,7 +52,9 @@ namespace Oostel.Application.Modules.Hostel.Services
                 {
                     return false;
                 }
-            }*/
+            }
+
+            var mappingRooms = _mapper.Map<Room>(hostelDTO.Rooms);
 
             //var rulesAndRegulationsMapping = _mapper.Map<List<HostelRulesAndRegulations>>(hostelDTO.RulesAndRegulation);
            // var faclitiesMapping = _mapper.Map<List<HostelFacilities>>(hostelDTO.HostelFacilities);
@@ -74,9 +76,10 @@ namespace Oostel.Application.Modules.Hostel.Services
                 hostelDTO.RulesAndRegulation,
                 hostelDTO.HostelFacilities,
                 hostelFrontViewPicture.Url,
-                hostelDTO.IsAnyRoomVacant,
-                rooms
+                hostelDTO.IsAnyRoomVacant
                 );
+
+            hostel.Rooms?.Add(mappingRooms);
 
             await _unitOfWork.HostelRepository.Add(hostel);
             await _unitOfWork.SaveAsync();

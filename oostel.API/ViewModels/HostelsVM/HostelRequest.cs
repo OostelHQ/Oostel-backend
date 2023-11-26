@@ -5,7 +5,7 @@ using Oostel.Domain.Hostel.Entities;
 
 namespace Oostel.API.ViewModels.HostelsVM
 {
-    public record HostelRequest
+    public class HostelRequest
     {
         public string LandlordId { get; set; }
         public string HostelName { get; set; }
@@ -16,13 +16,11 @@ namespace Oostel.API.ViewModels.HostelsVM
         public string Junction { get; set; }
         public string PriceBudgetRange { get; set; }
         public HostelCategory HostelCategory { get; set; }
+        public List<RoomToCreate>? Rooms { get; set; }
         public string State { get; set; }
         public IFormFile HostelFrontViewPicture { get; set; }
         public string Country { get; set; }
-        // public IEnumerable<RoomToCreate>? Rooms { get; set; }
-        //[JsonProperty("ruleAndRegulation")]
         public List<string> RuleAndRegulation { get; set; }
-        //[JsonProperty("hostelFacilities")]
         public List<string> FacilityName { get; set; }
         public bool IsAnyRoomVacant { get; set; }
     }
