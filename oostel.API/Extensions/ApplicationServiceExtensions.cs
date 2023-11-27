@@ -20,6 +20,7 @@ namespace Oostel.API.Extensions
 
             services.AddServicesConfiguration(_config);
 
+            services.AddHttpContextAccessor();
             services.AddScoped<UnitOfWork>();
 
             services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));

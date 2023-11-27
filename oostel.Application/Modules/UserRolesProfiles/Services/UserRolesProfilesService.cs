@@ -283,7 +283,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
                 LastModifiedDate = DateTime.UtcNow,
             };
 
-            var checkIfLandlordExist = await _unitOfWork.LandlordRepository.Find(x => x.Id == landlordProfileDTO.UserId);
+            var checkIfLandlordExist = await _unitOfWork.LandlordRepository.Find(x => x.Id == landlordProfileDTO.UserId && x.User.RolesCSV == RoleString.LandLord);
             if (checkIfLandlordExist is null)
             {
                 var referralInfo = await CreateReferralCode(landlordProfileDTO.UserId);
@@ -319,7 +319,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
                 LastModifiedDate = DateTime.UtcNow,
             };
 
-            var checkIfAgentExist = await _unitOfWork.AgentRepository.Find(x => x.Id == createAgentProfileDTO.UserId);
+            var checkIfAgentExist = await _unitOfWork.AgentRepository.Find(x => x.Id == createAgentProfileDTO.UserId && x.User.RolesCSV == RoleString.Agent);
             if (checkIfAgentExist is null)
             {
                 await _unitOfWork.AgentRepository.Add(agent);

@@ -1,9 +1,12 @@
 ﻿using MapsterMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Oostel.API.APIRoutes;
 using Oostel.API.ViewModels.UserAuthenticationsVM;
 using Oostel.Application.Modules.UserAuthentication.Features.Commands;
+using Oostel.Application.Modules.UserAuthentication.Features.Queries;
+using Oostel.Application.Modules.UserRolesProfiles.DTOs;
 using Oostel.Common.Types;
 
 namespace Oostel.API.Controllers
@@ -64,5 +67,12 @@ namespace Oostel.API.Controllers
             return HandleResult(await Mediator.Send(resetPasswordOTP));
         }
 
+        [Authorize]
+        [HttpGet]
+        [Route(UserAuthenticationRoute.GetCurrentUser)]
+        public async Task<ActionResult<APIResponse>> GetCurrentUser()
+        {
+            return HandleResult(await Mediator.Send(new GetCurrentUserRequest { }));
+        }
     }
 }

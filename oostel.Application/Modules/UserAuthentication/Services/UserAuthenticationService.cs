@@ -1,5 +1,7 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Oostel.Application.Modules.UserAuthentication.DTOs;
 using Oostel.Common.Helpers;
@@ -11,6 +13,7 @@ using Oostel.Infrastructure.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,15 +25,17 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
         private readonly IConfiguration _configuration;
         //private readonly IEmailSender _emailSender;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UnitOfWork _unitOfWork;
         private readonly ITokenService _tokenService;
-        public UserAuthenticationService(IConfiguration configuration, ITokenService tokenService, UserManager<ApplicationUser> userManager,
+        public UserAuthenticationService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ITokenService tokenService, UserManager<ApplicationUser> userManager,
             UnitOfWork unitOfWork)
         {
             _configuration = configuration;
            // _emailSender = emailSender;
             _userManager = userManager;
             _unitOfWork = unitOfWork;
+            _httpContextAccessor = httpContextAccessor;
             _tokenService = tokenService;
         }
 
@@ -79,6 +84,25 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
 
             return saveState > 0 ? true : false;  //> 0 ? await SendResetPasswordVerifyEmail(user.Email, generatedCode, user.LastName) : false;
 
+        }
+
+        public async Task<GetCurrentUserDTO> GetCurrentUser()
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId is null)
+                return null;
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            return new GetCurrentUserDTO()
+            {
+                UserId = user.Id,
+                FullName = $"{user.FirstName} {user.LastName}",
+                RoleCSV = user.RolesCSV,
+                ProfilePicture = user.ProfilePhotoURL,
+                CreatedAt = user.CreatedDate
+            };
         }
 
         public async Task<bool> VerifyUserOTPFromEmail(string codeReceived, string userId)

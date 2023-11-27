@@ -8,5 +8,6 @@
         public const string SendResetPasswordOTP = "authenticateuser/Send-reset-password-otp";
         public const string ResetPassword = "authenticateuser/reset-password";
         public const string RegisterAgent = "authenticateuser/register-agent";
+        public const string GetCurrentUser = "authenticateuser/get-current-user";
     }
 }
