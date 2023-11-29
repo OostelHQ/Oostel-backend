@@ -22,5 +22,6 @@ namespace Oostel.Application.Modules.Hostel.DTOs
         public List<string> RulesAndRegulation { get; set; }
         public List<string> HostelFacilities { get; set; }
         public bool IsAnyRoomVacant { get; set; }
+        public IFormFile VideoUrl { get; set; }
     }
 }

@@ -58,6 +58,8 @@ namespace Oostel.Application.Modules.Hostel.Services
            // var faclitiesMapping = _mapper.Map<List<HostelFacilities>>(hostelDTO.HostelFacilities);
 
             var hostelFrontViewPicture = await _mediaUpload.UploadPhoto(hostelDTO.HostelFrontViewPicture);
+
+            var uploadHostelVideo = await _mediaUpload.UploadVideo(hostelDTO.VideoUrl); 
            
             var hostel = Domain.Hostel.Entities.Hostel.CreateHostelFactory(
                 hostelDTO.LandlordId,
@@ -75,7 +77,8 @@ namespace Oostel.Application.Modules.Hostel.Services
                 hostelDTO.HostelFacilities,
                 hostelFrontViewPicture.Url,
                 hostelDTO.IsAnyRoomVacant,
-                rooms
+                rooms,
+                uploadHostelVideo.Url
                 );
 
             await _unitOfWork.HostelRepository.Add(hostel);

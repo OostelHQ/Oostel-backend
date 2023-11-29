@@ -99,5 +99,34 @@ namespace Oostel.Infrastructure.Media
 
             return result.Result == "ok" ? result.Result : null;
         }
+
+
+        public async Task<PhotoUploadResult> UploadVideo(IFormFile file)
+        {
+            if (file.Length > 0)
+            {
+                await using var stream = file.OpenReadStream();
+                var uploadParams = new VideoUploadParams
+                {
+                    File = new FileDescription(file.FileName, stream)
+                };
+
+                var uploadResult = await cloudinary.UploadAsync(uploadParams);
+
+                if (uploadResult.Error != null)
+                {
+                    throw new Exception(uploadResult.Error.Message);
+                }
+
+                return new PhotoUploadResult
+                {
+                    PublicId = uploadResult.PublicId,
+                    Url = uploadResult.SecureUrl.ToString()
+                };
+            }
+
+            return null;
+        }
+
     }
 }

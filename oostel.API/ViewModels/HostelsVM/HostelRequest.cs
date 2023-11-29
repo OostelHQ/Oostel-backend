@@ -25,5 +25,6 @@ namespace Oostel.API.ViewModels.HostelsVM
         //[JsonProperty("hostelFacilities")]
         public List<string> FacilityName { get; set; }
         public bool IsAnyRoomVacant { get; set; }
+        public IFormFile? VideoUrl { get; set; }
     }
 }

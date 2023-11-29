@@ -49,9 +49,10 @@ namespace Oostel.API.Controllers
                 State = request.State,
                 Street = request.Street,
                 TotalRoom = request.TotalRoom,
-                LandlordId = request.LandlordId
+                LandlordId = request.LandlordId,
+                VideoUrl = request.VideoUrl
             });
-            //var hostelRequest = _mapper.Map<CreateHostelCommand>(request);
+
             return HandleResult(await Mediator.Send(hostelRequest));
         }
 

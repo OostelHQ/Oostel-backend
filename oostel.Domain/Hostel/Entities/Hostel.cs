@@ -20,6 +20,7 @@ namespace Oostel.Domain.Hostel.Entities
         public List<string> HostelFacilities { get; set; } = new List<string>(); 
         public string HostelFrontViewPicture { get; set; }
         public bool IsAnyRoomVacant { get; set; }
+        public string? VideoUrl { get; set; }
         public ICollection<Room>? Rooms { get; set; }
         public virtual Landlord Landlord { get; set; }
         public ICollection<HostelLikes> HostelLikes { get; set; }
@@ -33,7 +34,7 @@ namespace Oostel.Domain.Hostel.Entities
 
         private Hostel(string userId, string hostelName, string hostelDescription, int totalRoom, decimal homeSize,
             string street, string junction, string hostelCategory, string state, string priceBudgetRange, string country, List<string> rulesAndRegulation, List<string> hostelFacilities, string hostelFrontViewPicture,
-            bool isAnyRoomVacant, ICollection<Room> rooms) : base(Guid.NewGuid().ToString())
+            bool isAnyRoomVacant, ICollection<Room> rooms, string videoUrl) : base(Guid.NewGuid().ToString())
         {
             LandlordId = userId;
             HostelName = hostelName;    
@@ -51,16 +52,17 @@ namespace Oostel.Domain.Hostel.Entities
             HostelFrontViewPicture = hostelFrontViewPicture;
             IsAnyRoomVacant= isAnyRoomVacant;
             Rooms = rooms;
+            VideoUrl = videoUrl;
             LastModifiedDate = DateTime.UtcNow;
             CreatedDate = DateTime.UtcNow;
         }
 
         public static Hostel CreateHostelFactory(string userId, string hostelName, string hostelDescription, int totalRoom, decimal homeSize,
             string street, string junction, string hostelCategory, string state, string priceBudgetRange, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
-            string hostelFrontViewPicture, bool isAnyRoomVacant, List<Room> rooms)
+            string hostelFrontViewPicture, bool isAnyRoomVacant, List<Room> rooms, string videoUrl)
         {
             return new Hostel(userId, hostelName, hostelDescription, totalRoom, homeSize, street, junction, hostelCategory, state, priceBudgetRange, country,
-                rulesAndRegulation, hostelFacilities, hostelFrontViewPicture, isAnyRoomVacant, rooms);
+                rulesAndRegulation, hostelFacilities, hostelFrontViewPicture, isAnyRoomVacant, rooms, videoUrl);
         }
     }
 }

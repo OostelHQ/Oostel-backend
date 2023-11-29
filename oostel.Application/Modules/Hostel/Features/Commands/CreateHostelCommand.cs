@@ -28,6 +28,7 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
         public IFormFile HostelFrontViewPicture { get; set; }
         public List<string> HostelFacilities { get; set; }
         public bool IsAnyRoomVacant { get; set; }
+        public IFormFile? VideoUrl { get; set; }
 
         public sealed class CreateHostelCommandHandler : IRequestHandler<CreateHostelCommand, APIResponse>
         {
@@ -58,7 +59,8 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
                     State = request.State,
                     Street = request.Street,
                     TotalRoom = request.TotalRoom,
-                    LandlordId = request.LandlordId
+                    LandlordId = request.LandlordId,
+                    VideoUrl= request.VideoUrl,
                 });
                 var createhostel = await _hostelService.CreateHostel(hostelRequest);
 
