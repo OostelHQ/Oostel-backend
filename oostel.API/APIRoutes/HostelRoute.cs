@@ -12,6 +12,7 @@
         public const string GetAllRoomsForHostel = "hostel/get-all-rooms-for-hostel";
         public const string UpdateRoom = "hostel/update-room";
         public const string GetAvailableRoomsPerHostel = "hostel/get-available-rooms-per-hostel";
+        public const string CreateRoomCollections = "hostel/create-room-collections";
 
         public const string AddHostelLikes = "hostel/add-hostel-likes";
 

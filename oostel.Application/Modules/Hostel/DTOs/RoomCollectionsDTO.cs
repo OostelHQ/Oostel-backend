@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.Hostel.DTOs
 {
-    public record RoomToCreate
+    public class RoomCollectionsDTO
     {
+        public string RoomId { get; set; }
+        public string HostelId { get; set; }
         public string RoomNumber { get; set; }
         public decimal Price { get; set; }
         public string Duration { get; set; }

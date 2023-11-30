@@ -6,6 +6,7 @@ using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Application.RequestFilters;
 using Oostel.Application.UserAccessors;
 using Oostel.Common.Constants;
+using Oostel.Common.Exceptions;
 using Oostel.Common.Helpers;
 using Oostel.Common.Types.RequestFeatures;
 using Oostel.Domain.Hostel.Entities;
@@ -44,7 +45,7 @@ namespace Oostel.Application.Modules.Hostel.Services
 
             var rooms = new List<Room>();
 
-           /* foreach (var roomDto in hostelDTO.Rooms)
+            foreach (var roomDto in hostelDTO.Rooms)
             {
                 bool roomCreated = await CreateRoomForHostel(hostelDTO.LandlordId, roomDto);
 
@@ -52,12 +53,12 @@ namespace Oostel.Application.Modules.Hostel.Services
                 {
                     return false;
                 }
-            }*/
+            }
 
             //var rulesAndRegulationsMapping = _mapper.Map<List<HostelRulesAndRegulations>>(hostelDTO.RulesAndRegulation);
            // var faclitiesMapping = _mapper.Map<List<HostelFacilities>>(hostelDTO.HostelFacilities);
 
-            var hostelFrontViewPicture = await _mediaUpload.UploadPhoto(hostelDTO.HostelFrontViewPicture);
+            var hostelFrontViewPictures = await _mediaUpload.UploadPhotos(hostelDTO.HostelFrontViewPicture);
 
             var uploadHostelVideo = await _mediaUpload.UploadVideo(hostelDTO.VideoUrl); 
            
@@ -75,11 +76,12 @@ namespace Oostel.Application.Modules.Hostel.Services
                 hostelDTO.Country,
                 hostelDTO.RulesAndRegulation,
                 hostelDTO.HostelFacilities,
-                hostelFrontViewPicture.Url,
                 hostelDTO.IsAnyRoomVacant,
                 rooms,
                 uploadHostelVideo.Url
                 );
+
+            hostel.HostelFrontViewPicture?.AddRange(hostelFrontViewPictures.Select(result => result.Url));
 
             await _unitOfWork.HostelRepository.Add(hostel);
             await _unitOfWork.SaveAsync();
@@ -94,7 +96,6 @@ namespace Oostel.Application.Modules.Hostel.Services
 
             var existinghostel = await _unitOfWork.HostelRepository.Find(h => h.Id == hostelId);
             if (existinghostel is null) return false;
-           // var rooms = _mapper.Map<ICollection<Room>>(hostelDTO.Rooms);
 
             existinghostel.HostelName = hostelDTO.HostelName;
             existinghostel.HostelDescription = hostelDTO.HostelDescription;
@@ -177,10 +178,6 @@ namespace Oostel.Application.Modules.Hostel.Services
                 .Include(x => x.Landlord.User)
                 .FirstOrDefaultAsync(x => x.Id == hostelId);
 
-
-                
-           // var hostel = _unitOfWork.HostelRepository.FindandInclude(x => x.Id == hostelId, true).Result.SingleOrDefault();
-
             if (hostel is not null)
             {
                 var hostelDetailsToReturn = new HostelDetailsResponse();
@@ -192,13 +189,13 @@ namespace Oostel.Application.Modules.Hostel.Services
                     Country = hostel.Country,
                     HomeSize = hostel.HomeSize,
                     HostelCategory = hostel.HostelCategory,
-                    HostelFacilities = hostel.HostelFacilities,//.Select(o => new HostelFacilitiesDTO { FacilityName = o.FacilityName }).ToList(),
+                    HostelFacilities = hostel.HostelFacilities,
                     HostelName = hostel.HostelName,
                     PriceBudgetRange = hostel.PriceBudgetRange,
                     HostelLikesCount = hostel.HostelLikes.Count(x => x.LikedHostelId == hostel.Id),
                     NumberOfRoomsLeft = hostel.Rooms.Count(x => !x.IsRented && x.HostelId == hostel.Id),
                     Junction = hostel.Junction,
-                    RulesAndRegulation = hostel.RulesAndRegulation,//.Select(o => new HostelRulesAndRegulationsDTO { RuleAndRegulation = o.RuleAndRegulation }).ToList(),
+                    RulesAndRegulation = hostel.RulesAndRegulation,
                     Street = hostel.Street,
                     TotalRoom = hostel.TotalRoom,
                 };
@@ -220,8 +217,6 @@ namespace Oostel.Application.Modules.Hostel.Services
             var hostel =  await _unitOfWork.HostelRepository.FindandInclude(x => x.Id == roomDTO.HostelId, true); 
             if (hostel is null) return false;
 
-           // var facilitiesMapping = _mapper.Map<List<RoomFacilities>>(roomDTO.RoomFacilities);
-
             var room = Room.CreateRoomForHostelFactory(roomDTO.RoomNumber, roomDTO.Price, roomDTO.Duration,
                                                           roomDTO.RoomFacilities, roomDTO.IsRented, roomDTO.HostelId);
             var photoUploadResults = await _mediaUpload.UploadPhotos(roomDTO.Files);
@@ -232,6 +227,42 @@ namespace Oostel.Application.Modules.Hostel.Services
             
             return true;
         }   
+
+       
+        public async Task<(IEnumerable<RoomCollectionsDTO> roomDTOs, string ids)> CreateRoomCollectionAsync(string landlordId, string hostelId, IEnumerable<RoomToCreate> roomsToCreates)
+        {
+            var user = await _userAccessor.CheckIfTheUserExist(landlordId);
+            if (user is null) throw new RoomDetailsExceptionResponse("User not found", System.Net.HttpStatusCode.NotFound);
+
+            var hostel = await _unitOfWork.HostelRepository.FindandInclude(x => x.Id == hostelId, true);
+            if (hostel is null) throw new RoomDetailsExceptionResponse("Hostel not found", System.Net.HttpStatusCode.NotFound);
+
+            var roomData = new List<Room>();
+
+            foreach (var roomToCreate in roomsToCreates)
+            {
+                var room = Room.CreateRoomForHostelFactory(
+                    roomToCreate.RoomNumber,
+                    roomToCreate.Price,
+                    roomToCreate.Duration,
+                    roomToCreate.RoomFacilities,
+                    roomToCreate.IsRented,
+                    hostelId
+                );
+
+                roomData.Add(room);
+                await _unitOfWork.RoomRepository.Add(room);
+            }
+
+            await _unitOfWork.SaveAsync();
+
+            var response = _mapper.Map<IEnumerable<RoomCollectionsDTO>>(roomData);
+
+            var ids = string.Join(",", response.Select(c => c.RoomId));
+
+            return (rooms: response, roomIds: ids);
+        }
+
 
         public async Task<bool> UpdateARoomForHostel(string userId, RoomDTO roomDTO)
         {

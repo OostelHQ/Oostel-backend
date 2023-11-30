@@ -35,6 +35,13 @@ namespace Oostel.Application.Mappers.HostelMapping
 
             config.NewConfig<Room, HostelDetailsResponse>();
             config.NewConfig<Room, RoomToReturn>();
+            config.NewConfig<Room, RoomCollectionsDTO>()
+                .Map(dest => dest.HostelId, src => src.HostelId)
+                .Map(dest => dest.RoomId, src => src.Id)
+                .Map(dest => dest.RoomFacilities, src => src.RoomFacilities)
+                .Map(dest => dest.Files, src => src.RoomPictures);
+
+            config.NewConfig<RoomToCreate, RoomCollectionsDTO>();
 
             config.NewConfig<Room, HostelsResponse>()
                 .Map(dest => dest.HostelId, src => src.Id)

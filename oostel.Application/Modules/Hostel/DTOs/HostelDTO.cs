@@ -15,10 +15,10 @@ namespace Oostel.Application.Modules.Hostel.DTOs
         public string Street { get; set; }
         public string Junction { get; set; }
         public HostelCategory HostelCategory { get; set; }
-        public IFormFile HostelFrontViewPicture { get; set; }
+        public List<IFormFile> HostelFrontViewPicture { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
-       // public IEnumerable<RoomDTO>? Rooms { get; set; }
+        public IEnumerable<RoomDTO>? Rooms { get; set; }
         public List<string> RulesAndRegulation { get; set; }
         public List<string> HostelFacilities { get; set; }
         public bool IsAnyRoomVacant { get; set; }

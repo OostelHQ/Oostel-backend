@@ -17,8 +17,8 @@ namespace Oostel.Domain.Hostel.Entities
         public string Country { get; set; }
         public string PriceBudgetRange { get; set; }
         public List<string> RulesAndRegulation { get; set; } = new List<string>();
-        public List<string> HostelFacilities { get; set; } = new List<string>(); 
-        public string HostelFrontViewPicture { get; set; }
+        public List<string> HostelFacilities { get; set; } = new List<string>();
+        public List<string>? HostelFrontViewPicture { get; set; } = new List<string>();
         public bool IsAnyRoomVacant { get; set; }
         public string? VideoUrl { get; set; }
         public ICollection<Room>? Rooms { get; set; }
@@ -33,7 +33,7 @@ namespace Oostel.Domain.Hostel.Entities
         }
 
         private Hostel(string userId, string hostelName, string hostelDescription, int totalRoom, decimal homeSize,
-            string street, string junction, string hostelCategory, string state, string priceBudgetRange, string country, List<string> rulesAndRegulation, List<string> hostelFacilities, string hostelFrontViewPicture,
+            string street, string junction, string hostelCategory, string state, string priceBudgetRange, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
             bool isAnyRoomVacant, ICollection<Room> rooms, string videoUrl) : base(Guid.NewGuid().ToString())
         {
             LandlordId = userId;
@@ -49,7 +49,6 @@ namespace Oostel.Domain.Hostel.Entities
             Country = country;
             RulesAndRegulation = rulesAndRegulation;
             HostelFacilities = hostelFacilities;
-            HostelFrontViewPicture = hostelFrontViewPicture;
             IsAnyRoomVacant= isAnyRoomVacant;
             Rooms = rooms;
             VideoUrl = videoUrl;
@@ -59,10 +58,10 @@ namespace Oostel.Domain.Hostel.Entities
 
         public static Hostel CreateHostelFactory(string userId, string hostelName, string hostelDescription, int totalRoom, decimal homeSize,
             string street, string junction, string hostelCategory, string state, string priceBudgetRange, string country, List<string> rulesAndRegulation, List<string> hostelFacilities,
-            string hostelFrontViewPicture, bool isAnyRoomVacant, List<Room> rooms, string videoUrl)
+             bool isAnyRoomVacant, List<Room> rooms, string videoUrl)
         {
             return new Hostel(userId, hostelName, hostelDescription, totalRoom, homeSize, street, junction, hostelCategory, state, priceBudgetRange, country,
-                rulesAndRegulation, hostelFacilities, hostelFrontViewPicture, isAnyRoomVacant, rooms, videoUrl);
+                rulesAndRegulation, hostelFacilities, isAnyRoomVacant, rooms, videoUrl);
         }
     }
 }

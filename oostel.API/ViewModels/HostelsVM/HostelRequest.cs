@@ -17,12 +17,10 @@ namespace Oostel.API.ViewModels.HostelsVM
         public string PriceBudgetRange { get; set; }
         public HostelCategory HostelCategory { get; set; }
         public string State { get; set; }
-        public IFormFile HostelFrontViewPicture { get; set; }
+        public List<IFormFile>? HostelFrontViewPicture { get; set; }
         public string Country { get; set; }
-        // public IEnumerable<RoomToCreate>? Rooms { get; set; }
-        //[JsonProperty("ruleAndRegulation")]
+        public IEnumerable<RoomToCreate>? Rooms { get; set; }
         public List<string> RuleAndRegulation { get; set; }
-        //[JsonProperty("hostelFacilities")]
         public List<string> FacilityName { get; set; }
         public bool IsAnyRoomVacant { get; set; }
         public IFormFile? VideoUrl { get; set; }

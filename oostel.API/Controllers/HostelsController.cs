@@ -37,7 +37,7 @@ namespace Oostel.API.Controllers
                 Country = request.Country,
                 HomeSize = request.HomeSize,
                 HostelCategory = request.HostelCategory,
-                //Rooms = request.Rooms,
+                Rooms = request.Rooms,
                 Junction = request.Junction,
                 HostelDescription= request.HostelDescription,
                 HostelFacilities = request.FacilityName,
@@ -101,6 +101,23 @@ namespace Oostel.API.Controllers
             });
             return HandleResult(await Mediator.Send(roomRequest));
             
+        }
+
+        [HttpPost]
+        [Route(HostelRoute.CreateRoomCollections)]
+        //[AllowAnonymous]
+        [Authorize(Policy = "LandlordAndAgent")]
+        public async Task<ActionResult<APIResponse>> CreateRoomCollections([FromForm] RoomCollectionsRequest request)
+        {
+            var roomRequest = (new CreateRoomCollectionCommand
+            {
+                HostelId = request.HostelId,
+                LandlordId = request.LandlordId,
+                roomToCreates = request.roomToCreates
+            });
+
+            return HandleResult(await Mediator.Send(roomRequest));
+
         }
 
         [HttpPut]
