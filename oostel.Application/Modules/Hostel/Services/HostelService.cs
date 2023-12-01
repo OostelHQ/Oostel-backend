@@ -60,8 +60,14 @@ namespace Oostel.Application.Modules.Hostel.Services
 
             var hostelFrontViewPictures = await _mediaUpload.UploadPhotos(hostelDTO.HostelFrontViewPicture);
 
-            var uploadHostelVideo = await _mediaUpload.UploadVideo(hostelDTO.VideoUrl); 
-           
+            string uploadHostelVideoUrl = null;
+
+            if (hostelDTO?.VideoUrl != null)
+            {
+                var uploadHostelVideo = await _mediaUpload?.UploadVideo(hostelDTO.VideoUrl);
+                uploadHostelVideoUrl = uploadHostelVideo?.Url;
+            }
+
             var hostel = Domain.Hostel.Entities.Hostel.CreateHostelFactory(
                 hostelDTO.LandlordId,
                 hostelDTO.HostelName,
@@ -78,7 +84,8 @@ namespace Oostel.Application.Modules.Hostel.Services
                 hostelDTO.HostelFacilities,
                 hostelDTO.IsAnyRoomVacant,
                 rooms,
-                uploadHostelVideo.Url
+                uploadHostelVideoUrl
+                
                 );
 
             hostel.HostelFrontViewPicture?.AddRange(hostelFrontViewPictures.Select(result => result.Url));
