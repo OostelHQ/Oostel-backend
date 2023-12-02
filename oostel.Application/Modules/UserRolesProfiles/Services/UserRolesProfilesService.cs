@@ -171,6 +171,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             studentProfile.User.PhoneNumber = userProfileDTO.PhoneNumber ?? studentProfile.User.PhoneNumber;
             studentProfile.User.FirstName = userProfileDTO.FirstName ?? studentProfile.User.FirstName;
             studentProfile.User.LastName = userProfileDTO.LastName ?? studentProfile.User.LastName;
+            studentProfile.GuardianPhoneNumber = userProfileDTO.GuardianPhoneNumber ?? studentProfile.GuardianPhoneNumber;
             studentProfile.LastModifiedDate = DateTime.UtcNow;
 
               await _unitOfWork.StudentRepository.UpdateAsync(studentProfile);
@@ -196,6 +197,8 @@ namespace Oostel.Application.Modules.UserProfiles.Services
                 SchoolLevel = updateStudentProfileDTO.SchoolLevel,
                 Denomination = updateStudentProfileDTO.Denomination,
                 StateOfOrigin = updateStudentProfileDTO.StateOfOrigin,
+                GuardianPhoneNumber = updateStudentProfileDTO.GuardianPhoneNumber,
+                Country = updateStudentProfileDTO.Country,
                 CreatedDate = DateTime.UtcNow,
                 LastModifiedDate = DateTime.UtcNow,
             };

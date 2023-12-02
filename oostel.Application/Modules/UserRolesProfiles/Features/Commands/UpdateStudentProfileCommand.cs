@@ -22,7 +22,7 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
         public string? Denomination { get; set; }
         public string? Age { get; set; }
         public string? Hobby { get; set; }
-
+        public string? GuardianPhoneNumber { get; set; }
         public sealed class UpdateUserProfileCommandHandler : IRequestHandler<UpdateStudentProfileCommand, APIResponse>
         {
             private readonly IUserRolesProfilesService _userProfilesService;

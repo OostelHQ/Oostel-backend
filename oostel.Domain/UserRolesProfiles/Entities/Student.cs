@@ -21,7 +21,7 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         public string? Area { get; set; }
         public string Denomination { get; set; }
         public string Hobby { get; set; }
-        
+        public string GuardianPhoneNumber { get; set; }
         public virtual OpenToRoommate OpenToRoomate { get; set; }
         public virtual ApplicationUser User { get; set; }
 
