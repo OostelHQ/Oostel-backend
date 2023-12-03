@@ -9,7 +9,7 @@ namespace Oostel.API.Controllers
 {
     [Route("api/")]
     [ApiController]
-    //[ResponseCache(CacheProfileName = "120SecondsDuration")]
+    [ResponseCache(CacheProfileName = "120SecondsDuration")]
     public class BaseController : ControllerBase
     {
 

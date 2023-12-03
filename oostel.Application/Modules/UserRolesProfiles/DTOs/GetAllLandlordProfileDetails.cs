@@ -7,14 +7,19 @@ using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.UserRolesProfiles.DTOs
 {
-    public class GetAllLandlordProfileDetails
+    public class GetAllLandlordProfileDetails : BaseRoleResponse
     {
         public UserWalletBalanceDTO UserWalletBalanceDTO { get; set; }
-        public UserDto UserDto { get; set; }
-        public LandlordProfile LandlordProfile { get; set; }
+        public LandlordProfile landlordProfile { get; set; }
+
     }
 
-    public class LandlordProfile
+    public class BaseRoleResponse
+    {
+        public UserDto UserDto { get; set; }
+}
+
+    public class LandlordProfile 
     {
         public string? FirstName { get; set; }
         public string LastName { get; set; }

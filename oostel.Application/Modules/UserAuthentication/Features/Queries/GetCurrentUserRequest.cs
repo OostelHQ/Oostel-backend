@@ -17,12 +17,12 @@ namespace Oostel.Application.Modules.UserAuthentication.Features.Queries
 
         public sealed class GetCurrentUserRequestCommand : IRequestHandler<GetCurrentUserRequest, APIResponse>
         {
-            private readonly IUserAuthenticationService _userAuthenticationService;
-            public GetCurrentUserRequestCommand(IUserAuthenticationService userAuthenticationService) =>
-                _userAuthenticationService = userAuthenticationService;
+            private readonly IUserRolesProfilesService _userRolesProfilesService;
+            public GetCurrentUserRequestCommand(IUserRolesProfilesService userRolesProfilesService) =>
+                _userRolesProfilesService = userRolesProfilesService;
             public async Task<APIResponse> Handle(GetCurrentUserRequest request, CancellationToken cancellationToken)
             {
-                var currentUser = await _userAuthenticationService.GetCurrentUser();
+                var currentUser = await _userRolesProfilesService.GetCurrentUser();
                 if (currentUser is null) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.NotFound);
 
                 return APIResponse.GetSuccessMessage(HttpStatusCode.OK, data: currentUser, ResponseMessages.FetchedSuccess);

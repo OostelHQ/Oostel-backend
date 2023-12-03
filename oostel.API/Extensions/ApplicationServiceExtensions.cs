@@ -10,6 +10,7 @@ using Oostel.Application.Modules.UserAuthentication.Features.Commands;
 using System.Reflection;
 using Marvin.Cache.Headers;
 using Microsoft.Extensions.Configuration;
+using System.Runtime;
 
 namespace Oostel.API.Extensions
 {
@@ -17,6 +18,8 @@ namespace Oostel.API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration _config)
         {
+
+           
 
             services.AddServicesConfiguration(_config);
 
@@ -29,11 +32,8 @@ namespace Oostel.API.Extensions
             {
                 Options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
-           /* var emailConfig = _config
-                            .GetSection("EmailConfiguration")
-                            .Get<EmailConfiguration>(*/
-            services.Configure<EmailConfiguration>(_config.GetSection("EmailConfiguration"));
-            //services.AddSingleton()
+          
+            services.Configure<EmailConfiguration>(_config.GetSection("EmailConfiguration"));  
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(RegisterUserCommand).GetTypeInfo().Assembly));
 

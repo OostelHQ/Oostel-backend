@@ -67,7 +67,7 @@ namespace Oostel.API.Controllers
 
         [HttpGet]
         [Route(HostelRoute.GetAllHostels)]
-        [ResponseCache(Duration = 60)]
+        [ResponseCache(Duration = 120)]
         [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> GetAllHostels([FromQuery] HostelTypesParam? hostelTypesParam)
         {

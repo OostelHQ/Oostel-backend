@@ -15,6 +15,7 @@ using Oostel.Infrastructure.FlutterwaveIntegration;
 using Oostel.Infrastructure.Media;
 using Oostel.Infrastructure.Repositories;
 using System.Reflection;
+using System.Runtime;
 
 
 namespace Oostel.Application
@@ -48,7 +49,17 @@ namespace Oostel.Application
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IUserWalletService, UserWalletService>();
-            services.AddHttpClient<IFlutterwaveClient, FlutterwaveClient>();
+
+            services.AddOptions<AppSettings>().BindConfiguration("FlutterWave");
+
+            var flutterSettings = _configuration.GetSection("FlutterWave").Get<AppSettings>();
+            services.AddHttpClient<IFlutterwaveClient, FlutterwaveClient>(client =>
+            {
+                client.BaseAddress = new Uri(flutterSettings.BaseUrl);
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+                client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json; charset=utf-8");
+                client.DefaultRequestHeaders.Add("Authorization", "Bearer " + flutterSettings.SecretKey);
+            });
 
             return services;
         }

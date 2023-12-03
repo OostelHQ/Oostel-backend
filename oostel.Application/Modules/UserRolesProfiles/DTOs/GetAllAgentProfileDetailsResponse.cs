@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.UserRolesProfiles.DTOs
 {
-    public class GetAllAgentProfileDetailsResponse
+    public class GetAllAgentProfileDetailsResponse : BaseRoleResponse
     {
-        public UserDto UserDto { get; set; }
+       
         public AgentProfile LandlordProfile { get; set; }
     }
 
-    public class AgentProfile
+    public class AgentProfile : GetAllLandlordProfileDetails
     {
         public string? FirstName { get; set; }
         public string LastName { get; set; }

@@ -27,6 +27,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         Task<GetAllAgentProfileDetailsResponse> GetAgentById(string agentId);
         Task<bool> UpdateLandLordProfile(UpdateLandlordDTO updateLandlordProfileDTO);
         Task<bool> ProfileViewsCount(string userId);
+        Task<BaseRoleResponse> GetCurrentUser();
         Task<bool> UploadDisplayPictureAsync(IFormFile file, string userId);
         Task<bool> AcceptLandlordInvitation(string agentId, string landlordId);
         Task<bool> AddStudentLike(string sourceId, string studentLikeId);

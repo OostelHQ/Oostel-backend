@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Oostel.Application.Modules.Hostel.DTOs;
+using Oostel.Application.Modules.UserAuthentication.DTOs;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserRolesProfiles.DTOs;
 using Oostel.Application.Modules.UserWallet.DTOs;
@@ -23,6 +24,7 @@ using Oostel.Infrastructure.EmailService;
 using Oostel.Infrastructure.Media;
 using Oostel.Infrastructure.Repositories;
 using System.Net;
+using System.Security.Claims;
 
 namespace Oostel.Application.Modules.UserProfiles.Services
 {
@@ -33,14 +35,16 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         private readonly IMapper _mapper;
         private readonly IMediaUpload _mediaUpload;
         private readonly ApplicationDbContext _applicationDbContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         //private readonly IEmailSender _emailSender;
-        public UserRolesProfilesService(UserManager<ApplicationUser> userManager, ApplicationDbContext applicationDbContext, UnitOfWork unitOfWork, IMediaUpload mediaUpload, IMapper mapper)
+        public UserRolesProfilesService(UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor, ApplicationDbContext applicationDbContext, UnitOfWork unitOfWork, IMediaUpload mediaUpload, IMapper mapper)
         {
             _unitOfWork= unitOfWork;
             _userManager= userManager;
             _mapper= mapper;
             _mediaUpload = mediaUpload;
             _applicationDbContext = applicationDbContext;
+            _httpContextAccessor = httpContextAccessor;
             //_emailSender = emailSender;
         }
 
@@ -253,7 +257,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
             studentDetailsResponse.UserDto = _mapper.Map<UserDto>(landlord.User);
             studentDetailsResponse.UserWalletBalanceDTO = _mapper.Map<UserWalletBalanceDTO>(landlord.User.Wallets);
-            studentDetailsResponse.LandlordProfile = _mapper.Map<LandlordProfile>(landlord);
+            studentDetailsResponse.landlordProfile = _mapper.Map<LandlordProfile>(landlord);
 
             return studentDetailsResponse;
         }
@@ -429,6 +433,26 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             await _userManager.UpdateAsync(user);
 
             return true;
+        }
+        public async Task<BaseRoleResponse> GetCurrentUser()
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId is null)
+                return null;
+
+            var user = await _userManager.FindByIdAsync(userId);
+           // var role = user.RolesCSV; //.Contains(RoleType.Agent.GetEnumDescription();
+
+            switch (user.RolesCSV)
+            {
+                case "Agent": return await GetAgentById(userId); break;
+                case "LandLord": return await GetLandlordsById(userId); break;
+                case "Student": return await GetStudentById(userId); break;
+
+                default: return null; break;
+            }
+           
         }
 
         public async Task<bool> AddStudentLike(string sourceId, string studentLikeId)
