@@ -144,10 +144,12 @@ namespace Oostel.Application.Modules.Hostel.Services
                     HostelLikesCount = h.HostelLikes.Count(x => x.LikedHostelId == h.Id),
                     RulesAndRegulation = h.RulesAndRegulation,//.Select(o => new HostelRulesAndRegulationsDTO { RuleAndRegulation = o.RuleAndRegulation }).ToList(),
                     State = h.State,
+                    IsAnyRoomVacant = h.IsAnyRoomVacant,
                     Street = h.Street,
                     TotalRoom = h.TotalRoom,
                     HostelName = h.HostelName,
                 })
+                .Where(x => x.IsAnyRoomVacant == true)
                 .AsNoTracking()
                 .AsQueryable();
 

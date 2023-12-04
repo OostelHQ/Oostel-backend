@@ -15,6 +15,7 @@ namespace Oostel.Application.Modules.Hostel.DTOs
         public string Junction { get; set; }
         public string HostelCategory { get; set; }
         public string State { get; set; }
+        public bool IsAnyRoomVacant { get; set; }
         public string Country { get; set; }
         public int NumberOfRoomsLeft { get; set; }
         public int HostelLikesCount { get; set; }

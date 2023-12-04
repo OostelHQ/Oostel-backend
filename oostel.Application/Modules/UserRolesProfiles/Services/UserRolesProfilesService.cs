@@ -73,6 +73,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
                     RoomBudgetAmount = s.OpenToRoomate.RoomBudgetAmount,
                     UserId = s.User.Id
                 })
+                .Where(x => x.IsAvailable == true)
                 .AsNoTracking()
                 .AsQueryable();
 
@@ -80,10 +81,10 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             {
                 studentsQuery = studentsQuery.SearchStudent(studentTypeParams.SearchTerm);
             }
-            else if (studentTypeParams.GottenHostel != null)
+           /* else if (studentTypeParams.GottenHostel != null)
             {
                 studentsQuery = studentsQuery.Where(o => o.IsAvailable == studentTypeParams.GottenHostel);
-            }
+            }*/
             else if (studentTypeParams.MinimumPrice != null)
             {
                 studentsQuery = studentsQuery.Where(r => r.RoomBudgetAmount >= studentTypeParams.MinimumPrice);
@@ -107,6 +108,36 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             return ResultResponse<PagedList<GetStudentProfileDTO>>.Success(await PagedList<GetStudentProfileDTO>.CreateAsync(studentsQuery, studentTypeParams.PageNumber, studentTypeParams.PageSize));
 
         }
+
+        /*public async Task<GetStudentProfileDTO> GetAvailableRoommates()
+        {
+            var studentsQuery = _applicationDbContext.Students
+                 .Include(x => x.User)
+                 .Include(x => x.OpenToRoomate)
+                 .OrderBy(x => x.CreatedDate)
+                 .Select(s => new GetStudentProfileDTO
+                 {
+                     FullName = s.User.FirstName + "" + s.User.LastName,
+                     Email = s.User.Email,
+                     Denomination = s.Denomination,
+                     SchoolLevel = s.SchoolLevel,
+                     StateOfOrigin = s.StateOfOrigin,
+                     Age = s.Age,
+                     Religion = s.Religion,
+                     Gender = s.Gender,
+                     Hobby = s.Hobby,
+                     IsAvailable = s.IsAvailable,
+                     JoinedDate = s.User.CreatedDate,
+                     PictureUrl = s.User.ProfilePhotoURL,
+                     ProfileViewCount = s.User.ProfileViewCount,
+                     Country = s.Country,
+                     RoomBudgetAmount = s.OpenToRoomate.RoomBudgetAmount,
+                     UserId = s.User.Id
+                 })
+                 .Where(x => x.IsAvailable == true)
+                 .AsNoTracking()
+                 .ToList();
+        }*/
 
         public async Task<bool> AvailableForRoommate(OpenToRoommateDTO openToRoommateDTO)
         {
