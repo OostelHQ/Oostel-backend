@@ -45,7 +45,6 @@ namespace Oostel.Application.Modules.UserRolesProfiles.DTOs
         public string Age { get; set; }
         public string Hobby { get; set; }
 
-        public UserDto UserDto { get; set; }
     }
 
 

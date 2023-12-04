@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Oostel.Application.Modules.UserAuthentication.DTOs;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserRolesProfiles.DTOs;
 using Oostel.Common.Helpers;

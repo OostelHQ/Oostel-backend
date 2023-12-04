@@ -180,14 +180,18 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         public async Task<GetAllStudentDetailsResponse> GetStudentById(string studentId)
         {
-            var student = await _unitOfWork.StudentRepository.FindandInclude(x => x.Id == studentId && x.User.RolesCSV.Contains(RoleType.Student.GetEnumDescription()), true);
+            // var student = await _unitOfWork.StudentRepository.FindandInclude(x => x.Id == studentId && x.User.RolesCSV.Contains(RoleType.Student.GetEnumDescription()), true);
+            var student = await _applicationDbContext.Students
+                      .Include(x => x.OpenToRoomate)
+                      .Include(x => x.User)
+                      .FirstOrDefaultAsync();
             if (student is null) return null;
 
             GetAllStudentDetailsResponse studentDetailsResponse = new();
 
-            studentDetailsResponse.UserDto = _mapper.Map<UserDto>(student.ToList()[0].User);
-            studentDetailsResponse.UserWalletBalanceDTO = _mapper.Map<UserWalletBalanceDTO>(student.ToList()[0].User.Wallets);
-            studentDetailsResponse.StudentProfile = _mapper.Map<StudentProfile>(student.ToList()[0]);
+            studentDetailsResponse.UserDto = _mapper.Map<UserDto>(student.User);
+            studentDetailsResponse.UserWalletBalanceDTO = _mapper.Map<UserWalletBalanceDTO>(student.User.Wallets);
+            studentDetailsResponse.StudentProfile = _mapper.Map<StudentProfile>(student);
 
             return studentDetailsResponse;
         }
@@ -295,13 +299,19 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         public async Task<GetAllAgentProfileDetailsResponse> GetAgentById(string agentId)
         {
-            var agent = await _unitOfWork.AgentRepository.FindandInclude(x => x.Id == agentId && x.User.RolesCSV.Contains(RoleType.Agent.GetEnumDescription()), true);
+            // var agent = await _unitOfWork.AgentRepository.FindandInclude(x => x.Id == agentId && x.User.RolesCSV.Contains(RoleType.Agent.GetEnumDescription()), true);
+            var agent = await _applicationDbContext.Landlords
+                      .Include(x => x.User)
+                      .Include(x => x.Hostels)
+                      .ThenInclude(x => x.Rooms)
+                      .FirstOrDefaultAsync();
+
             if (agent is null) return null;
 
             GetAllAgentProfileDetailsResponse studentDetailsResponse = new();
 
-            studentDetailsResponse.UserDto = _mapper.Map<UserDto>(agent.ToList()[0].User);
-            studentDetailsResponse.LandlordProfile = _mapper.Map<AgentProfile>(agent.ToList()[0]);
+            studentDetailsResponse.UserDto = _mapper.Map<UserDto>(agent.User);
+            studentDetailsResponse.LandlordProfile = _mapper.Map<AgentProfile>(agent);
             return studentDetailsResponse;
         }
 
@@ -432,7 +442,6 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             if (landlord is null)
                 return false;
 
-            //var agent = await _userManager.FindByIdAsync(agentId);
             var agent = _unitOfWork.AgentRepository.FindandInclude(x => x.Id == agentId, true).Result.FirstOrDefault();
 
             var landlordAgent = new LandlordAgent()
@@ -444,11 +453,6 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             landlord.LandlordAgents.Add(landlordAgent);
 
             await _unitOfWork.SaveAsync();
-
-           // await _unitOfWork.AgentRepository.Add(la)
-
-          //  await _unitOfWork.AgentRepository.UpdateAsync(agent);
-           // var r = await _userManager.UpdateAsync(agent);
             
             return true;
         }
@@ -465,6 +469,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
             return true;
         }
+
         public async Task<BaseRoleResponse> GetCurrentUser()
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -473,18 +478,41 @@ namespace Oostel.Application.Modules.UserProfiles.Services
                 return null;
 
             var user = await _userManager.FindByIdAsync(userId);
-           // var role = user.RolesCSV; //.Contains(RoleType.Agent.GetEnumDescription();
 
             switch (user.RolesCSV)
             {
-                case "Agent": return await GetAgentById(userId); break;
-                case "LandLord": return await GetLandlordsById(userId); break;
-                case "Student": return await GetStudentById(userId); break;
+                case "Agent":
+                    var agentResponse = await GetAgentById(userId);
+                    return agentResponse ?? GetDefaultUserDTO(user);
+                case "LandLord":
+                    var landlordResponse = await GetLandlordsById(userId);
+                    return landlordResponse ?? GetDefaultUserDTO(user);
+                case "Student":
+                    var studentResponse = await GetStudentById(userId);
+                    return studentResponse ?? GetDefaultUserDTO(user);
+                default:
+                    return null;
 
-                default: return null; break;
             }
            
         }
+      
+        private BaseRoleResponse GetDefaultUserDTO(ApplicationUser user)
+        {
+            return new BaseRoleResponse()
+            {
+                UserDto = new UserDto()
+                {
+                    UserId = user.Id,
+                    RolesCSV = user.RolesCSV,
+                    UserName = $"{user.FirstName} {user.LastName}",
+                    JoinedDate = user.CreatedDate,
+                    PhoneNumber = user?.ProfilePhotoURL
+                }
+            };
+        }
+
+
 
         public async Task<bool> AddStudentLike(string sourceId, string studentLikeId)
         {
