@@ -109,36 +109,6 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         }
 
-        /*public async Task<GetStudentProfileDTO> GetAvailableRoommates()
-        {
-            var studentsQuery = _applicationDbContext.Students
-                 .Include(x => x.User)
-                 .Include(x => x.OpenToRoomate)
-                 .OrderBy(x => x.CreatedDate)
-                 .Select(s => new GetStudentProfileDTO
-                 {
-                     FullName = s.User.FirstName + "" + s.User.LastName,
-                     Email = s.User.Email,
-                     Denomination = s.Denomination,
-                     SchoolLevel = s.SchoolLevel,
-                     StateOfOrigin = s.StateOfOrigin,
-                     Age = s.Age,
-                     Religion = s.Religion,
-                     Gender = s.Gender,
-                     Hobby = s.Hobby,
-                     IsAvailable = s.IsAvailable,
-                     JoinedDate = s.User.CreatedDate,
-                     PictureUrl = s.User.ProfilePhotoURL,
-                     ProfileViewCount = s.User.ProfileViewCount,
-                     Country = s.Country,
-                     RoomBudgetAmount = s.OpenToRoomate.RoomBudgetAmount,
-                     UserId = s.User.Id
-                 })
-                 .Where(x => x.IsAvailable == true)
-                 .AsNoTracking()
-                 .ToList();
-        }*/
-
         public async Task<bool> AvailableForRoommate(OpenToRoommateDTO openToRoommateDTO)
         {
             var student = await _unitOfWork.StudentRepository.FindandInclude(x => x.Id == openToRoommateDTO.StudentId,true);
@@ -184,7 +154,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             var student = await _applicationDbContext.Students
                       .Include(x => x.OpenToRoomate)
                       .Include(x => x.User)
-                      .FirstOrDefaultAsync();
+                      .FirstOrDefaultAsync(x => x.Id == studentId && x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()));
             if (student is null) return null;
 
             GetAllStudentDetailsResponse studentDetailsResponse = new();
@@ -280,11 +250,11 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         public async Task<GetAllLandlordProfileDetails> GetLandlordsById(string landlordId)
         {
             // var landlord = await _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == landlordId && x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()), true);
-            var landlord = await _applicationDbContext.Landlords
+            var landlord = await _applicationDbContext?.Landlords
                      .Include(x => x.User)
                      .Include(x => x.Hostels)
                      .ThenInclude(x => x.Rooms)
-                     .FirstOrDefaultAsync();
+                     ?.FirstOrDefaultAsync(x => x.Id == landlordId && x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()));
 
             if (landlord is null) return null;
 
@@ -304,7 +274,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
                       .Include(x => x.User)
                       .Include(x => x.Hostels)
                       .ThenInclude(x => x.Rooms)
-                      .FirstOrDefaultAsync();
+                      .FirstOrDefaultAsync(x => x.Id == agentId && x.User.RolesCSV.Contains(RoleType.Agent.GetEnumDescription()));
 
             if (agent is null) return null;
 
@@ -507,7 +477,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
                     RolesCSV = user.RolesCSV,
                     UserName = $"{user.FirstName} {user.LastName}",
                     JoinedDate = user.CreatedDate,
-                    PhoneNumber = user?.ProfilePhotoURL
+                    PhoneNumber = user.ProfilePhotoURL
                 }
             };
         }
