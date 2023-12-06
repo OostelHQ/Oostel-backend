@@ -29,6 +29,7 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         {
             LastModifiedDate = DateTime.UtcNow;
             CreatedDate = DateTime.UtcNow;
+            IsAvailable = false;
         }
 
         public Student(string userId) : base(userId)

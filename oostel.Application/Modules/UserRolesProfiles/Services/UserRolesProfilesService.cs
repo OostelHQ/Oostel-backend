@@ -117,9 +117,6 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             var openToRoomate = OpenToRoommate.CreateOpenToRoomateFactory(openToRoommateDTO.StudentId, openToRoommateDTO.HostelName,
                                 openToRoommateDTO.HostelPrice, openToRoommateDTO.HostelAddress);
 
-            if (openToRoomate.Student.IsAvailable == true) 
-                return false;
-
             openToRoomate.Student.IsAvailable = true;
 
             await _unitOfWork.OpenToRoommateRepository.Add(openToRoomate);
@@ -154,7 +151,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             var student = await _applicationDbContext.Students
                       .Include(x => x.OpenToRoomate)
                       .Include(x => x.User)
-                      .FirstOrDefaultAsync(x => x.Id == studentId && x.User.RolesCSV.Contains(RoleType.LandLord.GetEnumDescription()));
+                      .FirstOrDefaultAsync(x => x.Id == studentId && x.User.RolesCSV.Contains(RoleType.Student.GetEnumDescription()));
             if (student is null) return null;
 
             GetAllStudentDetailsResponse studentDetailsResponse = new();
@@ -297,6 +294,9 @@ namespace Oostel.Application.Modules.UserProfiles.Services
                 DateOfBirth = landlordProfileDTO.DateOfBirth,
                 State = landlordProfileDTO.State,
                 Country = landlordProfileDTO.Country,
+                Street = landlordProfileDTO.Street,
+                Denomination = landlordProfileDTO.Denomination,
+                Gender = landlordProfileDTO.Gender,
                 CreatedDate = DateTime.UtcNow,
                 LastModifiedDate = DateTime.UtcNow,
             };
@@ -333,6 +333,8 @@ namespace Oostel.Application.Modules.UserProfiles.Services
                 DateOfBirth = createAgentProfileDTO.DateOfBirth,
                 State = createAgentProfileDTO.State,
                 Country = createAgentProfileDTO.Country,
+                Street = createAgentProfileDTO.Street,
+                Denomination = createAgentProfileDTO
                 CreatedDate = DateTime.UtcNow,
                 LastModifiedDate = DateTime.UtcNow,
             };
@@ -489,7 +491,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             var sourceUser = await _userManager.FindByIdAsync(sourceId);
             if (sourceUser is null) return false;
 
-            var studentLiked = await _unitOfWork.HostelRepository.FindandInclude(x => x.Id == studentLikeId, true);
+            var studentLiked = await _unitOfWork.StudentRepository.FindandInclude(x => x.Id == studentLikeId, true);
             if (studentLiked is null && studentLiked.Count() < 0) return false;
 
             if(sourceId.Equals(studentLikeId)) return false;

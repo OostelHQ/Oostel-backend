@@ -1,6 +1,7 @@
 ﻿using MapsterMapper;
 using Oostel.Application.Modules.Hostel.Features.Commands;
 using Oostel.Application.Modules.Hostel.Services;
+using Oostel.Application.Modules.UserProfiles.Services;
 using Oostel.Common.Constants;
 using Oostel.Common.Types;
 using System;
@@ -18,13 +19,13 @@ namespace Oostel.Application.Modules.UserRolesProfiles.Features.Commands
         public string StudentLikeId { get; set; }
         public sealed class AddStudentLikesCommandHandler : IRequestHandler<AddStudentLikesCommand, APIResponse>
         {
-            private readonly IHostelService _hostelService;
-            public AddStudentLikesCommandHandler(IHostelService hostelService, IMapper mapper) =>
-                _hostelService = hostelService;
+            private readonly IUserRolesProfilesService _userRolesProfilesService;
+            public AddStudentLikesCommandHandler(IUserRolesProfilesService userRolesProfilesService, IMapper mapper) =>
+                _userRolesProfilesService = userRolesProfilesService;
 
             public async Task<APIResponse> Handle(AddStudentLikesCommand request, CancellationToken cancellationToken)
             {
-                var likeStudent = await _hostelService.AddHostelLike(request.LikingUserId, request.StudentLikeId);
+                var likeStudent = await _userRolesProfilesService.AddStudentLike(request.LikingUserId, request.StudentLikeId);
 
                 if (!likeStudent) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);
 

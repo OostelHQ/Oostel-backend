@@ -17,6 +17,7 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         public bool IsVerified { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public string? Street { get; set; }
+        public string? Gender { get; set; }
         public string? Denomination { get; set; }
         public virtual ApplicationUser User { get; set; }
         public ICollection<Domain.Hostel.Entities.Hostel> Hostels { get; set; }
