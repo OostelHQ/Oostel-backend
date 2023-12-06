@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserMessage;
 using Oostel.Domain.UserRoleProfiles.Entities;
 using Oostel.Domain.UserRolesProfiles.Entities;
@@ -29,6 +30,8 @@ namespace Oostel.Domain.UserAuthentication.Entities
         public ICollection<Transaction> Transactions { get; set; }
         public ICollection<Message> MessagesSent { get; set; }
         public ICollection<Message> MessagesReceived { get; set; }
+       // public ICollection<StudentLikes> LikedByUsers { get; set; }
+       // public ICollection<StudentLikes> LikedUsers { get; set; }
 
 
         public ApplicationUser()

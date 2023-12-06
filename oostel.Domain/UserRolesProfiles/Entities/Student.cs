@@ -23,6 +23,7 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         public string Hobby { get; set; }
         public string GuardianPhoneNumber { get; set; }
         public virtual OpenToRoommate OpenToRoomate { get; set; }
+        public ICollection<StudentLikes> LikedUsers { get; set; }
         public virtual ApplicationUser User { get; set; }
 
         public Student()

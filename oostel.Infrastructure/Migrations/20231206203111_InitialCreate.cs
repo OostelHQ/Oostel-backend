@@ -141,6 +141,7 @@ namespace Oostel.Infrastructure.Migrations
                     Religion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsVerified = table.Column<bool>(type: "bit", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Denomination = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -254,6 +255,7 @@ namespace Oostel.Infrastructure.Migrations
                     IsVerified = table.Column<bool>(type: "bit", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gender = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Denomination = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -521,6 +523,33 @@ namespace Oostel.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "StudentLikes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SourceUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LikedStudentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StudentLikes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StudentLikes_AspNetUsers_SourceUserId",
+                        column: x => x.SourceUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StudentLikes_Students_LikedStudentId",
+                        column: x => x.LikedStudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
@@ -727,6 +756,16 @@ namespace Oostel.Infrastructure.Migrations
                 column: "HostelId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StudentLikes_LikedStudentId",
+                table: "StudentLikes",
+                column: "LikedStudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StudentLikes_SourceUserId",
+                table: "StudentLikes",
+                column: "SourceUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Transactions_UserId",
                 table: "Transactions",
                 column: "UserId");
@@ -786,6 +825,9 @@ namespace Oostel.Infrastructure.Migrations
                 name: "Rooms");
 
             migrationBuilder.DropTable(
+                name: "StudentLikes");
+
+            migrationBuilder.DropTable(
                 name: "Transactions");
 
             migrationBuilder.DropTable(
@@ -804,10 +846,10 @@ namespace Oostel.Infrastructure.Migrations
                 name: "Agents");
 
             migrationBuilder.DropTable(
-                name: "Students");
+                name: "Hostels");
 
             migrationBuilder.DropTable(
-                name: "Hostels");
+                name: "Students");
 
             migrationBuilder.DropTable(
                 name: "Landlords");

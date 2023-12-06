@@ -117,7 +117,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             var openToRoomate = OpenToRoommate.CreateOpenToRoomateFactory(openToRoommateDTO.StudentId, openToRoommateDTO.HostelName,
                                 openToRoommateDTO.HostelPrice, openToRoommateDTO.HostelAddress);
 
-            openToRoomate.Student.IsAvailable = true;
+            student.ToList()[0].IsAvailable = true;
 
             await _unitOfWork.OpenToRoommateRepository.Add(openToRoomate);
             await _unitOfWork.SaveAsync();

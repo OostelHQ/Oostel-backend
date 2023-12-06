@@ -573,6 +573,9 @@ namespace Oostel.Infrastructure.Migrations
                     b.Property<string>("Denomination")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Gender")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsVerified")
                         .HasColumnType("bit");
 
@@ -670,6 +673,10 @@ namespace Oostel.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Denomination")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsVerified")
@@ -801,6 +808,35 @@ namespace Oostel.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("ReferralAgentInfos");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.UserRolesProfiles.Entities.StudentLikes", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LikedStudentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SourceUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LikedStudentId");
+
+                    b.HasIndex("SourceUserId");
+
+                    b.ToTable("StudentLikes");
                 });
 
             modelBuilder.Entity("Oostel.Domain.UserWallet.PayInHistory", b =>
@@ -1146,6 +1182,25 @@ namespace Oostel.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Oostel.Domain.UserRolesProfiles.Entities.StudentLikes", b =>
+                {
+                    b.HasOne("Oostel.Domain.UserRoleProfiles.Entities.Student", "LikedStudent")
+                        .WithMany("LikedUsers")
+                        .HasForeignKey("LikedStudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "SourceUser")
+                        .WithMany()
+                        .HasForeignKey("SourceUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LikedStudent");
+
+                    b.Navigation("SourceUser");
+                });
+
             modelBuilder.Entity("Oostel.Domain.UserWallet.Transaction", b =>
                 {
                     b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "User")
@@ -1219,6 +1274,8 @@ namespace Oostel.Infrastructure.Migrations
 
             modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Student", b =>
                 {
+                    b.Navigation("LikedUsers");
+
                     b.Navigation("OpenToRoomate")
                         .IsRequired();
                 });

@@ -42,6 +42,7 @@ namespace Oostel.Infrastructure.Data.Configurations
                 .HasOne(u => u.Student)
                 .WithOne(a => a.User)
                 .HasForeignKey<Student>(k => k.Id);
+                //.OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<ApplicationRole>()
             .Property(e => e.Id)

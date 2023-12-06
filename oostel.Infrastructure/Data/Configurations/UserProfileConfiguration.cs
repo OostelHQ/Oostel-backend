@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserRoleProfiles.Entities;
 using Oostel.Domain.UserRolesProfiles.Entities;
 
@@ -10,6 +11,7 @@ namespace Oostel.Infrastructure.Data.Configurations
         {
             modelBuilder.Entity<Landlord>().HasKey(u => u.Id);
             modelBuilder.Entity<Agent>().HasKey(u => u.Id);
+            modelBuilder.Entity<Student>().HasKey(u => u.Id);
 
             modelBuilder.Entity<Landlord>()
                 .HasMany(h => h.Hostels)
@@ -25,6 +27,25 @@ namespace Oostel.Infrastructure.Data.Configurations
                 .HasForeignKey(u => u.LandlordId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+          //  modelBuilder.Entity<StudentLikes>().HasKey(k => new { k.SourceUserId, k.LikedStudentId });
+
+           /* modelBuilder.Entity<StudentLikes>()
+                .HasOne(s => s.LikedStudent)
+                .WithMany()
+                .HasForeignKey(s => s.LikedStudentId)
+                .OnDelete(DeleteBehavior.Restrict);*/
+
+            modelBuilder.Entity<StudentLikes>()
+            .HasOne(sl => sl.LikedStudent)
+            .WithMany(s => s.LikedUsers)
+            .HasForeignKey(sl => sl.LikedStudentId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            /*modelBuilder.Entity<StudentLikes>()
+                .HasOne(s => s.LikedStudent)
+                .WithMany(x => x.LikedByUsers)
+               // .HasForeignKey(s => s.LikedStudentId)
+*/
             modelBuilder.Entity<LandlordAgent>()
                 .HasOne(u => u.Agent)
                 .WithMany(a => a.LandlordAgents)
