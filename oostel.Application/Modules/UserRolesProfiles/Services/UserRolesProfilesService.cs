@@ -334,7 +334,8 @@ namespace Oostel.Application.Modules.UserProfiles.Services
                 State = createAgentProfileDTO.State,
                 Country = createAgentProfileDTO.Country,
                 Street = createAgentProfileDTO.Street,
-                Denomination = createAgentProfileDTO
+                Denomination = createAgentProfileDTO.Denomination,
+                Gender = createAgentProfileDTO.Gender,
                 CreatedDate = DateTime.UtcNow,
                 LastModifiedDate = DateTime.UtcNow,
             };
@@ -365,6 +366,9 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             landlordProfile.User.PhoneNumber = landlordProfileDTO.PhoneNumber ?? landlordProfile.User.PhoneNumber;
             landlordProfile.User.FirstName = landlordProfileDTO.FirstName ?? landlordProfile.User.FirstName;
             landlordProfile.User.LastName = landlordProfileDTO.LastName ?? landlordProfile.User.LastName;
+            landlordProfile.Denomination = landlordProfile.Denomination ?? landlordProfile.Denomination;
+            landlordProfile.Street = landlordProfile.Street ?? landlordProfile.Street;
+            landlordProfile.Gender = landlordProfile.Gender ?? landlordProfile.Gender;
             landlordProfile.LastModifiedDate = DateTime.UtcNow;
 
             await _unitOfWork.LandlordRepository.UpdateAsync(landlordProfile);
@@ -386,6 +390,9 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             agentProfile.User.PhoneNumber = updateAgentProfileDTO.PhoneNumber ?? agentProfile.User.PhoneNumber;
             agentProfile.User.FirstName = updateAgentProfileDTO.FirstName ?? agentProfile.User.FirstName;
             agentProfile.User.LastName = updateAgentProfileDTO.LastName ?? agentProfile.User.LastName;
+            agentProfile.Denomination = updateAgentProfileDTO.Denomination ?? agentProfile.Denomination;
+            agentProfile.Street = updateAgentProfileDTO.Street ?? agentProfile.Street;
+            agentProfile.Gender = updateAgentProfileDTO.Gender ?? agentProfile.Gender;
             agentProfile.LastModifiedDate = DateTime.UtcNow;
 
             await _unitOfWork.AgentRepository.UpdateAsync(agentProfile);

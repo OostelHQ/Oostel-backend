@@ -15,6 +15,7 @@ namespace Oostel.Domain.UserRolesProfiles.Entities
         public string Religion { get; set; }
         public string? Country { get; set; }
         public string? Street { get; set; }
+        public string Gender { get; set; }
         public bool IsVerified { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public string? Denomination { get; set; }
