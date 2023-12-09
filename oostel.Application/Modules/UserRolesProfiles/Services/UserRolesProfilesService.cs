@@ -337,7 +337,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
                 Denomination = createAgentProfileDTO.Denomination,
                 Gender = createAgentProfileDTO.Gender,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow,              
             };
 
             var checkIfAgentExist = await _unitOfWork.AgentRepository.Find(x => x.Id == createAgentProfileDTO.UserId && x.User.RolesCSV == RoleString.Agent);

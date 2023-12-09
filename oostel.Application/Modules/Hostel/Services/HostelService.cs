@@ -148,6 +148,8 @@ namespace Oostel.Application.Modules.Hostel.Services
                     Street = h.Street,
                     TotalRoom = h.TotalRoom,
                     HostelName = h.HostelName,
+                   HostelFrontViewPicture = h.HostelFrontViewPicture
+                    
                 })
                 .Where(x => x.IsAnyRoomVacant == true)
                 .AsNoTracking()
