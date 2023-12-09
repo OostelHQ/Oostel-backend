@@ -7,6 +7,7 @@ using Oostel.API.ViewModels.UserAuthenticationsVM;
 using Oostel.Application.Modules.UserAuthentication.Features.Commands;
 using Oostel.Application.Modules.UserAuthentication.Features.Queries;
 using Oostel.Application.Modules.UserRolesProfiles.DTOs;
+using Oostel.Application.Modules.UserRolesProfiles.Features.Commands;
 using Oostel.Common.Types;
 
 namespace Oostel.API.Controllers
@@ -73,6 +74,14 @@ namespace Oostel.API.Controllers
         public async Task<ActionResult<APIResponse>> GetCurrentUser()
         {
             return HandleResult(await Mediator.Send(new GetCurrentUserRequest { }));
+        }
+
+        [HttpDelete()]
+        [Route(UserAuthenticationRoute.DeleteUserAccount)]
+        public async Task<ActionResult> DeleteUserAccount(string userId)
+        {
+            var deleteUserAccountRequest = new DeleteUserAccountCommand { UserId = userId };
+            return HandleResult(await Mediator.Send(deleteUserAccountRequest));
         }
     }
 }

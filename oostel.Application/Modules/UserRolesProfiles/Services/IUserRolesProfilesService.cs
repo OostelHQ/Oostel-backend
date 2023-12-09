@@ -27,6 +27,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         Task<bool> CreateStudentProfile(CreateStudentDTO userProfileDTO);
         Task<GetAllAgentProfileDetailsResponse> GetAgentById(string agentId);
         Task<bool> UpdateLandLordProfile(UpdateLandlordDTO updateLandlordProfileDTO);
+        Task<bool> DeleteUserAccountAsync(string id);
         Task<bool> ProfileViewsCount(string userId);
         Task<BaseRoleResponse> GetCurrentUser();
         Task<bool> UploadDisplayPictureAsync(IFormFile file, string userId);

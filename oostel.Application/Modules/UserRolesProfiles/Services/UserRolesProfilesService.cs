@@ -519,6 +519,18 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             return true;
         }
 
+        public async Task<bool> DeleteUserAccountAsync(string id)
+        {
+            var userToDelete = await _userManager.Users.SingleOrDefaultAsync(x => x.Id == id);  
+            if (userToDelete is null) return false;
+
+            var result = await _userManager.DeleteAsync(userToDelete);
+            if(result.Succeeded)
+                return true;
+
+            return false;
+        }
+
         public async Task<string> GetLandlordReferralCode(string landlordId)
         {
             var landlord = await _unitOfWork.ReferralAgentInfoRepository.FindandInclude(x => x.UserId == landlordId, true);
