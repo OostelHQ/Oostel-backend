@@ -38,10 +38,10 @@ namespace Oostel.Application.Modules.Hostel.Services
         }
 
 
-        public async Task<bool> CreateHostel(HostelDTO hostelDTO)
+        public async Task<string> CreateHostel(HostelDTO hostelDTO)
         {
             var user = await _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == hostelDTO.LandlordId, true);
-            if (user is null) return false;
+            if (user is null) return null;
 
             var rooms = new List<Room>();
 
@@ -51,7 +51,7 @@ namespace Oostel.Application.Modules.Hostel.Services
 
                 if (!roomCreated)
                 {
-                    return false;
+                    return null;
                 }
             }
 
@@ -94,7 +94,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             await _unitOfWork.SaveAsync();
 
 
-            return true;
+            return hostel.Id;
         }        
         public async Task<bool> UpdateHostel(string hostelId, HostelDTO hostelDTO)
         {

@@ -64,9 +64,9 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
                 });
                 var createhostel = await _hostelService.CreateHostel(hostelRequest);
 
-                if (!createhostel) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);
+                if (createhostel is null) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);
 
-                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: null, ResponseMessages.SuccessfulCreation);
+                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: createhostel, ResponseMessages.SuccessfulCreation);
             }
         }
     }

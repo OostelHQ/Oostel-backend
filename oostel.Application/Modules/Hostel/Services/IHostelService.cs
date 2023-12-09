@@ -11,7 +11,7 @@ namespace Oostel.Application.Modules.Hostel.Services
 {
     public interface IHostelService
     {
-        Task<bool> CreateHostel(HostelDTO hostelDTO);
+        Task<string> CreateHostel(HostelDTO hostelDTO);
         Task<ResultResponse<PagedList<HostelsResponse>>> GetAllHostels(HostelTypesParam hostelTypesParam);
         Task<HostelDetailsResponse> GetHostelById(string hostelId);
         Task<List<RoomToReturn>> GetAllRoomsForHostel(string hostelId);
