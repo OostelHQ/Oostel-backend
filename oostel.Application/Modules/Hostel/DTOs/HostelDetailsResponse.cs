@@ -23,7 +23,7 @@ namespace Oostel.Application.Modules.Hostel.DTOs
         public int HostelLikesCount { get; set; }
         public int NumberOfRoomsLeft { get; set; }
         public string HostelCategory { get; set; }
-        public List<IFormFile> HostelFrontViewPicture { get; set; }
+        public List<string> HostelFrontViewPicture { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
         public List<string> RulesAndRegulation { get; set; }

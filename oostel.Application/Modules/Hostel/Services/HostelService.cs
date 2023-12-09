@@ -207,6 +207,7 @@ namespace Oostel.Application.Modules.Hostel.Services
                     RulesAndRegulation = hostel.RulesAndRegulation,
                     Street = hostel.Street,
                     TotalRoom = hostel.TotalRoom,
+                    HostelFrontViewPicture = hostel.HostelFrontViewPicture
                 };
                 hostelDetailsToReturn.Rooms = _mapper.Map<List<RoomToReturn>>(hostel.Rooms);
                 hostelDetailsToReturn.CommentDTO = _mapper.Map<List<CommentDTO>>(hostel.Comments);
