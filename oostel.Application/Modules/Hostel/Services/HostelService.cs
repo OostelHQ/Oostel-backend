@@ -213,8 +213,12 @@ namespace Oostel.Application.Modules.Hostel.Services
                 };
                 hostelDetailsToReturn.Rooms = _mapper.Map<List<RoomToReturn>>(hostel.Rooms);
                 hostelDetailsToReturn.CommentDTO = _mapper.Map<List<CommentDTO>>(hostel.Comments);
-                hostelDetailsToReturn.AgentProfileToDisplay = _mapper.Map<AgentProfileToDisplay>(hostel.Landlord.LandlordAgents.ToList()[0].Agent);
                 hostelDetailsToReturn.LandlordProfile = _mapper.Map<LandlordProfileToDisplay>(hostel.Landlord);
+                if (hostel.Landlord.LandlordAgents != null && hostel.Landlord.LandlordAgents.Any())
+                {
+                    hostelDetailsToReturn.LandlordProfile = _mapper.Map<LandlordProfileToDisplay>(hostel.Landlord.LandlordAgents.ToList()[0].Landlord);
+                }
+               // hostelDetailsToReturn.LandlordProfile = _mapper.Map<LandlordProfileToDisplay>(hostel?.Landlord?.LandlordAgents?.ToList()[0]?.Landlord);
                 return hostelDetailsToReturn;
             }
             
