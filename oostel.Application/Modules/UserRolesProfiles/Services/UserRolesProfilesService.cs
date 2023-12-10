@@ -189,7 +189,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
         public async Task<bool> CreateStudentProfile(CreateStudentDTO updateStudentProfileDTO)
         {
-            var studentProfile = _userManager.Users.Any(x => x.Id == updateStudentProfileDTO.UserId && x.RolesCSV.Contains(RoleType.Student.GetEnumDescription()));
+            var studentProfile = _userManager.Users.Any(x => x.Id == updateStudentProfileDTO.UserId);
             if (!studentProfile) return false;
 
 
@@ -209,7 +209,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
                 LastModifiedDate = DateTime.UtcNow,
             };
 
-            var checkIfUserProfileExist = await _unitOfWork.StudentRepository.Find(x => x.Id == updateStudentProfileDTO.UserId);
+            var checkIfUserProfileExist = await _unitOfWork.StudentRepository.Find(x => x.Id == updateStudentProfileDTO.UserId && x.User.RolesCSV == RoleString.LandLord);
             if (checkIfUserProfileExist is null)
             {
                 await _unitOfWork.StudentRepository.Add(student);

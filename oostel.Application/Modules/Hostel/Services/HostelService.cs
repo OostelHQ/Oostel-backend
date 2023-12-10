@@ -176,6 +176,9 @@ namespace Oostel.Application.Modules.Hostel.Services
             return ResultResponse<PagedList<HostelsResponse>>.Success(await PagedList<HostelsResponse>.CreateAsync(hostelsQuery, hostelTypesParam.PageNumber, hostelTypesParam.PageSize));
         }
 
+
+        public async Task<List<>>
+
         public async Task<HostelDetailsResponse> GetHostelById(string hostelId)
         {
             var hostel = await _applicationDbContext.Hostels

@@ -3,7 +3,6 @@
     public class StudentProfileRequest
     {
         public string UserId { get; set; }
-        //public string? PhoneNumber { get; set; }
         public string? StateOfOrigin { get; set; }
         public string? Country { get; set; }
         public string? Gender { get; set; }
