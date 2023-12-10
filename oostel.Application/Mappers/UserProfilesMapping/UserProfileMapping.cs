@@ -35,6 +35,7 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
                 .Map(dest => dest.Email, src => src.User.Email)
                 .Map(dest => dest.PictureUrl, src => src.User.ProfilePhotoURL)
                 .Map(dest => dest.IsAvailable, src => src.IsAvailable)
+                .Map(dest => dest.GuardianPhoneNumber, src => src.GuardianPhoneNumber)
                 .Map(dest => dest.RoomBudgetAmount, src => src.OpenToRoomate.RoomBudgetAmount)
                 .Map(dest => dest.ProfileViewCount, src => src.User.ProfileViewCount)
                 .Map(dest => dest.FullName, src => $"{src.User.FirstName} {src.User.LastName}");
