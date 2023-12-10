@@ -177,7 +177,7 @@ namespace Oostel.Application.Modules.Hostel.Services
         }
 
 
-        public async Task<List<>>
+       // public async Task<List<>>
 
         public async Task<HostelDetailsResponse> GetHostelById(string hostelId)
         {
