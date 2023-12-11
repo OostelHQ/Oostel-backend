@@ -55,9 +55,6 @@ namespace Oostel.Application.Modules.Hostel.Services
                 }
             }
 
-            //var rulesAndRegulationsMapping = _mapper.Map<List<HostelRulesAndRegulations>>(hostelDTO.RulesAndRegulation);
-           // var faclitiesMapping = _mapper.Map<List<HostelFacilities>>(hostelDTO.HostelFacilities);
-
             var hostelFrontViewPictures = await _mediaUpload.UploadPhotos(hostelDTO.HostelFrontViewPicture);
 
             string uploadHostelVideoUrl = null;
@@ -177,7 +174,45 @@ namespace Oostel.Application.Modules.Hostel.Services
         }
 
 
-       // public async Task<List<>>
+        public async Task<List<GetMyHostelsDTO>> GetMyHostels(string landlordId)
+        {
+            var hostels = await _applicationDbContext.Hostels
+                    .Include(x => x.Rooms)
+                    .Include(x => x.HostelLikes)
+                    .Where(x => x.LandlordId == landlordId)
+                    .AsNoTracking()
+                    .ToListAsync();
+
+            var hostelsDTO = new List<GetMyHostelsDTO>();
+
+            foreach (var hostel in hostels)
+            {
+                var response = new GetMyHostelsDTO
+                {
+                    HostelId = hostel.Id,
+                    HostelDescription = hostel.HostelDescription,
+                    State = hostel.State,
+                    Country = hostel.Country,
+                    HomeSize = hostel.HomeSize,
+                    HostelCategory = hostel.HostelCategory,
+                    HostelFacilities = hostel.HostelFacilities,
+                    HostelName = hostel.HostelName,
+                    PriceBudgetRange = hostel.PriceBudgetRange,
+                    HostelLikesCount = hostel.HostelLikes.Count(x => x.LikedHostelId == hostel.Id),
+                    NumberOfRoomsLeft = hostel.Rooms.Count(x => !x.IsRented && x.HostelId == hostel.Id),
+                    Junction = hostel.Junction,
+                    RulesAndRegulation = hostel.RulesAndRegulation,
+                    Street = hostel.Street,
+                    TotalRoom = hostel.TotalRoom,
+                    HostelFrontViewPicture = hostel.HostelFrontViewPicture,
+                    Rooms = _mapper.Map<List<RoomToReturn>>(hostel.Rooms),
+                };
+
+                hostelsDTO.Add(response);
+            }
+
+            return hostelsDTO;
+        }
 
         public async Task<HostelDetailsResponse> GetHostelById(string hostelId)
         {

@@ -21,7 +21,7 @@ namespace Oostel.Application.Modules.Hostel.Services
         Task<bool> UpdateHostel(string hostelId, HostelDTO hostelDTO);
         Task<ResultResponse<CommentDTO>> CreateComment(CreateCommentDTO createCommentDTO);
         Task<bool> UpdateARoomForHostel(string userId, RoomDTO roomDTO);
-
+        Task<List<GetMyHostelsDTO>> GetMyHostels(string landlordId);
         Task<ResultResponse<List<CommentDTO>>> GetComments(string hostelId);
         Task<(IEnumerable<RoomCollectionsDTO> roomDTOs, string ids)> CreateRoomCollectionAsync(string landlordId, string hostelId, IEnumerable<RoomToCreate> roomsToCreates);
     }

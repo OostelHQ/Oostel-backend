@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Microsoft.Extensions.Hosting;
 using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Domain.Hostel.Entities;
 
@@ -18,6 +19,7 @@ namespace Oostel.Application.Mappers.HostelMapping
                 .Map(dest => dest.Country, src => src.Country);
             config.NewConfig<Room, RoomDTO>()
                 .Map(dest => dest.Files, src => src.RoomPictures);
+
 
 
             config.NewConfig<HostelFacilities, HostelFacilitiesDTO>()

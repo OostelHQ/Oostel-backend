@@ -132,7 +132,6 @@ namespace Oostel.API.Controllers
         [HttpGet]
         [ResponseCache(Duration = 60)]
         [Route(HostelRoute.GetARoomForHostel)]
-        [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> GetARoomForHostel(string hostelId, string roomId)
         {
             return HandleResult(await Mediator.Send(new GetARoomForHostelRequest { HostelId = hostelId, RoomId = roomId}));
@@ -141,10 +140,18 @@ namespace Oostel.API.Controllers
         [HttpGet]
         [Route(HostelRoute.GetAllRoomsForHostel)]
         [ResponseCache(Duration = 60)]
-        [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> GetAllRoomsForHostel(string hostelId)
         {
             return HandleResult(await Mediator.Send(new GetAllRoomsForHostelRequest { HostelId = hostelId }));
+        }
+
+        [HttpGet]
+        [Route(HostelRoute.GetMyHostels)]
+        [ResponseCache(Duration = 60)]
+        [AllowAnonymous]
+        public async Task<ActionResult<APIResponse>> GetMyHostels(string landlordId)
+        {
+            return HandleResult(await Mediator.Send(new GetMyHostelsRequest { LandlordId =  landlordId}));
         }
 
         [HttpGet]
