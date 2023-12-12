@@ -16,7 +16,7 @@ namespace Oostel.Application.Modules.UserRolesProfiles.Features.Commands
     public class OpenToRoommateCommand : IRequest<APIResponse>
     {
         public string StudentId { get; set; }
-        public string HostelName { get; set; }
+        public bool GottenAHostel { get; set; }
         public decimal HostelPrice { get; set; }
         public string HostelAddress { get; set; }
 

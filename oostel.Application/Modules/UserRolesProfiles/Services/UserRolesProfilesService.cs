@@ -114,7 +114,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             var student = await _unitOfWork.StudentRepository.FindandInclude(x => x.Id == openToRoommateDTO.StudentId,true);
             if (student is null) return false;
 
-            var openToRoomate = OpenToRoommate.CreateOpenToRoomateFactory(openToRoommateDTO.StudentId, openToRoommateDTO.HostelName,
+            var openToRoomate = OpenToRoommate.CreateOpenToRoomateFactory(openToRoommateDTO.StudentId, openToRoommateDTO.GottenAHostel,
                                 openToRoommateDTO.HostelPrice, openToRoommateDTO.HostelAddress);
 
             student.ToList()[0].IsAvailable = true;

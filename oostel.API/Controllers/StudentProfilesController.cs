@@ -28,7 +28,7 @@ namespace Oostel.API.Controllers
 
         [HttpPut]
         [Route(UserProfileRoute.UpdateStudentProfile)]
-        public async Task<ActionResult<APIResponse>> UpdateUserProfile(StudentProfileRequest request)
+        public async Task<ActionResult<APIResponse>> UpdateUserProfile(UpdateStudentProfileRequest request)
         {
             var studentProfileRequest = _mapper.Map<UpdateStudentProfileCommand>(request);
             return HandleResult(await Mediator.Send(studentProfileRequest));

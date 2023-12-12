@@ -9,7 +9,7 @@ namespace Oostel.Application.Modules.UserRolesProfiles.DTOs
     public class OpenToRoommateDTO
     {
         public string StudentId { get; set; }
-        public string HostelName { get; set; }
+        public bool GottenAHostel { get; set; }
         public decimal HostelPrice { get; set; }
         public string HostelAddress { get; set; }
     }

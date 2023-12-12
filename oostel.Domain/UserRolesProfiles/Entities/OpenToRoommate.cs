@@ -11,7 +11,7 @@ namespace Oostel.Domain.UserRolesProfiles.Entities
     public class OpenToRoommate : BaseEntity<string>
     {
         public string StudentId { get; set; }
-        public string HostelName { get; set; }
+        public bool GottenAHostel { get; set; }
         public decimal RoomBudgetAmount { get; set; }
         public string HostelAddress { get; set; }
         public Student Student { get; set; }
@@ -22,10 +22,10 @@ namespace Oostel.Domain.UserRolesProfiles.Entities
             CreatedDate = DateTime.UtcNow;
         }
 
-        private OpenToRoommate(string studentId, string hostelName, decimal hostelPrice, string roomBudgetAmount)
+        private OpenToRoommate(string studentId, bool gottenAHostel, decimal hostelPrice, string roomBudgetAmount)
         {
             StudentId = studentId;
-            HostelName = hostelName;
+            GottenAHostel = gottenAHostel;
             RoomBudgetAmount = hostelPrice;
             HostelAddress = roomBudgetAmount;
             LastModifiedDate = DateTime.UtcNow;
@@ -33,9 +33,9 @@ namespace Oostel.Domain.UserRolesProfiles.Entities
             Id = Guid.NewGuid().ToString();
         }
 
-        public static OpenToRoommate CreateOpenToRoomateFactory(string studentId, string hostelName, decimal roomBudgetAmount, string hostelAddress)
+        public static OpenToRoommate CreateOpenToRoomateFactory(string studentId, bool gottenAHostel, decimal roomBudgetAmount, string hostelAddress)
         {
-            return new OpenToRoommate(studentId, hostelName, roomBudgetAmount, hostelAddress);
+            return new OpenToRoommate(studentId, gottenAHostel, roomBudgetAmount, hostelAddress);
         }
     }
 }
