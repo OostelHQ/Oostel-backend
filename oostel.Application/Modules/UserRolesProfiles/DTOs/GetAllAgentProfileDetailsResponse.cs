@@ -10,7 +10,8 @@ namespace Oostel.Application.Modules.UserRolesProfiles.DTOs
     public class GetAllAgentProfileDetailsResponse : BaseRoleResponse
     {
        
-        public AgentProfile LandlordProfile { get; set; }
+        public AgentProfile AgentProfile { get; set; }
+        public LandlordProfile LandlordProfile { get; set; }
     }
 
     public class AgentProfile : GetAllLandlordProfileDetails

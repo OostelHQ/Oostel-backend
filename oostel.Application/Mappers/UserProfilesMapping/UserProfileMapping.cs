@@ -80,6 +80,7 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
                 .Map(dest => dest.ProfilePicture, src => src.User.ProfilePhotoURL)
                 .Map(dest => dest.RoleCVS, src => src.User.RolesCSV)
                 .Map(dest => dest.FullName, src => $"{src.User.FirstName} {src.User.LastName}");
+                
                    
             config.NewConfig<Agent, GetAgentProfileDTO>()
                 .Map(dest => dest.UserId, src => src.Id)

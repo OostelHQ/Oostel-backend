@@ -267,10 +267,12 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         public async Task<GetAllAgentProfileDetailsResponse> GetAgentById(string agentId)
         {
             // var agent = await _unitOfWork.AgentRepository.FindandInclude(x => x.Id == agentId && x.User.RolesCSV.Contains(RoleType.Agent.GetEnumDescription()), true);
-            var agent = await _applicationDbContext.Landlords
+            var agent = await _applicationDbContext.Agents
                       .Include(x => x.User)
-                      .Include(x => x.Hostels)
-                      .ThenInclude(x => x.Rooms)
+                      .Include(x => x.LandlordAgents)
+                        //.ThenInclude(x => x.Landlord)
+                        //    .ThenInclude(x => x.Hostels)
+                        //        .ThenInclude(x => x.Rooms)
                       .FirstOrDefaultAsync(x => x.Id == agentId && x.User.RolesCSV.Contains(RoleType.Agent.GetEnumDescription()));
 
             if (agent is null) return null;
@@ -278,7 +280,8 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             GetAllAgentProfileDetailsResponse studentDetailsResponse = new();
 
             studentDetailsResponse.UserDto = _mapper.Map<UserDto>(agent.User);
-            studentDetailsResponse.LandlordProfile = _mapper.Map<AgentProfile>(agent);
+            studentDetailsResponse.AgentProfile = _mapper.Map<AgentProfile>(agent);
+            //studentDetailsResponse.LandlordProfile = _mapper.Map<LandlordProfile>(agent.LandlordAgents.ToList()[0].Landlord);
             return studentDetailsResponse;
         }
 
