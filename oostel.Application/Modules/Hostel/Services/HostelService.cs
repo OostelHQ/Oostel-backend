@@ -339,7 +339,7 @@ namespace Oostel.Application.Modules.Hostel.Services
 
             return true;
         }
-
+        
         public async Task<RoomToReturn> GetARoomForHostel(string hostelId, string roomId)
         {
             var checkIfHostelExist = await GetHostelById(hostelId);
