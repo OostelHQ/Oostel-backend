@@ -148,16 +148,23 @@ namespace Oostel.API.Controllers
         [HttpGet]
         [Route(HostelRoute.GetMyHostels)]
         [ResponseCache(Duration = 60)]
-        [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> GetMyHostels(string landlordId)
         {
             return HandleResult(await Mediator.Send(new GetMyHostelsRequest { LandlordId =  landlordId}));
         }
 
         [HttpGet]
-        [Route(HostelRoute.GetAvailableRoomsPerHostel)]
+        [Route(HostelRoute.GetMyLikedHostels)]
         [ResponseCache(Duration = 60)]
         [AllowAnonymous]
+        public async Task<ActionResult<APIResponse>> GetMyLikedHostels(string userId)
+        {
+            return HandleResult(await Mediator.Send(new GetMyLikedHostelsRequest { UserId = userId }));
+        }
+
+        [HttpGet]
+        [Route(HostelRoute.GetAvailableRoomsPerHostel)]
+        [ResponseCache(Duration = 60)]
         public async Task<ActionResult<int>> GetAvailableRoomsPerHostel(string hostelId)
         {
             int availableRoomsCount = await _unitOfWork.RoomRepository.CountAsync(x => x.IsRented && x.HostelId == hostelId);

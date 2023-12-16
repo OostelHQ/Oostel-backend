@@ -282,7 +282,58 @@ namespace Oostel.Application.Modules.Hostel.Services
             return true;
         }   
 
-       
+        public async Task<List<HostelsResponse>> GetMyLikedHostels(string userId)
+        {
+            var likedHostels = await _applicationDbContext.HostelLikes
+                                
+                              // .Include(x => x.LikedHostel)
+                               //.ThenInclude(x => x.Rooms)                              
+                               .Where(x => x.SourceUserId == userId)
+                               .Select(x => x.LikedHostel)
+                               .ToListAsync(); 
+
+            var likedHostelsResponse = likedHostels.Select(h => new HostelsResponse
+            {
+                UserId = h.LandlordId,
+                HostelId = h.Id,
+                HostelCategory = h.HostelCategory,
+                Country = h.Country,
+                HomeSize = h.HomeSize,
+                HostelDescription = h.HostelDescription,
+                HostelFacilities = h.HostelFacilities,
+                PriceBudgetRange = h.PriceBudgetRange,
+               // NumberOfRoomsLeft = h.Rooms.Count(x => !x.IsRented && x.HostelId == h.Id),
+                Junction = h.Junction,
+                //HostelLikesCount = h.HostelLikes.Count(x => x.LikedHostelId == h.Id),
+                RulesAndRegulation = h.RulesAndRegulation,
+                State = h.State,
+                IsAnyRoomVacant = h.IsAnyRoomVacant,
+                Street = h.Street,
+                TotalRoom = h.TotalRoom,
+                HostelName = h.HostelName,
+                HostelFrontViewPicture = h.HostelFrontViewPicture
+            }).ToList();
+
+            return likedHostelsResponse;
+
+        }
+
+        public async Task<List<LikedUserDTO>> GetHostelLikedUsers(string hostelId)
+        {
+            var likedUsers = await _applicationDbContext.HostelLikes
+                             .Where(x => x.LikedHostelId == hostelId)
+                             .Select(x => x.SourceUser)
+                             .ToListAsync();
+
+            var likedUsersResponse = likedUsers.Select(u => new LikedUserDTO
+            {
+                Name = $"{u.FirstName} {u.LastName}",
+                UserId = u.Id,
+                ProfilePicture = u.ProfilePhotoURL
+            }).ToList();
+
+            return likedUsersResponse;
+        }
         public async Task<(IEnumerable<RoomCollectionsDTO> roomDTOs, string ids)> CreateRoomCollectionAsync(string landlordId, string hostelId, IEnumerable<RoomToCreate> roomsToCreates)
         {
             var user = await _userAccessor.CheckIfTheUserExist(landlordId);

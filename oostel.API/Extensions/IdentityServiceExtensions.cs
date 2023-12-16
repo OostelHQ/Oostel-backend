@@ -58,7 +58,7 @@ namespace Oostel.API.Extensions
 
                            var path = context.HttpContext.Request.Path;
                            if (!string.IsNullOrEmpty(accessToken) &&
-                               path.StartsWithSegments("/hubs"))
+                               (path.StartsWithSegments("/hubs")))
                            {
                                context.Token = accessToken;
                            }

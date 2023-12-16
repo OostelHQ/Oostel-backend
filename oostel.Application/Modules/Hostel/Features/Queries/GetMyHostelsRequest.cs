@@ -21,12 +21,12 @@ namespace Oostel.Application.Modules.Hostel.Features.Queries
 
             public async Task<APIResponse> Handle(GetMyHostelsRequest request, CancellationToken cancellationToken)
             {
-                var rooms = await _hostelService.GetMyHostels(request.LandlordId);
+                var myHostels = await _hostelService.GetMyHostels(request.LandlordId);
 
-                if (rooms is null)
+                if (myHostels is null)
                     return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.NotFound);
 
-                return APIResponse.GetSuccessMessage(HttpStatusCode.OK, data: rooms, ResponseMessages.FetchedSuccess);
+                return APIResponse.GetSuccessMessage(HttpStatusCode.OK, data: myHostels, ResponseMessages.FetchedSuccess);
             }
         }
     }
