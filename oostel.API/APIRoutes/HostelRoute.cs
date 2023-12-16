@@ -8,6 +8,7 @@
         public const string UpdateHostel = "hostel/update-hostel";
         public const string GetMyHostels = "hostel/get-my-hostels";
         public const string GetMyLikedHostels = "hostel/get-my-liked-hostels";
+        public const string GetHostelLikedUsers = "hostel/get-hostel-liked-users";
 
         public const string CreateRoomForHostel = "hostel/create-room-for-hostel";
         public const string GetARoomForHostel = "hostel/get-a-room-for-hostel";

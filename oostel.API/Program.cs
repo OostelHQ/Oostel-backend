@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Oostel.API.Middlewares;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http.Connections;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,9 +69,27 @@ app.UseAuthorization();
 app.UseSwagger();
 app.MapControllers();
 
-app.MapHub<PresenceHub>("hubs/presence");  //We're giving this a root where it's gonna be access from
-app.MapHub<MessageHub>("hubs/message");
-app.MapHub<CommentHub>("hubs/comment");
+app.MapHub<PresenceHub>("hubs/presence", options =>
+{
+    options.Transports =
+        HttpTransportType.WebSockets |
+        HttpTransportType.LongPolling;
+   // options.CloseOnAuthenticationExpiration = true;
+});
+app.MapHub<MessageHub>("hubs/message", options =>
+{
+    options.Transports =
+        HttpTransportType.WebSockets |
+        HttpTransportType.LongPolling;
+   // options.CloseOnAuthenticationExpiration = true;
+});
+app.MapHub<CommentHub>("hubs/comment", options =>
+{
+    options.Transports =
+        HttpTransportType.WebSockets |
+        HttpTransportType.LongPolling;
+   // options.CloseOnAuthenticationExpiration = true;
+});
 
 
 using var scope = app.Services.CreateScope();

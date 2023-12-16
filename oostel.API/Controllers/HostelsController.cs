@@ -156,10 +156,18 @@ namespace Oostel.API.Controllers
         [HttpGet]
         [Route(HostelRoute.GetMyLikedHostels)]
         [ResponseCache(Duration = 60)]
-        [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> GetMyLikedHostels(string userId)
         {
             return HandleResult(await Mediator.Send(new GetMyLikedHostelsRequest { UserId = userId }));
+        }
+
+        [HttpGet]
+        [Route(HostelRoute.GetHostelLikedUsers)]
+        [ResponseCache(Duration = 60)]
+        [AllowAnonymous]
+        public async Task<ActionResult<APIResponse>> GetHostelLikedUsers(string hostelId)
+        {
+            return HandleResult(await Mediator.Send(new GetHostelLikedUsersRequest { HostelId = hostelId }));
         }
 
         [HttpGet]
