@@ -17,6 +17,8 @@
         public const string ProfileViewsCount = "user-profile/profile-views-count";
 
         public const string AddStudentLikes = "user-profile/like-student-profile";
+        public const string GetMyLikedStudents = "user-profile/get-my-liked-students";
+        public const string GetAStudentLikedUsers = "user-profile/ get-a-student-liked-users";
 
         public const string UploadUserProfilePicture = "user-profile/upload-user-profile-picture";
         public const string SendAgentInvitationCode = "user-profile/send-an-invitation-code";

@@ -6,6 +6,7 @@ using Oostel.API.ViewModels.UserProfilesVM;
 using Oostel.Application.Modules.UserProfiles.Features.Commands;
 using Oostel.Application.Modules.UserProfiles.Features.Queries;
 using Oostel.Application.Modules.UserRolesProfiles.Features.Commands;
+using Oostel.Application.Modules.UserRolesProfiles.Features.Queries;
 using Oostel.Common.Types;
 using Oostel.Common.Types.RequestFeatures;
 
@@ -79,5 +80,20 @@ namespace Oostel.API.Controllers
         {
             return HandleResult(await Mediator.Send(new AddStudentLikesCommand {LikingUserId = request.LikingUserId, StudentLikeId = request.StudentLikeId }));
         }
+
+        [HttpGet]
+        [Route(UserProfileRoute.GetMyLikedStudents)]
+        public async Task<ActionResult<APIResponse>> GetMyLikedStudents(string userId)
+        {
+            return HandleResult(await Mediator.Send(new GetMyLikedStudentsRequest {UserId = userId}));
+        }
+
+        [HttpGet]
+        [Route(UserProfileRoute.GetMyLikedStudents)]
+        public async Task<ActionResult<APIResponse>> GetAStudentLikedUsers(string studentId)
+        {
+            return HandleResult(await Mediator.Send(new GetAStudentLikedUsersRequest { StudentId = studentId }));
+        }
     }
+
 }

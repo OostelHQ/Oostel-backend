@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Application.Modules.UserAuthentication.DTOs;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserRolesProfiles.DTOs;
@@ -28,6 +29,8 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         Task<GetAllAgentProfileDetailsResponse> GetAgentById(string agentId);
         Task<bool> UpdateLandLordProfile(UpdateLandlordDTO updateLandlordProfileDTO);
         Task<bool> DeleteUserAccountAsync(string id);
+        Task<List<GetMyLikedStudentDTO>> GetMyLikedStudents(string userId);
+        Task<List<LikedUserDTO>> GetAStudentLikedUsers(string studentId);
         Task<bool> ProfileViewsCount(string userId);
         Task<BaseRoleResponse> GetCurrentUser();
         Task<bool> UploadDisplayPictureAsync(IFormFile file, string userId);

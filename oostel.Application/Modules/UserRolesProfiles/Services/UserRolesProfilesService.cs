@@ -494,7 +494,43 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             };
         }
 
+        public async Task<List<LikedUserDTO>> GetAStudentLikedUsers(string studentId)
+        {
+            var likedUsers = await _applicationDbContext.StudentLikes
+                        .Where(x => x.LikedStudentId == studentId)
+                        .Select(x => x.SourceUser)
+                        .ToListAsync();
 
+            var mapData = likedUsers.Select(u => new LikedUserDTO
+            {
+                Name = $"{u.FirstName} {u.LastName}",
+                UserId = u.Id,
+                ProfilePicture = u.ProfilePhotoURL
+            }).ToList();
+
+            return mapData;
+        }
+
+        public async Task<List<GetMyLikedStudentDTO>> GetMyLikedStudents(string userId)
+        {
+            var likedStudents = await _applicationDbContext.StudentLikes
+                                .Include(x => x.LikedStudent)                             
+                                .Where(x => x.SourceUserId == userId)
+                                .Select(x => x.LikedStudent)
+                                .ToListAsync();
+
+            var mapData = likedStudents.Select(u => new GetMyLikedStudentDTO
+            {
+                Name = $"{u.User.FirstName} {u.User.LastName}",
+                StudentId = u.Id,
+                Gender = u.Gender,
+                Level = u.SchoolLevel,
+                BudgetAmount = u.OpenToRoomate.RoomBudgetAmount,
+                LikesCount = u.LikedUsers.Count(x => x.LikedStudentId == u.Id)
+            }).ToList();
+
+            return mapData;
+        }
 
         public async Task<bool> AddStudentLike(string sourceId, string studentLikeId)
         {
