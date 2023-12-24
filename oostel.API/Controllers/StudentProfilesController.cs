@@ -89,7 +89,7 @@ namespace Oostel.API.Controllers
         }
 
         [HttpGet]
-        [Route(UserProfileRoute.GetMyLikedStudents)]
+        [Route(UserProfileRoute.GetAStudentLikedUsers)]
         public async Task<ActionResult<APIResponse>> GetAStudentLikedUsers(string studentId)
         {
             return HandleResult(await Mediator.Send(new GetAStudentLikedUsersRequest { StudentId = studentId }));

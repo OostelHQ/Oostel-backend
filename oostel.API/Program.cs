@@ -74,7 +74,7 @@ app.MapHub<PresenceHub>("hubs/presence", options =>
     options.Transports =
         HttpTransportType.WebSockets |
         HttpTransportType.LongPolling;
-   // options.CloseOnAuthenticationExpiration = true;
+    options.CloseOnAuthenticationExpiration = true;
 });
 app.MapHub<MessageHub>("hubs/message", options =>
 {
@@ -83,16 +83,12 @@ app.MapHub<MessageHub>("hubs/message", options =>
         HttpTransportType.LongPolling;
     options.CloseOnAuthenticationExpiration = true;
 });
-
-
-
-
 app.MapHub<CommentHub>("hubs/comment", options =>
 {
     options.Transports =
         HttpTransportType.WebSockets |
         HttpTransportType.LongPolling;
-   // options.CloseOnAuthenticationExpiration = true;
+    options.CloseOnAuthenticationExpiration = true;
 });
 
 

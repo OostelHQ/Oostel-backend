@@ -46,8 +46,6 @@ namespace Oostel.API.Extensions
                        IssuerSigningKey = key,
                        ValidateIssuer = false,
                        ValidateAudience = false,
-                       ValidateLifetime = true,
-                       ClockSkew = TimeSpan.Zero
                    };
 
                    opt.Events = new JwtBearerEvents
