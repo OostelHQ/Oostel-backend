@@ -40,9 +40,9 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
             {
                 var mapData = _mapper.Map<UpdateLandlordDTO>(request);
                 var landlordProfile = await _userProfilesService.UpdateLandLordProfile(mapData);
-                if (!landlordProfile) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailToUpdateError);
+                if (landlordProfile is null) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailToUpdateError);
 
-                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: null, ResponseMessages.UpdateMessage);
+                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: landlordProfile, ResponseMessages.UpdateMessage);
             }
         }
     }

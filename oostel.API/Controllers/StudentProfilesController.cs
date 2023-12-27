@@ -38,6 +38,7 @@ namespace Oostel.API.Controllers
         [HttpGet]
         [Route(UserProfileRoute.GetAllStudents)]
         [ResponseCache(Duration = 60)]
+        [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> GetAllStudents([FromQuery]StudentTypeParams studentTypeParams)
         {
             return HandlePagedResult(await Mediator.Send(new GetAllStudentsRequest { StudentTypeParams = studentTypeParams}));
@@ -46,6 +47,7 @@ namespace Oostel.API.Controllers
         [HttpGet]
         [Route(UserProfileRoute.GetStudentById)]
         [ResponseCache(Duration = 60)]
+        [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> GetUserProfileById(string studentId)
         {
             return HandleResult(await Mediator.Send(new GetStudentByIdRequest { StudentId = studentId }));

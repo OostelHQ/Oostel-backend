@@ -35,9 +35,9 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
             {
                 var mapData = _mapper.Map<UpdateStudentDTO>(request);
                 var studentProfile = await _userProfilesService.UpdateStudentProfile(mapData);
-                if (!studentProfile) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailToUpdateError);
+                if (studentProfile is null) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailToUpdateError);
 
-                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: null, ResponseMessages.UpdateMessage);
+                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: studentProfile, ResponseMessages.UpdateMessage);
             }
         }
     }

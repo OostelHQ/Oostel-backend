@@ -46,9 +46,9 @@ namespace Oostel.Application.Modules.Hostel.Features.Commands
                 var mapData = _mapper.Map<HostelDTO>(request);
                 var updatehostel = await _hostelService.UpdateHostel(request.HostelId, mapData);
 
-                if (!updatehostel) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);
+                if (updatehostel is null) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);
 
-                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: null, ResponseMessages.SuccessfulCreation);
+                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: updatehostel, ResponseMessages.SuccessfulCreation);
             }
         }
     }

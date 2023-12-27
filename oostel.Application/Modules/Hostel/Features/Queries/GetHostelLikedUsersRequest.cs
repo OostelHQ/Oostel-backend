@@ -21,7 +21,7 @@ namespace Oostel.Application.Modules.Hostel.Features.Queries
 
             public async Task<APIResponse> Handle(GetHostelLikedUsersRequest request, CancellationToken cancellationToken)
             {
-                var LikedUsers = await _hostelService.GetHostelLikedUsers(request.HostelId);
+                var LikedUsers = await _hostelService.GetHostelLikedUsersAndCount(request.HostelId);
 
                 if (LikedUsers is null)
                     return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.NotFound);

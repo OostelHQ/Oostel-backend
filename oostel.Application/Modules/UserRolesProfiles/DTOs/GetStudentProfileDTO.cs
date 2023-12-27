@@ -20,6 +20,8 @@ namespace Oostel.Application.Modules.UserProfiles.DTOs
         public int ProfileViewCount { get; set; }
         public string Gender { get; set; }
         public string Country { get; set; }
+        public List<string> LikedStudentIds { get; set; }
+        public List<string> StudentLikedIds { get; set; }
         public string SchoolLevel { get; set; }
         public string Religion { get; set; }
         public string Denomination { get; set; }

@@ -11,6 +11,8 @@ namespace Oostel.Application.Modules.UserRolesProfiles.DTOs
     {
         public UserWalletBalanceDTO UserWalletBalanceDTO { get; set; }
         public StudentProfile StudentProfile { get; set; }
+        public List<string> LikedStudentIds { get; set; }
+        public List<string> StudentLikedIds { get; set; }
     }
 
     public class UserDto 

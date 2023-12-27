@@ -40,9 +40,9 @@ namespace Oostel.Application.Modules.UserProfiles.Features.Commands
             {
                 var mapData = _mapper.Map<UpdateAgentProfileDTO>(request);
                 var agentProfile = await _userProfilesService.UpdateAgentProfile(mapData);
-                if (!agentProfile) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailToUpdateError);
+                if (agentProfile is null) return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailToUpdateError);
 
-                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: null, ResponseMessages.UpdateMessage);
+                return APIResponse.GetSuccessMessage(HttpStatusCode.Created, data: agentProfile, ResponseMessages.UpdateMessage);
             }
         }
     }

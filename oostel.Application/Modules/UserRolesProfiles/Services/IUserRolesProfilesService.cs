@@ -19,7 +19,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
     {
         Task<ResultResponse<PagedList<GetStudentProfileDTO>>> GetAllStudents(StudentTypeParams studentTypeParams);
         Task<GetAllStudentDetailsResponse> GetStudentById(string studentId);
-        Task<bool> UpdateStudentProfile(UpdateStudentDTO userProfileDTO);
+        Task<UpdateStudentResponse> UpdateStudentProfile(UpdateStudentDTO userProfileDTO);
         Task<GetAllLandlordProfileDetails> GetLandlordsById(string landlordId);
         Task<bool> AvailableForRoommate(OpenToRoommateDTO openToRoommateDTO);
         Task<List<GetAgentProfileDTO>> GetAllAgents();
@@ -27,16 +27,16 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         Task<bool> CreateLandLordProfile(CreateLandlordDTO landlordProfileDTO);
         Task<bool> CreateStudentProfile(CreateStudentDTO userProfileDTO);
         Task<GetAllAgentProfileDetailsResponse> GetAgentById(string agentId);
-        Task<bool> UpdateLandLordProfile(UpdateLandlordDTO updateLandlordProfileDTO);
+        Task<UpdateLandlordResponse> UpdateLandLordProfile(UpdateLandlordDTO landlordProfileDTO);
         Task<bool> DeleteUserAccountAsync(string id);
-        Task<List<GetMyLikedStudentDTO>> GetMyLikedStudents(string userId);
-        Task<List<LikedUserDTO>> GetAStudentLikedUsers(string studentId);
+        Task<List<string>> GetMyLikedStudents(string userId);
+        Task<List<string>> GetAStudentLikedUsers(string studentId);
         Task<bool> ProfileViewsCount(string userId);
         Task<BaseRoleResponse> GetCurrentUser();
         Task<bool> UploadDisplayPictureAsync(IFormFile file, string userId);
         Task<bool> AcceptLandlordInvitation(string agentId, string landlordId);
         Task<bool> AddStudentLike(string sourceId, string studentLikeId);
-        Task<bool> UpdateAgentProfile(UpdateAgentProfileDTO updateAgentProfileDTO);
+        Task<UpdateLandlordResponse> UpdateAgentProfile(UpdateAgentProfileDTO updateAgentProfileDTO);
         Task<ApplicationUser> GetEmailAsync(string email);
         Task<bool> CreateAgentProfile(CreateAgentProfileDTO createAgentProfileDTO);
         Task<bool> CreateReferralCode(string landlordId);

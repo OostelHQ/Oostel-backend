@@ -53,6 +53,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             var studentsQuery = _applicationDbContext.Students
                 .Include(x => x.User)
                 .Include(x => x.OpenToRoomate)
+               // .Include(x => x.LikedUsers)
                 .OrderBy(x => x.CreatedDate)
                 .Select(s => new GetStudentProfileDTO
                 {
@@ -64,6 +65,9 @@ namespace Oostel.Application.Modules.UserProfiles.Services
                     Age = s.Age,
                     Religion = s.Religion,
                     Gender = s.Gender,
+                    Area = s.Area,
+                    //LikedStudentIds = GetMyLikedStudents(s.Id),
+                    // await GetAStudentLikedUsers(studentId),
                     Hobby = s.Hobby,
                     IsAvailable = s.IsAvailable,
                     JoinedDate = s.User.CreatedDate,
@@ -150,6 +154,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             // var student = await _unitOfWork.StudentRepository.FindandInclude(x => x.Id == studentId && x.User.RolesCSV.Contains(RoleType.Student.GetEnumDescription()), true);
             var student = await _applicationDbContext.Students
                       .Include(x => x.OpenToRoomate)
+                      .Include(x => x.LikedUsers)
                       .Include(x => x.User)
                       .FirstOrDefaultAsync(x => x.Id == studentId && x.User.RolesCSV.Contains(RoleType.Student.GetEnumDescription()));
             if (student is null) return null;
@@ -159,13 +164,15 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             studentDetailsResponse.UserDto = _mapper.Map<UserDto>(student.User);
             studentDetailsResponse.UserWalletBalanceDTO = _mapper.Map<UserWalletBalanceDTO>(student.User.Wallets);
             studentDetailsResponse.StudentProfile = _mapper.Map<StudentProfile>(student);
+            studentDetailsResponse.LikedStudentIds = await GetMyLikedStudents(studentId);
+            studentDetailsResponse.StudentLikedIds = await GetAStudentLikedUsers(studentId);
 
             return studentDetailsResponse;
         }
-        public async Task<bool> UpdateStudentProfile(UpdateStudentDTO userProfileDTO)
+        public async Task<UpdateStudentResponse> UpdateStudentProfile(UpdateStudentDTO userProfileDTO)
         {
             var studentProfile =  _unitOfWork.StudentRepository.FindandInclude(x => x.Id == userProfileDTO.UserId && x.User.RolesCSV.Contains(RoleType.Student.GetEnumDescription()), true).Result.FirstOrDefault();
-            if (studentProfile is null) return false;
+            if (studentProfile is null) return null;
 
             studentProfile.SchoolLevel = userProfileDTO.SchoolLevel ?? studentProfile.SchoolLevel;
             studentProfile.Age = userProfileDTO.Age ?? studentProfile.Age;
@@ -182,9 +189,23 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
               await _unitOfWork.StudentRepository.UpdateAsync(studentProfile);
              var saveState = await _unitOfWork.SaveAsync() > 0;
-             if(!saveState) return false;
+             if(!saveState) return null;
 
-            return true;
+            return new UpdateStudentResponse()
+            {
+                UserId = studentProfile.Id,
+                FirstName = studentProfile.User.FirstName,
+                LastName = studentProfile.User.LastName,
+                Age = studentProfile.Age,
+                Denomination = studentProfile.Denomination,
+                Gender = studentProfile.Gender,
+                GuardianPhoneNumber =studentProfile.GuardianPhoneNumber,
+                Hobby = studentProfile.Hobby,
+                Religion = studentProfile.Religion,
+                PhoneNumber = studentProfile.User.PhoneNumber,
+                SchoolLevel = studentProfile.SchoolLevel,
+                StateOfOrigin = studentProfile.StateOfOrigin,             
+            };
         }
 
         public async Task<bool> CreateStudentProfile(CreateStudentDTO updateStudentProfileDTO)
@@ -357,10 +378,10 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             return true;
         }
 
-        public async Task<bool> UpdateLandLordProfile(UpdateLandlordDTO landlordProfileDTO)
+        public async Task<UpdateLandlordResponse> UpdateLandLordProfile(UpdateLandlordDTO landlordProfileDTO)
         {
             var landlordProfile = _unitOfWork.LandlordRepository.FindandInclude(x => x.Id == landlordProfileDTO.UserId, true).Result.SingleOrDefault();
-            if (landlordProfile is null) return false;
+            if (landlordProfile is null) return null;
 
             landlordProfile.Religion = landlordProfileDTO.Religion ?? landlordProfile.Religion;
             landlordProfile.State = landlordProfileDTO.State ?? landlordProfile.State;
@@ -376,15 +397,28 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
             await _unitOfWork.LandlordRepository.UpdateAsync(landlordProfile);
             var saveState = await _unitOfWork.SaveAsync() > 0;
-            if (!saveState) return false;
+            if (!saveState) return null;
 
-            return true;
+            return new UpdateLandlordResponse()
+            {
+                UserId = landlordProfile.Id,
+                FirstName = landlordProfile.User.FirstName,
+                LastName = landlordProfile.User.LastName,
+                DateOfBirth = landlordProfile.DateOfBirth,
+                Country = landlordProfile.Country,
+                Denomination = landlordProfile.Denomination,
+                Gender = landlordProfile.Gender,
+                PhoneNumber = landlordProfile.User.PhoneNumber,
+                Religion = landlordProfile.Religion,
+                State = landlordProfile.State,
+                Street = landlordProfile.Street
+            };
         }
 
-        public async Task<bool> UpdateAgentProfile(UpdateAgentProfileDTO updateAgentProfileDTO)
+        public async Task<UpdateLandlordResponse> UpdateAgentProfile(UpdateAgentProfileDTO updateAgentProfileDTO)
         {
             var agentProfile = _unitOfWork.AgentRepository.FindandInclude(x => x.Id == updateAgentProfileDTO.UserId, true).Result.SingleOrDefault();
-            if (agentProfile is null) return false;
+            if (agentProfile is null) return null;
 
             agentProfile.Religion = updateAgentProfileDTO.Religion ?? agentProfile.Religion;
             agentProfile.State = updateAgentProfileDTO.State ?? agentProfile.State;
@@ -400,9 +434,22 @@ namespace Oostel.Application.Modules.UserProfiles.Services
 
             await _unitOfWork.AgentRepository.UpdateAsync(agentProfile);
             var saveState = await _unitOfWork.SaveAsync() > 0;
-            if (!saveState) return false;
+            if (!saveState) return null;
 
-            return true;
+            return new UpdateLandlordResponse()
+            {
+                UserId = agentProfile.Id,
+                FirstName = agentProfile.User.FirstName,
+                LastName = agentProfile.User.LastName,
+                DateOfBirth = agentProfile.DateOfBirth,
+                Country = agentProfile.Country,
+                Denomination = agentProfile.Denomination,
+                Gender = agentProfile.Gender,
+                PhoneNumber = agentProfile.User.PhoneNumber,
+                Religion = agentProfile.Religion,
+                State = agentProfile.State,
+                Street = agentProfile.Street
+            };
         }
 
         public async Task<bool> UploadDisplayPictureAsync(IFormFile file, string userId)
@@ -494,24 +541,34 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             };
         }
 
-        public async Task<List<LikedUserDTO>> GetAStudentLikedUsers(string studentId)
+        /* public async Task<List<LikedUserDTO>> GetAStudentLikedUsers(string studentId)
+         {
+             var likedUsers = await _applicationDbContext.StudentLikes
+                         .Where(x => x.LikedStudentId == studentId)
+                         .Select(x => x.SourceUser)
+                         .ToListAsync();
+
+             var mapData = likedUsers.Select(u => new LikedUserDTO
+             {
+                 Name = $"{u.FirstName} {u.LastName}",
+                 UserId = u.Id,
+                 ProfilePicture = u.ProfilePhotoURL
+             }).ToList();
+
+             return mapData;
+         }*/
+
+        public async Task<List<string>> GetAStudentLikedUsers(string studentId)
         {
             var likedUsers = await _applicationDbContext.StudentLikes
                         .Where(x => x.LikedStudentId == studentId)
-                        .Select(x => x.SourceUser)
+                        .Select(x => x.SourceUser.Id)
                         .ToListAsync();
 
-            var mapData = likedUsers.Select(u => new LikedUserDTO
-            {
-                Name = $"{u.FirstName} {u.LastName}",
-                UserId = u.Id,
-                ProfilePicture = u.ProfilePhotoURL
-            }).ToList();
-
-            return mapData;
+            return likedUsers;
         }
 
-        public async Task<List<GetMyLikedStudentDTO>> GetMyLikedStudents(string userId)
+        /*public async Task<List<GetMyLikedStudentDTO>> GetMyLikedStudents(string userId)
         {
             var likedStudents = await _applicationDbContext.StudentLikes
                                 .Include(x => x.LikedStudent)                             
@@ -530,6 +587,17 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             }).ToList();
 
             return mapData;
+        }*/
+
+        public async Task<List<string>> GetMyLikedStudents(string userId)
+        {
+            var likedStudents = await _applicationDbContext.StudentLikes
+                                .Include(x => x.LikedStudent)
+                                .Where(x => x.SourceUserId == userId)
+                                .Select(x => x.LikedStudent.Id)
+                                .ToListAsync();
+
+            return likedStudents;
         }
 
         public async Task<bool> AddStudentLike(string sourceId, string studentLikeId)
