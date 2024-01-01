@@ -37,7 +37,7 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-builder.Services.AddCors();
+//builder.Services.AddCors();
 
 var app = builder.Build();
 
