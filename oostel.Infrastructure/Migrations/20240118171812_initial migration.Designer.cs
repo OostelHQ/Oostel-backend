@@ -12,8 +12,8 @@ using Oostel.Infrastructure.Data;
 namespace Oostel.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231206223805_AddToDatabase")]
-    partial class AddToDatabase
+    [Migration("20240118171812_initial migration")]
+    partial class initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -191,9 +191,6 @@ namespace Oostel.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("HostelFrontViewPicture")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("HostelName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -276,6 +273,42 @@ namespace Oostel.Infrastructure.Migrations
                     b.ToTable("HostelLikes");
                 });
 
+            modelBuilder.Entity("Oostel.Domain.Hostel.Entities.HostelPictures", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("HostelId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoomId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HostelId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("HostelPictures");
+                });
+
             modelBuilder.Entity("Oostel.Domain.Hostel.Entities.Room", b =>
                 {
                     b.Property<string>("Id")
@@ -307,10 +340,6 @@ namespace Oostel.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoomNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RoomPictures")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -759,11 +788,10 @@ namespace Oostel.Infrastructure.Migrations
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("HostelAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("GottenAHostel")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("HostelName")
+                    b.Property<string>("HostelAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1052,6 +1080,21 @@ namespace Oostel.Infrastructure.Migrations
                     b.Navigation("SourceUser");
                 });
 
+            modelBuilder.Entity("Oostel.Domain.Hostel.Entities.HostelPictures", b =>
+                {
+                    b.HasOne("Oostel.Domain.Hostel.Entities.Hostel", "Hostel")
+                        .WithMany("HostelFrontViewPicture")
+                        .HasForeignKey("HostelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Oostel.Domain.Hostel.Entities.Room", null)
+                        .WithMany("RoomPictures")
+                        .HasForeignKey("RoomId");
+
+                    b.Navigation("Hostel");
+                });
+
             modelBuilder.Entity("Oostel.Domain.Hostel.Entities.Room", b =>
                 {
                     b.HasOne("Oostel.Domain.Hostel.Entities.Hostel", "Hostel")
@@ -1230,9 +1273,16 @@ namespace Oostel.Infrastructure.Migrations
                 {
                     b.Navigation("Comments");
 
+                    b.Navigation("HostelFrontViewPicture");
+
                     b.Navigation("HostelLikes");
 
                     b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.Hostel.Entities.Room", b =>
+                {
+                    b.Navigation("RoomPictures");
                 });
 
             modelBuilder.Entity("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", b =>
