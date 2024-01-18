@@ -15,6 +15,6 @@ namespace Oostel.Application.Modules.Hostel.DTOs
         public string Duration { get; set; }
         public List<string>? RoomFacilities { get; set; }
         public bool IsRented { get; set; }
-        public List<string> RoomPictures { get; set; }
+        public List<HostelPicturesDTO> RoomPictures { get; set; }
     }
 }

@@ -24,6 +24,13 @@ namespace Oostel.Infrastructure.Data.Configurations
             .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<Hostel>()
+                .HasMany(p => p.HostelFrontViewPicture)
+                .WithOne(h => h.Hostel)
+                .HasForeignKey(h => h.HostelId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            builder.Entity<Hostel>()
                 .Property(h => h.LastModifiedDate)
                 .IsConcurrencyToken();
 
@@ -42,7 +49,7 @@ namespace Oostel.Infrastructure.Data.Configurations
                 );
             });
 
-            builder.Entity<Hostel>(x =>
+            /*builder.Entity<Hostel>(x =>
             {
                 x.HasKey(y => y.Id);
                 x.Property(y => y.HostelFrontViewPicture)
@@ -55,7 +62,7 @@ namespace Oostel.Infrastructure.Data.Configurations
                             c => c.ToList()
                     )
                 );
-            });
+            });*/
 
             builder.Entity<Hostel>(x =>
             {
@@ -87,7 +94,7 @@ namespace Oostel.Infrastructure.Data.Configurations
                 );
             });
 
-            builder.Entity<Room>(x =>
+           /* builder.Entity<Room>(x =>
             {
                 x.HasKey(y => y.Id);
                 x.Property(y => y.RoomPictures)
@@ -100,7 +107,7 @@ namespace Oostel.Infrastructure.Data.Configurations
                             c => c.ToList()
                     )
                 );
-            });
+            });*/
         }
     }
 }

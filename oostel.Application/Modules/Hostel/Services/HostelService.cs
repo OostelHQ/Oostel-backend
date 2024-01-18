@@ -86,7 +86,9 @@ namespace Oostel.Application.Modules.Hostel.Services
                 
                 );
 
-            hostel.HostelFrontViewPicture?.AddRange(hostelFrontViewPictures.Select(result => result.Url));
+           // hostel.HostelFrontViewPicture?.AddRange(hostelFrontViewPictures.Select(result => result.Url);
+            hostel.HostelFrontViewPicture?.AddRange(hostelFrontViewPictures.Select(x => 
+                HostelPictures.CreateHostelOrRoomPicturesFactory(x.Url, x.PublicId, hostel.Id)));
 
             await _unitOfWork.HostelRepository.Add(hostel);
             await _unitOfWork.SaveAsync();
@@ -111,8 +113,8 @@ namespace Oostel.Application.Modules.Hostel.Services
             existinghostel.HostelCategory = hostelDTO.HostelCategory.GetEnumDescription();
             existinghostel.State = hostelDTO.State;
             existinghostel.Country = hostelDTO.Country;
-            existinghostel.RulesAndRegulation = hostelDTO.RulesAndRegulation;//_mapper.Map<List<HostelRulesAndRegulations>>(hostelDTO.RulesAndRegulation);
-            existinghostel.HostelFacilities = hostelDTO.HostelFacilities; //_mapper.Map<List<HostelFacilities>>(hostelDTO.HostelFacilities);
+            existinghostel.RulesAndRegulation = hostelDTO.RulesAndRegulation;
+            existinghostel.HostelFacilities = hostelDTO.HostelFacilities; 
             existinghostel.IsAnyRoomVacant = hostelDTO.IsAnyRoomVacant;
            // existinghostel.Rooms = rooms;
             existinghostel.LastModifiedDate = DateTime.UtcNow;
@@ -130,7 +132,7 @@ namespace Oostel.Application.Modules.Hostel.Services
                 HostelCategory = existinghostel.HostelCategory,
                 HostelDescription = existinghostel.HostelDescription,
                 HostelFacilities= existinghostel.HostelFacilities,
-                HostelFrontViewPicture = existinghostel.HostelFrontViewPicture,
+                HostelFrontViewPicture = _mapper.Map<List<HostelPicturesDTO>>(existinghostel.HostelFrontViewPicture),
                 State= existinghostel.State,    
                 IsAnyRoomVacant = existinghostel.IsAnyRoomVacant,
                 Junction = existinghostel.Junction,
@@ -166,7 +168,7 @@ namespace Oostel.Application.Modules.Hostel.Services
                     Street = h.Street,
                     TotalRoom = h.TotalRoom,
                     HostelName = h.HostelName,
-                   HostelFrontViewPicture = h.HostelFrontViewPicture
+                    HostelFrontViewPicture =  _mapper.Map<List<HostelPicturesDTO>>(h.HostelFrontViewPicture),
                     
                 })
                 .Where(x => x.IsAnyRoomVacant == true)
@@ -226,7 +228,7 @@ namespace Oostel.Application.Modules.Hostel.Services
                     RulesAndRegulation = hostel.RulesAndRegulation,
                     Street = hostel.Street,
                     TotalRoom = hostel.TotalRoom,
-                    HostelFrontViewPicture = hostel.HostelFrontViewPicture,
+                    HostelFrontViewPicture = _mapper.Map<List<HostelPicturesDTO>>(hostel.HostelFrontViewPicture),
                     Rooms = _mapper.Map<List<RoomToReturn>>(hostel.Rooms),
                 };
 
@@ -269,7 +271,7 @@ namespace Oostel.Application.Modules.Hostel.Services
                     RulesAndRegulation = hostel.RulesAndRegulation,
                     Street = hostel.Street,
                     TotalRoom = hostel.TotalRoom,
-                    HostelFrontViewPicture = hostel.HostelFrontViewPicture
+                    HostelFrontViewPicture = _mapper.Map<List<HostelPicturesDTO>>(hostel.HostelFrontViewPicture)
                 };
                 hostelDetailsToReturn.Rooms = _mapper.Map<List<RoomToReturn>>(hostel.Rooms);
                 hostelDetailsToReturn.CommentDTO = _mapper.Map<List<CommentDTO>>(hostel.Comments);
@@ -296,8 +298,10 @@ namespace Oostel.Application.Modules.Hostel.Services
             var room = Room.CreateRoomForHostelFactory(roomDTO.RoomNumber, roomDTO.Price, roomDTO.Duration,
                                                           roomDTO.RoomFacilities, roomDTO.IsRented, roomDTO.HostelId);
             var photoUploadResults = await _mediaUpload.UploadPhotos(roomDTO.Files);
-            room.RoomPictures?.AddRange(photoUploadResults.Select(result => result.Url));
 
+            room.RoomPictures?.AddRange(photoUploadResults.Select(x => 
+                HostelPictures.CreateHostelOrRoomPicturesFactory(x.Url, x.PublicId, roomDTO.HostelId)));
+           
             await _unitOfWork.RoomRepository.Add(room);
             await _unitOfWork.SaveAsync();
             

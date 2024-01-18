@@ -18,7 +18,7 @@ namespace Oostel.Domain.Hostel.Entities
         public string PriceBudgetRange { get; set; }
         public List<string> HostelFacilities { get; set; } = new List<string>();
         public List<string> RulesAndRegulation { get; set; } = new List<string>();
-        public List<string>? HostelFrontViewPicture { get; set; } = new List<string>();
+        public List<HostelPictures>? HostelFrontViewPicture { get; set; } = new List<HostelPictures>();
         public bool IsAnyRoomVacant { get; set; }
         public string? VideoUrl { get; set; }
         public ICollection<Room>? Rooms { get; set; }

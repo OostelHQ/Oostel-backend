@@ -33,6 +33,7 @@ namespace Oostel.Infrastructure.Data
         public DbSet<UserOTP> UserOTPs { get; set; }
         public DbSet<Hostel> Hostels { get; set; }
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<HostelPictures> HostelPictures { get; set; }
         public DbSet<OpenToRoommate> OpenToRoommates { get; set; }
         public DbSet<HostelLikes> HostelLikes { get; set; }
         public DbSet<StudentLikes> StudentLikes { get; set; }

@@ -20,7 +20,7 @@ namespace Oostel.Application.Modules.Hostel.DTOs
         public string Street { get; set; }
         public string Junction { get; set; }
         public string HostelCategory { get; set; }
-        public List<string> HostelFrontViewPicture { get; set; }
+        public List<HostelPicturesDTO> HostelFrontViewPicture { get; set; }
         public string State { get; set; }
         public string Country { get; set; }
         public IEnumerable<RoomDTO>? Rooms { get; set; }
