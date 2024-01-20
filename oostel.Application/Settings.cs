@@ -1,6 +1,7 @@
 ﻿using FluentValidation.AspNetCore;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Oostel.Application.Modules.Hostel.Services;
@@ -35,7 +36,7 @@ namespace Oostel.Application
                 s.RegisterValidatorsFromAssemblyContaining<RegisterUserCommandValidator>();
             });
 
-            services.AddScoped< EmailSender>();
+            services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<ITokenService, TokenService>();
 
             services.Configure<CloudinarySettings>(_configuration.GetSection("CloudinarySettings"));
