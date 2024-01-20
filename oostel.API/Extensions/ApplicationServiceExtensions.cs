@@ -11,6 +11,7 @@ using System.Reflection;
 using Marvin.Cache.Headers;
 using Microsoft.Extensions.Configuration;
 using System.Runtime;
+using Oostel.Infrastructure.FlutterwaveIntegration;
 
 namespace Oostel.API.Extensions
 {
@@ -33,7 +34,7 @@ namespace Oostel.API.Extensions
                 Options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
             });
           
-            services.Configure<EmailConfiguration>(_config.GetSection("EmailConfiguration"));  
+            services.Configure<EmailConfiguration>(_config.GetSection("EmailConfiguration"));
 
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(RegisterUserCommand).GetTypeInfo().Assembly));
 

@@ -1,26 +1,25 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Mailjet.Client;
+using Mailjet.Client.Resources;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
 
 namespace Oostel.Infrastructure.EmailService
 {
-    public class EmailSender //: IEmailSender
+    public class EmailSender : IEmailSender
     {
 
-        private readonly IConfiguration _config;
-        // private readonly EmailConfiguration _mailjetSettings;
-        public EmailSender(IConfiguration configuration)
-        {
-            _config = configuration;
-        }
-
-        /*public EmailSender(IOptions<EmailConfiguration> mailjetSettings)
+       // private readonly IConfiguration _config;
+        private readonly EmailConfiguration _mailjetSettings;
+        public EmailSender(IOptions<EmailConfiguration> mailjetSettings)
         {
             _mailjetSettings = mailjetSettings.Value;
-        }*/
+        }
 
-       /* public async Task SendEmailAsync(string email, string subject, string body)
+        public async Task SendEmailAsync(string email, string subject, string body)
         {
-            MailjetClient client = new MailjetClient("61ad72cb57d19e529e18f9340ea6730b", "ded532f83c336c0cf6a6273cfbaa38d4");//"61ad72cb57d19e529e18f9340ea6730b", "ded532f83c336c0cf6a6273cfbaa38d4")//_config["Mailjet : APIKey"], _config["Mailjet : SecretKey"])
+            MailjetClient client = new MailjetClient("3d5b5f5063962cd1f707ee860dfd56ea", "03c549b4d3a65617a022555a6bd222a7");
             {
 
             };
@@ -30,7 +29,7 @@ namespace Oostel.Infrastructure.EmailService
             }
 
 
-            .Property(Send.FromEmail, "ajeigbekehinde160@gmail.com")
+            .Property(Send.FromEmail, "fynda.care@gmail.com")
             .Property(Send.FromName, "Fynda APP")
             .Property(Send.Subject, subject)
             .Property(Send.HtmlPart, body)
@@ -41,7 +40,7 @@ namespace Oostel.Infrastructure.EmailService
                 });
 
             MailjetResponse response = await client.PostAsync(request);
-        }*/
+        }
 
        /* public async Task SendEmailAsync(EmailParameter emailParameter)
         {

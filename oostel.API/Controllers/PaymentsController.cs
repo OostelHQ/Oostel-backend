@@ -26,6 +26,7 @@ namespace Oostel.API.Controllers
         
         [HttpGet]
         [Route(PaymentRoute.GetNGNBanks)]
+        [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> GetNGNBanks()
         {
             return HandleResult(await _mediator.Send(new GetNGNBanksRequest()));

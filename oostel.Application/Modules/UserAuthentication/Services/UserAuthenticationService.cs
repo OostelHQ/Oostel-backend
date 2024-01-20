@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Oostel.Application.Modules.UserAuthentication.DTOs;
@@ -23,16 +24,16 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
     public class UserAuthenticationService : IUserAuthenticationService
     {
         private readonly IConfiguration _configuration;
-        //private readonly IEmailSender _emailSender;
+        private readonly IEmailSender _emailSender;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UnitOfWork _unitOfWork;
         private readonly ITokenService _tokenService;
         public UserAuthenticationService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ITokenService tokenService, UserManager<ApplicationUser> userManager,
-            UnitOfWork unitOfWork)
+            UnitOfWork unitOfWork, IEmailSender emailSender)
         {
             _configuration = configuration;
-           // _emailSender = emailSender;
+            _emailSender = emailSender;
             _userManager = userManager;
             _unitOfWork = unitOfWork;
             _httpContextAccessor = httpContextAccessor;
@@ -58,7 +59,7 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
 
             var saveState = await _unitOfWork.SaveAsync(cancellationToken);
 
-            return saveState > 0 ? true : false; //? await SendRegisterVerifyEmail(user.Email, generatedCode, user.LastName) : false;
+            return saveState > 0 ? await SendRegisterVerifyEmail(user.Email, generatedCode, user.LastName) : false;
 
         }
 
@@ -82,7 +83,7 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
 
             var saveState = await _unitOfWork.SaveAsync(cancellationToken);
 
-            return saveState > 0 ? true : false;  //> 0 ? await SendResetPasswordVerifyEmail(user.Email, generatedCode, user.LastName) : false;
+            return saveState > 0 ? await SendResetPasswordVerifyEmail(user.Email, generatedCode, user.LastName) : false;
 
         }
 
@@ -165,16 +166,16 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
             return new OtpVerificationResponse { Message = "Invalid OTP", Success = false }; ;
         }
 
-        /*private async Task<bool> SendRegisterVerifyEmail(string email, string generatedCode, string lastname)
+        private async Task<bool> SendRegisterVerifyEmail(string email, string generatedCode, string lastname)
         {
 
             var message = $"<p><b>Hello, {lastname}!</b></p>" +
              $"<p>You're welcome on board! Before you take any step further, do well to first verify your email</p><p>" +
              $"<p><b>{generatedCode}</b></p>";
 
-            var emailParams = new EmailParameter(email, $"Please Verify Your Email", message);
+            //var emailParams = new EmailParameter(email, $"Please Verify Your Email", message);
 
-            await _emailSender.SendEmailAsync(emailParams);
+            await _emailSender.SendEmailAsync(email, $"Please Verify Your Email", message);
 
             return true;
         }
@@ -186,12 +187,12 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
              $"<p>Kindly reset your password with verified OTP below</p><p>" +
              $"<p><b>{generatedCode}</b></p>";
 
-            var emailParams = new EmailParameter(email, $"Reset Password", message);
+           // var emailParams = new EmailParameter(email, $"Reset Password", message);
 
-            await _emailSender.SendEmailAsync(emailParams);
+            await _emailSender.SendEmailAsync(email, $"Please Verify Your Email", message);
 
             return true;
-        }*/
+        }
 
 
     }

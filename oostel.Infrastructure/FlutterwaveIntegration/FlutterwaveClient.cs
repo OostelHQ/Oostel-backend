@@ -4,20 +4,17 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Oostel.Common.Exceptions;
 using Oostel.Infrastructure.FlutterwaveIntegration.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace Oostel.Infrastructure.FlutterwaveIntegration
 {
     public class FlutterwaveClient: IFlutterwaveClient
     {
         private readonly HttpClient _httpClient;
-        private AppSettings _appSettings;
+        private readonly AppSettings _appSettings;
         private readonly IConfiguration _configuration;
 
         public FlutterwaveClient(HttpClient httpClient, IOptions<AppSettings> options, IConfiguration configuration)
@@ -30,7 +27,7 @@ namespace Oostel.Infrastructure.FlutterwaveIntegration
 
         public async Task<GetBanksResponse> GetBanks()
         {
-            string secretKey = _configuration.GetValue<string>("SecretKey");
+            string secretKey = _appSettings.SecretKey; 
             string url = _appSettings.BaseUrl + "banks/NG";
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", secretKey);
@@ -46,7 +43,7 @@ namespace Oostel.Infrastructure.FlutterwaveIntegration
             }
 
             var result = await response.Content.ReadAsStringAsync();
-            var IncomingDataResponse = JsonConvert.DeserializeObject<GetBanksResponse>(result);
+            var IncomingDataResponse = System.Text.Json.JsonSerializer.Deserialize<GetBanksResponse>(result);
             return IncomingDataResponse;
         }
 
@@ -82,7 +79,7 @@ namespace Oostel.Infrastructure.FlutterwaveIntegration
             }
 
             var result = await response.Content.ReadAsStringAsync();
-            var IncomingDataResponse = JsonConvert.DeserializeObject<BankTransferResponseData>(result);
+            var IncomingDataResponse = System.Text.Json.JsonSerializer.Deserialize<BankTransferResponseData>(result);
             return IncomingDataResponse;
         }
 
@@ -118,7 +115,7 @@ namespace Oostel.Infrastructure.FlutterwaveIntegration
             }
 
             var result = await response.Content.ReadAsStringAsync();
-            var IncomingDataResponse = JsonConvert.DeserializeObject<GeneratePaymentResponse>(result);
+            var IncomingDataResponse = System.Text.Json.JsonSerializer.Deserialize<GeneratePaymentResponse>(result);
             return IncomingDataResponse;
         }
 
@@ -142,7 +139,7 @@ namespace Oostel.Infrastructure.FlutterwaveIntegration
             }
 
             var result = await response.Content.ReadAsStringAsync();
-            var IncomingDataResponse = JsonConvert.DeserializeObject<VerifyTransactionResponse>(result);
+            var IncomingDataResponse = System.Text.Json.JsonSerializer.Deserialize<VerifyTransactionResponse>(result);
             return IncomingDataResponse;
         }
     }
