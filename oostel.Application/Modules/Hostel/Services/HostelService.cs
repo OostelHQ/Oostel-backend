@@ -149,6 +149,7 @@ namespace Oostel.Application.Modules.Hostel.Services
 
            var hostelsQuery = _applicationDbContext.Hostels
                 .Include(r => r.Rooms)
+                .Include(p => p.HostelFrontViewPicture)
                 .OrderBy(d => d.CreatedDate)
                 .Select( h => new HostelsResponse {
                     UserId = h.LandlordId,
@@ -201,6 +202,7 @@ namespace Oostel.Application.Modules.Hostel.Services
         {
             var hostels = await _applicationDbContext.Hostels
                     .Include(x => x.Rooms)
+                    .Include(p => p.HostelFrontViewPicture)
                     .Include(x => x.HostelLikes)
                     .Where(x => x.LandlordId == landlordId)
                     .AsNoTracking()
@@ -243,6 +245,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             var hostel = await _applicationDbContext.Hostels
                 .Include(x => x.Rooms)
                 .Include(x => x.Comments)
+                .Include(p => p.HostelFrontViewPicture)
                 .Include(x => x.Landlord)
                     .ThenInclude(x => x.LandlordAgents)
                         .ThenInclude(x => x.Agent)
