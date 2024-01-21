@@ -49,7 +49,7 @@ namespace Oostel.Infrastructure.FlutterwaveIntegration
 
         public async Task<BankTransferResponseData> ProcessTransfer(BankTransferRequest transferRequest)
         {
-            string secretKey = _configuration.GetValue<string>("SecretKey");
+            string secretKey = _appSettings.SecretKey;
             string url = _appSettings.BaseUrl + "transfers";
 
             var requestData = new BankTransferRequest()
@@ -86,7 +86,7 @@ namespace Oostel.Infrastructure.FlutterwaveIntegration
 
         public async Task<GeneratePaymentResponse> GeneratePaymentLink(GeneratePaymentRequest generatePaymentRequest)
         {
-            string secretKey = _configuration.GetValue<string>("SecretKey");
+            string secretKey = _appSettings.SecretKey;
             string url = _appSettings.BaseUrl + "payments";
 
             var requestData = new GeneratePaymentRequest()
@@ -121,7 +121,7 @@ namespace Oostel.Infrastructure.FlutterwaveIntegration
 
         public async Task<VerifyTransactionResponse> VerifyTransactionPayment(VerifyTransactionRequest verifyTransactionRequest)
         {
-            string secretKey = _configuration.GetValue<string>("SecretKey");
+            string secretKey = _appSettings.SecretKey;
             string url = _appSettings.BaseUrl + $"transactions/{verifyTransactionRequest.TransactionId}/verify";
 
             //  var json = JsonConvert.SerializeObject(countryIso2Code);
