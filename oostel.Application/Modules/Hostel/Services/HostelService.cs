@@ -303,7 +303,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             var photoUploadResults = await _mediaUpload.UploadPhotos(roomDTO.Files);
 
             room.RoomPictures?.AddRange(photoUploadResults.Select(x => 
-                HostelPictures.CreateHostelOrRoomPicturesFactory(x.Url, x.PublicId, roomDTO.HostelId)));
+                HostelPictures.CreateHostelOrRoomPicturesFactory(x.Url, x.PublicId, room.Id)));
            
             await _unitOfWork.RoomRepository.Add(room);
             await _unitOfWork.SaveAsync();
