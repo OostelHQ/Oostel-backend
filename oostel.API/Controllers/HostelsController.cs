@@ -164,7 +164,6 @@ namespace Oostel.API.Controllers
         [HttpGet]
         [Route(HostelRoute.GetHostelLikedUsers)]
         [ResponseCache(Duration = 60)]
-        [AllowAnonymous]
         public async Task<ActionResult<APIResponse>> GetHostelLikedUsers(string hostelId)
         {
             return HandleResult(await Mediator.Send(new GetHostelLikedUsersRequest { HostelId = hostelId }));
@@ -185,6 +184,13 @@ namespace Oostel.API.Controllers
         {
             var hostelLikeRequest = _mapper.Map<AddHostelLikeCommand>(request);
             return HandleResult(await Mediator.Send(hostelLikeRequest));
+        }
+
+        [HttpDelete]
+        [Route(HostelRoute.DeleteHostelPicture)]
+        public async Task<ActionResult<APIResponse>> DeleteHostelPicture(string userId, string hostelPictureId)
+        {
+            return HandleResult(await Mediator.Send(new DeleteHostelPictureCommand { UserId = userId, HostelPictureId= hostelPictureId}));
         }
     }
 }

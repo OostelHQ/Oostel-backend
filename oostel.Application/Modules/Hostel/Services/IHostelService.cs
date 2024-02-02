@@ -23,6 +23,7 @@ namespace Oostel.Application.Modules.Hostel.Services
         Task<RoomUpdateResponse> UpdateARoomForHostel(string userId, RoomDTO roomDTO);
         Task<List<GetMyHostelsDTO>> GetMyHostels(string landlordId);
         Task<ResultResponse<List<CommentDTO>>> GetComments(string hostelId);
+        Task<bool> DeleteProductPicture(string userId, string pictureId);
         Task<List<string>> GetMyLikedHostels(string userId);
         Task<HostelLikesAndCount> GetHostelLikedUsersAndCount(string hostelId);
         Task<(IEnumerable<RoomCollectionsDTO> roomDTOs, string ids)> CreateRoomCollectionAsync(string landlordId, string hostelId, IEnumerable<RoomToCreate> roomsToCreates);

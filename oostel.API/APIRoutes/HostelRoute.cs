@@ -19,5 +19,6 @@
 
         public const string AddHostelLikes = "hostel/add-hostel-likes";
 
+        public const string DeleteHostelPicture = "hostel/delete-hostel-picture";
     }
 }

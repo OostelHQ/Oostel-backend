@@ -274,7 +274,7 @@ namespace Oostel.Application.Modules.Hostel.Services
                     RulesAndRegulation = hostel.RulesAndRegulation,
                     Street = hostel.Street,
                     TotalRoom = hostel.TotalRoom,
-                    HostelFrontViewPicture = _mapper.Map<List<HostelPicturesDTO>>(hostel.HostelFrontViewPicture)
+                    HostelFrontViewPicture = _mapper.Map<List<HostelPicturesDTO>>(hostel.HostelFrontViewPicture),
                 };
                 hostelDetailsToReturn.Rooms = _mapper.Map<List<RoomToReturn>>(hostel.Rooms);
                 hostelDetailsToReturn.CommentDTO = _mapper.Map<List<CommentDTO>>(hostel.Comments);
@@ -493,6 +493,25 @@ namespace Oostel.Application.Modules.Hostel.Services
 
             var roomsDto = _mapper.Map<List<RoomToReturn>>(hostelRooms);
             return roomsDto;
+        }
+
+
+        public async Task<bool> DeleteProductPicture(string userId, string pictureId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user is null) return false;
+
+            var getPicture = await _unitOfWork.HostelPictureRepository.GetById(pictureId);
+            if (getPicture is null) return false;
+
+            var cloudinaryDelete = await _mediaUpload.DeletePhoto(getPicture.PublicId);
+            if (cloudinaryDelete is null)
+                return false;
+
+            await _unitOfWork.HostelPictureRepository.Remove(getPicture);
+            await _unitOfWork.SaveAsync();
+
+            return true;
         }
 
         public async Task<bool> AddHostelLike(string sourceId, string hostelLikeId)

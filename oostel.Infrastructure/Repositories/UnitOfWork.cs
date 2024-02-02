@@ -36,6 +36,7 @@ namespace Oostel.Infrastructure.Repositories
         private GenericRepository<ReferralAgentInfo, string> referralAgentInfoRepository;
         private GenericRepository<AgentReferred, string> agentReferredRepository;
         private GenericRepository<Agent, string> agentRepository;
+        private GenericRepository<HostelPictures, string> hostelPictureRepository;
         
         public IMessageRepository MessageRepository => new MessageRepository(_context, _mapper);
 
@@ -50,6 +51,19 @@ namespace Oostel.Infrastructure.Repositories
                     payInHistoryRepository = new GenericRepository<PayInHistory, string>(_context);
                 }
                 return payInHistoryRepository;
+            }
+        }
+
+        public GenericRepository<HostelPictures, string> HostelPictureRepository
+        {
+            get
+            {
+
+                if (hostelPictureRepository == null)
+                {
+                    hostelPictureRepository = new GenericRepository<HostelPictures, string>(_context);
+                }
+                return hostelPictureRepository;
             }
         }
 
