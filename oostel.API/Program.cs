@@ -34,7 +34,7 @@ builder.Services.AddSignalR(hubOptions =>
 {
     hubOptions.EnableDetailedErrors = true;
     hubOptions.KeepAliveInterval = TimeSpan.FromSeconds(10);
-    hubOptions.HandshakeTimeout = TimeSpan.FromSeconds(5);
+    hubOptions.HandshakeTimeout = TimeSpan.FromMinutes(30);
 });
 
 Log.Logger = new LoggerConfiguration()
