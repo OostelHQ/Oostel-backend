@@ -32,9 +32,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR(hubOptions =>
 {
-    hubOptions.EnableDetailedErrors = true;
     hubOptions.KeepAliveInterval = TimeSpan.FromSeconds(10);
-    hubOptions.HandshakeTimeout = TimeSpan.FromMinutes(30);
+    hubOptions.MaximumReceiveMessageSize = 65_536;
+    hubOptions.HandshakeTimeout = TimeSpan.FromSeconds(15);
+    hubOptions.MaximumParallelInvocationsPerClient = 2;
+    hubOptions.EnableDetailedErrors = true;
+    hubOptions.StreamBufferCapacity = 15;
 });
 
 Log.Logger = new LoggerConfiguration()
