@@ -302,8 +302,8 @@ namespace Oostel.Application.Modules.Hostel.Services
                                                           roomDTO.RoomFacilities, roomDTO.IsRented, roomDTO.HostelId);
             var photoUploadResults = await _mediaUpload.UploadPhotos(roomDTO.Files);
 
-            room.RoomPictures?.AddRange(photoUploadResults.Select(x => 
-                HostelPictures.CreateHostelOrRoomPicturesFactory(x.Url, x.PublicId, room.Id)));
+            room.RoomPictures?.AddRange(photoUploadResults.Select(x =>
+                HostelPictures.CreateHostelOrRoomPicturesFactory(x.Url, x.PublicId, room.HostelId)));
            
             await _unitOfWork.RoomRepository.Add(room);
             await _unitOfWork.SaveAsync();
