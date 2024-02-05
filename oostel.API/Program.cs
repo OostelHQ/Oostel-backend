@@ -30,15 +30,7 @@ builder.Services.AddControllers(
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSignalR(hubOptions =>
-{
-    hubOptions.KeepAliveInterval = TimeSpan.FromSeconds(10);
-    hubOptions.MaximumReceiveMessageSize = 65_536;
-    hubOptions.HandshakeTimeout = TimeSpan.FromSeconds(15);
-    hubOptions.MaximumParallelInvocationsPerClient = 2;
-    hubOptions.EnableDetailedErrors = true;
-    hubOptions.StreamBufferCapacity = 15;
-});
+builder.Services.AddSignalR();
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration).CreateLogger();
