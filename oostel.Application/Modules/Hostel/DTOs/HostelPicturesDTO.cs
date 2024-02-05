@@ -10,6 +10,6 @@ namespace Oostel.Application.Modules.Hostel.DTOs
     {
         public string PictureId { get; set; }
         public string Url { get; set; }
-        public string PublicId { get; set; }
+        //public string PublicId { get; set; }
     }
 }

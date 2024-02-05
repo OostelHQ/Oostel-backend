@@ -245,7 +245,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             var hostel = await _applicationDbContext.Hostels
                 .Include(x => x.Rooms)
                 .Include(x => x.Comments)
-                .Include(p => p.HostelFrontViewPicture)
+                //.Include(p => p.HostelFrontViewPicture)
                 .Include(x => x.Landlord)
                     .ThenInclude(x => x.LandlordAgents)
                         .ThenInclude(x => x.Agent)
