@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.UserWallet.Features.Queries
 {
-    public class GetAllPayInHistoriesRequest : IRequest<ResultResponse<PagedList<PayInHistory>>>
+    public class GetAllPayInHistoriesRequest : IRequest<ResultResponse<PagedList<PayInAndOutHistory>>>
     {
         public int PageNo { get; set; }
         public int PageSize { get; set; }
 
-        public sealed class GetAllPayInHistoriesRequestCommand : IRequestHandler<GetAllPayInHistoriesRequest, ResultResponse<PagedList<PayInHistory>>>
+        public sealed class GetAllPayInHistoriesRequestCommand : IRequestHandler<GetAllPayInHistoriesRequest, ResultResponse<PagedList<PayInAndOutHistory>>>
         {
             private readonly IUserWalletService _userWalletService;
             private readonly IMapper _mapper;
@@ -28,13 +28,13 @@ namespace Oostel.Application.Modules.UserWallet.Features.Queries
                 _mapper = mapper;
             }
 
-            public async Task<ResultResponse<PagedList<PayInHistory>>> Handle(GetAllPayInHistoriesRequest request, CancellationToken cancellationToken)
+            public async Task<ResultResponse<PagedList<PayInAndOutHistory>>> Handle(GetAllPayInHistoriesRequest request, CancellationToken cancellationToken)
             {
                 var transaction = await _userWalletService.GetPayInHistories(request.PageSize, request.PageNo);
 
-                if (transaction.Data is null) return ResultResponse<PagedList<PayInHistory>>.Failure(ResponseMessages.NotFound);
+                if (transaction.Data is null) return ResultResponse<PagedList<PayInAndOutHistory>>.Failure(ResponseMessages.NotFound);
 
-                return ResultResponse<PagedList<PayInHistory>>.Success(transaction.Data);
+                return ResultResponse<PagedList<PayInAndOutHistory>>.Success(transaction.Data);
             }
         }
     }

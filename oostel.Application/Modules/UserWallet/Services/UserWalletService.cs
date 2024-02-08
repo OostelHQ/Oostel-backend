@@ -92,7 +92,7 @@ namespace Oostel.Application.Modules.UserWallet.Services
             return ResultResponse<PagedList<Transaction>>.Success(await PagedList<Transaction>.CreateAsync(transactionQuery, pageNo, pageSize));
         }
 
-        public async Task<PayInHistory> CreateAndUpdatePayInHistory(PayInHistory payInHistory)
+        public async Task<PayInAndOutHistory> CreateAndUpdatePayInHistory(PayInAndOutHistory payInHistory)
         {
             if (string.IsNullOrEmpty(payInHistory.Id))
             {
@@ -108,7 +108,7 @@ namespace Oostel.Application.Modules.UserWallet.Services
             return payInHistory;
         }
 
-        public async Task<PayInHistory> GetPayInHistoryById(string transactionId)
+        public async Task<PayInAndOutHistory> GetPayInHistoryById(string transactionId)
         {
             var payInHistory = await _unitOfWork.PayInHistoryRepository.GetById(transactionId);
             if (payInHistory is null)
@@ -117,13 +117,13 @@ namespace Oostel.Application.Modules.UserWallet.Services
             return payInHistory;
         }
 
-        public async Task<ResultResponse<PagedList<PayInHistory>>> GetPayInHistories(int pageNo, int pageSize)
+        public async Task<ResultResponse<PagedList<PayInAndOutHistory>>> GetPayInHistories(int pageNo, int pageSize)
         {
             var payInHistory = _unitOfWork.PayInHistoryRepository.FindByCondition(x => true, false);
             if (payInHistory is null)
-                return ResultResponse<PagedList<PayInHistory>>.Failure(ResponseMessages.NotFound);
+                return ResultResponse<PagedList<PayInAndOutHistory>>.Failure(ResponseMessages.NotFound);
 
-            return ResultResponse<PagedList<PayInHistory>>.Success(await PagedList<PayInHistory>.CreateAsync(payInHistory, pageNo, pageSize));
+            return ResultResponse<PagedList<PayInAndOutHistory>>.Success(await PagedList<PayInAndOutHistory>.CreateAsync(payInHistory, pageNo, pageSize));
         }
 
         public async Task<List<FLBankModel>> GetNigeriaBanks()

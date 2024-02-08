@@ -1,5 +1,6 @@
 ﻿using MapsterMapper;
 using Oostel.Domain.Hostel.Entities;
+using Oostel.Domain.Notification;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserMessage;
 using Oostel.Domain.UserRoleProfiles.Entities;
@@ -30,25 +31,39 @@ namespace Oostel.Infrastructure.Repositories
         private GenericRepository<StudentLikes, string> studentLikesRepository;
         private GenericRepository<Comment, string> commentRepository;
         private GenericRepository<Wallet, string> walletRepository;
-        private GenericRepository<PayInHistory, string> payInHistoryRepository;
+        private GenericRepository<PayInAndOutHistory, string> payInHistoryRepository;
         //private GenericRepository<Message, string> messageRepository;
         private GenericRepository<Transaction, string> transactionRepository;
         private GenericRepository<ReferralAgentInfo, string> referralAgentInfoRepository;
         private GenericRepository<AgentReferred, string> agentReferredRepository;
         private GenericRepository<Agent, string> agentRepository;
         private GenericRepository<HostelPictures, string> hostelPictureRepository;
+        private GenericRepository<Notifications, string> notificationRepository;
         
         public IMessageRepository MessageRepository => new MessageRepository(_context, _mapper);
 
 
-        public GenericRepository<PayInHistory, string> PayInHistoryRepository
+        public GenericRepository<Notifications, string> NotificationRepository
+        {
+            get
+            {
+
+                if (notificationRepository == null)
+                {
+                    notificationRepository = new GenericRepository<Notifications, string>(_context);
+                }
+                return notificationRepository;
+            }
+        }
+
+        public GenericRepository<PayInAndOutHistory, string> PayInHistoryRepository
         {
             get
             {
 
                 if (payInHistoryRepository == null)
                 {
-                    payInHistoryRepository = new GenericRepository<PayInHistory, string>(_context);
+                    payInHistoryRepository = new GenericRepository<PayInAndOutHistory, string>(_context);
                 }
                 return payInHistoryRepository;
             }

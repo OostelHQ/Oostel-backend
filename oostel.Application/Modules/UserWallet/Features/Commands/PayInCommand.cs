@@ -61,7 +61,7 @@ namespace Oostel.Application.Modules.UserWallet.Features.Commands
                 if (result.IsSuccessful)
                 {
                     // Create Payment History 
-                    var paymentHistory = PayInHistory.CreatePayInHistoryFactory(customerPaymentInfo.UserId, result.PaymentGenerationData.Id,
+                    var paymentHistory = PayInAndOutHistory.CreatePayInHistoryFactory(customerPaymentInfo.UserId, result.PaymentGenerationData.Id,
                         customerPaymentInfo.PaymentData.ReferenceNumber,
                         request.Amount, request.Currency, result.PaymentProvider);
 

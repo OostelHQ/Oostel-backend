@@ -18,10 +18,10 @@ namespace Oostel.Application.Modules.UserWallet.Services
         Task<Wallet> GetUserWallet(string userId);
         Task<ResultResponse<PagedList<Transaction>>> GetTransaction(string userId, TransactionType transactionType, int pageSize, int pageNo);
         Task<List<FLBankModel>> GetNigeriaBanks();
-        Task<PayInHistory> GetPayInHistoryById(string transactionId);
-        Task<ResultResponse<PagedList<PayInHistory>>> GetPayInHistories(int pageNo, int pageSize);
+        Task<PayInAndOutHistory> GetPayInHistoryById(string transactionId);
+        Task<ResultResponse<PagedList<PayInAndOutHistory>>> GetPayInHistories(int pageNo, int pageSize);
         Task<BasePaymentResponse> GeneratePaymentDetails(CustomerPaymentInfo customerPaymentInfo);
-        Task<PayInHistory> CreateAndUpdatePayInHistory(PayInHistory payInHistory);
+        Task<PayInAndOutHistory> CreateAndUpdatePayInHistory(PayInAndOutHistory payInHistory);
         Task<bool> CreateTransaction(string senderId, string title, decimal amount, string lastname, TransactionType type);
         Task<BasePaymentResponse> VerifyTransactionPayment(VerifyRequestModel verifyRequestModel);
         string GenerateReferenceNumber();

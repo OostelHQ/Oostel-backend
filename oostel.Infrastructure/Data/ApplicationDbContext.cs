@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Oostel.Domain.Hostel.Entities;
+using Oostel.Domain.Notification;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserMessage;
 using Oostel.Domain.UserRoleProfiles.Entities;
@@ -44,10 +45,11 @@ namespace Oostel.Infrastructure.Data
         public DbSet<Group> Groups { get; set; }
         public DbSet<Connection> Connections { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
-        public DbSet<PayInHistory> PayInHistories { get; set; }
+        public DbSet<PayInAndOutHistory> PayInHistories { get; set; }
         public DbSet<ReferralAgentInfo> ReferralAgentInfos { get; set; }
         public DbSet<AgentReferred> AgentReferreds { get; set; }
         public DbSet<Agent> Agents { get; set; }
         public DbSet<LandlordAgent> LandlordAgents { get; set; }
+        public DbSet<Notifications> Notifications { get; set; }
     }
 }

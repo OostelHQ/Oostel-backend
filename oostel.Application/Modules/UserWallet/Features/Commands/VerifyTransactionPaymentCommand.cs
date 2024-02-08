@@ -61,7 +61,7 @@ namespace Oostel.Application.Modules.UserWallet.Features.Commands
                             // Create a Transaction Object 
                             await _userWalletService.CreateTransaction(payInHistory.UserId, ResponseMessages.PayInPayment, verifyPayment.VerificationData.Amount ?? 0m, payInHistory.ProviderName, TransactionType.Credit);
 
-                            var mapCompletedPayment = _mapper.Map<PayInHistory>(payInHistory);
+                            var mapCompletedPayment = _mapper.Map<PayInAndOutHistory>(payInHistory);
 
                             // Completed : If All goes Well, Update Payment History =   else Failed 
                             await _userWalletService.CreateAndUpdatePayInHistory(mapCompletedPayment);
@@ -73,7 +73,7 @@ namespace Oostel.Application.Modules.UserWallet.Features.Commands
                         // On Hold: Successul Status But Amount or Currency not Match
                         payInHistory.Status = PaymentStatus.OnHold.GetEnumDescription();
 
-                        var mapOnHoldPayment = _mapper.Map<PayInHistory>(payInHistory);
+                        var mapOnHoldPayment = _mapper.Map<PayInAndOutHistory>(payInHistory);
                         await _userWalletService.CreateAndUpdatePayInHistory(mapOnHoldPayment);
                         response.VerificationData = verifyPayment.VerificationData;
                         return response;
@@ -84,7 +84,7 @@ namespace Oostel.Application.Modules.UserWallet.Features.Commands
                 // Failed : Status is not Successful 
                 payInHistory.Status = PaymentStatus.Failed.GetEnumDescription();
 
-                var mapFailedPayment = _mapper.Map<PayInHistory>(payInHistory);
+                var mapFailedPayment = _mapper.Map<PayInAndOutHistory>(payInHistory);
                 await _userWalletService.CreateAndUpdatePayInHistory(mapFailedPayment);
                 response.VerificationData = verifyPayment.VerificationData;
                 return response;
