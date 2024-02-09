@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Modules\Notification\Features\Commands\" />
+    <Folder Include="Modules\Notification\Features\Queries\" />
     <Folder Include="Modules\UserMessage\DTOs\" />
     <Folder Include="Modules\UserMessage\Features\Commands\" />
   </ItemGroup>
