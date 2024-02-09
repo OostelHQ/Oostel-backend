@@ -1,8 +1,10 @@
 ﻿using MapsterMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Application.Modules.Notification.DTOs;
 using Oostel.Common.Constants;
+using Oostel.Common.Helpers;
 using Oostel.Common.Types.RequestFeatures;
 using Oostel.Domain.Notification;
 using Oostel.Infrastructure.Data;
@@ -18,12 +20,10 @@ namespace Oostel.Application.Modules.Notification.Service
     public class NotificationService: INotificationService
     {
         private readonly UnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly ApplicationDbContext _context;
-        public NotificationService(UnitOfWork unitOfWork, IMapper mapper, ApplicationDbContext context)
+        public NotificationService(UnitOfWork unitOfWork, ApplicationDbContext context)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _context= context;
         }
 
@@ -47,24 +47,35 @@ namespace Oostel.Application.Modules.Notification.Service
         }
 
 
-        public async Task<IEnumerable<Notifications>> GetNotificationAsync(GetNotificationRequestDTO notificationRequestDTO, PagingParams paginationParameters)
+        public async Task<ResultResponse<PagedList<Notifications>>> GetNotificationAsync(GetNotificationRequestDTO notificationRequestDTO, PagingParams paginationParameters)
         {
             if (Enum.IsDefined(typeof(NotificationType), notificationRequestDTO.NotificationType) && notificationRequestDTO.NotificationType != 0)
             {
-                var notification = await _context.Notifications
-                                        .Where(x => x.UserId == notificationRequestDTO.UserId)
+                var notificationQuery = _context.Notifications
                                         .OrderByDescending(d => d.CreatedDate)
+                                        .Where(x => x.UserId == notificationRequestDTO.UserId)
                                         .AsNoTracking()
-                                        .ToListAsync();
-                return null;
+                                        .AsQueryable();
 
+                if (notificationRequestDTO.NotificationType != null)
+                {
+                    notificationQuery = notificationQuery.Where(o => o.NotificationType == notificationRequestDTO.NotificationType.GetEnumDescription());
+                }
+                else if (notificationRequestDTO.notificationDurationInDays > 0)
+                {
+                    notificationQuery.Where(t => t.CreatedDate >= DateTime.UtcNow.AddDays(-notificationRequestDTO.notificationDurationInDays));
+                }
+
+                return ResultResponse<PagedList<Notifications>>.Success(await PagedList<Notifications>.CreateAsync(notificationQuery, paginationParameters.PageNumber, paginationParameters.PageSize));
             }
-            return null;
+
+            return ResultResponse<PagedList<Notifications>>.Failure(ResponseMessages.NotFound); ;
         }
 
         public async Task<bool> MarkNotificationAsReadAsync(string userId, List<string> notificationIds)
+
         {
-            var markNotifications = await _unitOfWork.NotificationRepository.Find(x => x.UserId == userId && notificationIds.Contains(g.Id));
+            var markNotifications = _unitOfWork.NotificationRepository.FindByCondition(x => x.UserId == userId && notificationIds.Contains(x.Id), false);
 
             foreach (var notification in markNotifications)
             {
@@ -76,7 +87,7 @@ namespace Oostel.Application.Modules.Notification.Service
 
         public async Task<bool> MarkAllNotificationAsReadAsync(string userId)
         {
-            var markNotifications = await _unitOfWork.NotificationRepository.Find(x => x.UserId == userId);
+            var markNotifications =  _unitOfWork.NotificationRepository.FindByCondition(x => x.UserId == userId, false);
 
             foreach (var notification in markNotifications)
             {
@@ -90,21 +101,29 @@ namespace Oostel.Application.Modules.Notification.Service
         {
             if (!Enum.IsDefined(typeof(NotificationType), notificationType) && notificationType != 0)
             {
-                throw new ArgumentNullException(nameof(_notification.NotificationType));
+                throw new ArgumentNullException(nameof(Notifications.NotificationType));
             }
 
             var notificationTypeString = notificationType == 0 ? string.Empty : notificationType.ToString();
-            return await _notificationOrchestrator.GetNotificationCountAsync(userId, notificationTypeString);
+            var notificationCountQuery = await _context.Notifications
+                   .Where(x => x.UserId == userId && x.IsRead == false)
+                   .ToListAsync();
+
+            notificationCountQuery.Where(x => x.NotificationType == notificationTypeString);
+
+            return notificationCountQuery.Count();
         }
 
         public async Task<bool> DeleteNotificationAsync(string notificationId, NotificationType notificationType)
         {
             if (!Enum.IsDefined(typeof(NotificationType), notificationType))
             {
-                throw new ArgumentNullException(nameof(_notification.NotificationType));
+                throw new ArgumentNullException(nameof(Notifications.NotificationType));
             }
 
-            return await _notificationOrchestrator.DeleteNotificationAsync(notificationId, notificationType.ToString());
+            _unitOfWork.NotificationRepository.FindByCondition(x => x.Id == notificationId && x.NotificationType == notificationType.ToString(), false);
+
+            return true;
         }
     }
 }
