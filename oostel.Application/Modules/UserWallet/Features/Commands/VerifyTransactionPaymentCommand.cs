@@ -53,7 +53,7 @@ namespace Oostel.Application.Modules.UserWallet.Features.Commands
                     {
                         // Confirm the Response Currency > or = Amount Saved in Currency
                         // Confirm the Response Amount > or = Amount Saved in PayInHistory 
-                        if (verifyPayment.VerificationData.Amount >= payInHistory.Amount && verifyPayment.VerificationData.Currency == payInHistory.Currency)
+                        if (verifyPayment.VerificationData.Amount >= payInHistory.AmountPaid && verifyPayment.VerificationData.Currency == payInHistory.Currency)
                         {
                             payInHistory.Status = PaymentStatus.Completed.GetEnumDescription();
 

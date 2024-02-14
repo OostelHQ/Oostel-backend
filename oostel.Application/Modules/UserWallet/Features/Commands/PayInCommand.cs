@@ -63,7 +63,7 @@ namespace Oostel.Application.Modules.UserWallet.Features.Commands
                     // Create Payment History 
                     var paymentHistory = PayInAndOutHistory.CreatePayInHistoryFactory(customerPaymentInfo.UserId, result.PaymentGenerationData.Id,
                         customerPaymentInfo.PaymentData.ReferenceNumber,
-                        request.Amount, request.Currency, result.PaymentProvider);
+                        request.Amount, request.Currency, request.PayInType.GetEnumDescription(), result.PaymentProvider);
 
                     await _userWalletService.CreateAndUpdatePayInHistory(paymentHistory);
                 }

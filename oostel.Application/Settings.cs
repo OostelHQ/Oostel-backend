@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Oostel.Application.Modules.Hostel.Services;
+using Oostel.Application.Modules.Notification.Service;
 using Oostel.Application.Modules.UserAuthentication.Services;
 using Oostel.Application.Modules.UserMessage.Services;
 using Oostel.Application.Modules.UserProfiles.Services;
@@ -38,6 +39,7 @@ namespace Oostel.Application
 
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<ITokenService, TokenService>();
+           
 
             services.Configure<CloudinarySettings>(_configuration.GetSection("CloudinarySettings"));
             services.AddScoped<IMediaUpload, MediaUpload>();
@@ -50,6 +52,7 @@ namespace Oostel.Application
             services.AddScoped<IMessageService, MessageService>();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IUserWalletService, UserWalletService>();
+            services.AddScoped<INotificationService, NotificationService>();
 
             services.AddOptions<AppSettings>().BindConfiguration("FlutterWave");
 
