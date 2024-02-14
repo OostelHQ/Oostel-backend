@@ -81,6 +81,7 @@ namespace Oostel.Application.Modules.Notification.Service
             {
                 notification.IsRead = true;
                 await _unitOfWork.NotificationRepository.UpdateAsync(notification);
+                await _context.SaveChangesAsync();
             }
             return true;
         }
@@ -93,6 +94,7 @@ namespace Oostel.Application.Modules.Notification.Service
             {
                 notification.IsRead = true;
                 await _unitOfWork.NotificationRepository.UpdateAsync(notification);
+                await _context.SaveChangesAsync();
             }
             return true;
         }
