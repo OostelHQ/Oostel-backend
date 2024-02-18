@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Oostel.Application.Modules.Notification.DTOs;
+using Oostel.Application.Modules.Notification.Service;
 using Oostel.Application.Modules.UserAuthentication.DTOs;
+using Oostel.Common.Constants;
 using Oostel.Common.Helpers;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserAuthentication.Events;
@@ -29,8 +32,9 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly UnitOfWork _unitOfWork;
         private readonly ITokenService _tokenService;
+        private readonly INotificationService _notificationService;
         public UserAuthenticationService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, ITokenService tokenService, UserManager<ApplicationUser> userManager,
-            UnitOfWork unitOfWork, IEmailSender emailSender)
+            UnitOfWork unitOfWork, IEmailSender emailSender, INotificationService notificationService)
         {
             _configuration = configuration;
             _emailSender = emailSender;
@@ -38,6 +42,7 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
             _unitOfWork = unitOfWork;
             _httpContextAccessor = httpContextAccessor;
             _tokenService = tokenService;
+            _notificationService = notificationService;
         }
 
         public async Task<bool> SendVerifyOTPToUserEmail(ApplicationUser user, CancellationToken cancellationToken)
@@ -133,8 +138,22 @@ namespace Oostel.Application.Modules.UserAuthentication.Services
                 var commitState = await _unitOfWork.SaveAsync(cancellationToken);
                 if (commitState > 0)
                 {
+                    var username = _userManager.FindByIdAsync(referralFromDb.UserId).Result.UserName.ToString();
+                    var userProfilePicUrl = _userManager.FindByIdAsync(userId).Result.ProfilePhotoURL;
+
+                    await _notificationService.CreateNotificationAsync(new NotificationDTO
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        UserId = referralFromDb.UserId,
+                        NotificationType = NotificationType.ReferralRegistration,
+                        Content = String.Format(NotificationMessageConstants.ReferralRegistration, username),
+                        UserProfilePicUrl = userProfilePicUrl,
+                        IsRead = false,
+                        NotificationTypeValueId = userReferral.Id
+                    });
                     result = true;
-                    ReferreeAddedEventPublisher.OnReferreeAdded(new ReferreeAddedEventArgs(referralFromDb.UserId.ToString()));
+                    
+                   // ReferreeAddedEventPublisher.OnReferreeAdded(new ReferreeAddedEventArgs(referralFromDb.UserId.ToString()));
                 };
             }
 

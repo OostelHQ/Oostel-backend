@@ -1,9 +1,12 @@
-﻿using Mapster;
+﻿using Mailjet.Client.Resources;
+using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Oostel.Application.Modules.Hostel.DTOs;
+using Oostel.Application.Modules.Notification.DTOs;
+using Oostel.Application.Modules.Notification.Service;
 using Oostel.Application.RequestFilters;
 using Oostel.Application.UserAccessors;
 using Oostel.Common.Constants;
@@ -27,7 +30,9 @@ namespace Oostel.Application.Modules.Hostel.Services
         private readonly IMediaUpload _mediaUpload;
         private readonly ApplicationDbContext _applicationDbContext;
         private readonly IGenericRepository<Room, string> _genericRepository;
-        public HostelService(UserManager<ApplicationUser> userManager, IMediaUpload mediaUpload, ApplicationDbContext applicationDbContext, UnitOfWork unitOfWork, IGenericRepository<Room, string> genericRepository, IMapper mapper, IUserAccessor userAccessor)
+        private readonly INotificationService _notificationService;
+        public HostelService(UserManager<ApplicationUser> userManager, INotificationService notificationService,
+            IMediaUpload mediaUpload, ApplicationDbContext applicationDbContext, UnitOfWork unitOfWork, IGenericRepository<Room, string> genericRepository, IMapper mapper, IUserAccessor userAccessor)
         {
             _userManager = userManager;
             _unitOfWork = unitOfWork;
@@ -36,6 +41,7 @@ namespace Oostel.Application.Modules.Hostel.Services
             _mediaUpload = mediaUpload;
             _genericRepository = genericRepository;
             _userAccessor = userAccessor;
+            _notificationService = notificationService;
         }
 
 
@@ -527,7 +533,21 @@ namespace Oostel.Application.Modules.Hostel.Services
             {
                 var likeHostel = HostelLikes.CreateHostelLikesFactory(sourceId, hostelLikeId);
                 await _unitOfWork.HostelLikesRepository.Add(likeHostel);
-                await _unitOfWork.SaveAsync();
+                var save = await _unitOfWork.SaveAsync();
+                if (save > 0)
+                {
+
+                    await _notificationService.CreateNotificationAsync(new NotificationDTO
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        UserId = sourceId,
+                        NotificationType = NotificationType.HostelLike,
+                        Content = String.Format(NotificationMessageConstants.ReferralRegistration, sourceUser.UserName),
+                        UserProfilePicUrl = sourceUser.ProfilePhotoURL,
+                        IsRead = false,
+                        NotificationTypeValueId = hostelLikeId
+                    });
+                }
             }
             else
             {

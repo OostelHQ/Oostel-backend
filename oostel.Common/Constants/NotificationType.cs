@@ -9,10 +9,9 @@ namespace Oostel.Common.Constants
     public enum NotificationType
     {
         ReceiveMoney = 1,
-        ReceiveGift = 2,
-        Transaction = 3,
-        ReferralRegistration = 4,
-        HostelLike = 5,
-        HostelComment = 6
+        Transaction = 2,
+        ReferralRegistration = 3,
+        HostelLike = 4,
+        HostelComment = 5
     }
 }
