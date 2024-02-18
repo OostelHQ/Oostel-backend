@@ -1,9 +1,7 @@
-﻿using Mailjet.Client.Resources;
-using Mapster;
+﻿using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Application.Modules.Notification.DTOs;
 using Oostel.Application.Modules.Notification.Service;
