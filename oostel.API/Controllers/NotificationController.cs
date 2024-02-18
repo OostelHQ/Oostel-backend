@@ -27,7 +27,7 @@ namespace Oostel.API.Controllers
         [HttpGet]
         [Route(NotificationRoute.GetNotification)]
 
-        public async Task<ActionResult<APIResponse>> GetNotification([FromQuery] PagingParams paginationParameters, [FromQuery] GetNotificationsRequest notificationRequestDTO)
+        public async Task<ActionResult<APIResponse>> GetNotification([FromQuery] NotificationParam paginationParameters, [FromQuery] GetNotificationsRequest notificationRequestDTO)
         {
             var query = new GetNotificationRequest
             {

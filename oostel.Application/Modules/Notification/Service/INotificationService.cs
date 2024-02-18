@@ -14,7 +14,7 @@ namespace Oostel.Application.Modules.Notification.Service
     public interface INotificationService
     {
         Task<bool> CreateNotificationAsync(NotificationDTO notificationDTO);
-        Task<ResultResponse<PagedList<Notifications>>> GetNotificationAsync(GetNotificationRequestDTO notificationRequestDTO, PagingParams paginationParameters);
+        Task<ResultResponse<PagedList<Notifications>>> GetNotificationAsync(GetNotificationRequestDTO notificationRequestDTO, NotificationParam notificationParam);
         Task<bool> MarkNotificationAsReadAsync(string userId, List<string> notificationIds);
         Task<bool> MarkAllNotificationAsReadAsync(string userId);
         Task<int> GetNotificationCountAsync(string userId, NotificationType notificationType);

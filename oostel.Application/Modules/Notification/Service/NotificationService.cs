@@ -47,7 +47,7 @@ namespace Oostel.Application.Modules.Notification.Service
         }
 
 
-        public async Task<ResultResponse<PagedList<Notifications>>> GetNotificationAsync(GetNotificationRequestDTO notificationRequestDTO, PagingParams paginationParameters)
+        public async Task<ResultResponse<PagedList<Notifications>>> GetNotificationAsync(GetNotificationRequestDTO notificationRequestDTO, NotificationParam notificationParam)
         {
             if (Enum.IsDefined(typeof(NotificationType), notificationRequestDTO.NotificationType) && notificationRequestDTO.NotificationType != 0)
             {
@@ -66,7 +66,7 @@ namespace Oostel.Application.Modules.Notification.Service
                     notificationQuery.Where(t => t.CreatedDate >= DateTime.UtcNow.AddDays(-notificationRequestDTO.notificationDurationInDays));
                 }
 
-                return ResultResponse<PagedList<Notifications>>.Success(await PagedList<Notifications>.CreateAsync(notificationQuery, paginationParameters.PageNumber, paginationParameters.PageSize));
+                return ResultResponse<PagedList<Notifications>>.Success(await PagedList<Notifications>.CreateAsync(notificationQuery, notificationParam.PageNumber, notificationParam.PageSize));
             }
 
             return ResultResponse<PagedList<Notifications>>.Failure(ResponseMessages.NotFound); ;

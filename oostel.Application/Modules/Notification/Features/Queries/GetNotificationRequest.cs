@@ -22,7 +22,7 @@ namespace Oostel.Application.Modules.Notification.Features.Queries
         public string UserId { get; set; }
         public NotificationType? NotificationType { get; set; }
         public int NotificationDurationInDays { get; set; }
-        public PagingParams? PaginationParameters { get; set; }
+        public NotificationParam? PaginationParameters { get; set; }
 
         public class GetNotificationRequestHandler : IRequestHandler<GetNotificationRequest, ResultResponse<PagedList<Notifications>>>
         {
