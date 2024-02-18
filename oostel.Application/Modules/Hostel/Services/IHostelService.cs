@@ -19,10 +19,10 @@ namespace Oostel.Application.Modules.Hostel.Services
         Task<bool> AddHostelLike(string sourceId, string hostelLikeId);
         Task<bool> CreateRoomForHostel(string userId, RoomDTO roomDTO);
         Task<UpdateHostelResponse> UpdateHostel(string hostelId, HostelDTO hostelDTO);
-        Task<ResultResponse<CommentDTO>> CreateComment(CreateCommentDTO createCommentDTO);
+       // Task<ResultResponse<CommentDTO>> CreateComment(CreateCommentDTO createCommentDTO);
         Task<RoomUpdateResponse> UpdateARoomForHostel(string userId, RoomDTO roomDTO);
         Task<List<GetMyHostelsDTO>> GetMyHostels(string landlordId);
-        Task<ResultResponse<List<CommentDTO>>> GetComments(string hostelId);
+       // Task<ResultResponse<List<CommentDTO>>> GetComments(string hostelId);
         Task<bool> DeleteProductPicture(string userId, string pictureId);
         Task<List<string>> GetMyLikedHostels(string userId);
         Task<HostelLikesAndCount> GetHostelLikedUsersAndCount(string hostelId);

@@ -12,8 +12,10 @@ namespace Oostel.Domain.Hostel.Entities
     {
         public string UserComment { get; set; }
         public int rating { get; set; }
-        public Hostel Hostel { get; set; }
-        public ApplicationUser Author { get; set; }
+        public string HostelId { get; set; }
+        public string CommenterId { get; set; }
+        public string? ParentCommentId { get; set; }
+        public List<Comment> Comments { get; set; }
 
         public Comment():base(Guid.NewGuid().ToString())
         {

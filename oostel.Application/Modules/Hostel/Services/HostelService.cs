@@ -248,7 +248,7 @@ namespace Oostel.Application.Modules.Hostel.Services
         {
             var hostel = await _applicationDbContext.Hostels
                 .Include(x => x.Rooms)
-                .Include(x => x.Comments)
+                //.Include(x => x.Comments)
                 //.Include(p => p.HostelFrontViewPicture)
                 .Include(x => x.Landlord)
                     .ThenInclude(x => x.LandlordAgents)
@@ -281,7 +281,7 @@ namespace Oostel.Application.Modules.Hostel.Services
                     HostelFrontViewPicture = _mapper.Map<List<HostelPicturesDTO>>(hostel.HostelFrontViewPicture),
                 };
                 hostelDetailsToReturn.Rooms = _mapper.Map<List<RoomToReturn>>(hostel.Rooms);
-                hostelDetailsToReturn.CommentDTO = _mapper.Map<List<CommentDTO>>(hostel.Comments);
+               // hostelDetailsToReturn.CommentDTO = _mapper.Map<List<CommentDTO>>(hostel.Comments);
                 hostelDetailsToReturn.LandlordProfile = _mapper.Map<LandlordProfileToDisplay>(hostel.Landlord);
                 if (hostel.Landlord.LandlordAgents != null && hostel.Landlord.LandlordAgents.Any())
                 {
@@ -557,7 +557,7 @@ namespace Oostel.Application.Modules.Hostel.Services
         }
 
 
-        public async Task<ResultResponse<CommentDTO>> CreateComment(CreateCommentDTO createCommentDTO)
+       /* public async Task<ResultResponse<CommentDTO>> CreateComment(CreateCommentDTO createCommentDTO)
         {
            //var hostel = await _unitOfWork.HostelRepository.FindandInclude(x => x.Id == createCommentDTO.HostelId, true);
            var hostel = await _applicationDbContext.Hostels.FindAsync(createCommentDTO.HostelId);
@@ -604,7 +604,7 @@ namespace Oostel.Application.Modules.Hostel.Services
                 return entity;
 
             return entity;
-        }
+        }*/
 
     }
 }
