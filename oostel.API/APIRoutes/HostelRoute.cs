@@ -20,5 +20,10 @@
         public const string AddHostelLikes = "hostel/add-hostel-likes";
 
         public const string DeleteHostelPicture = "hostel/delete-hostel-picture";
+
+        public const string CreateHostelComment = "hostel-comment/create-hostel-comment";
+        public const string DeleteHostelComment = "hostel-comment/delete-hostel-comment";
+        public const string UpdateHostelComment = "hostel-comment/update-hostel-comment";
+        public const string GetAllHostelComments = "hostel-comment/get-all-hostel-comments";
     }
 }

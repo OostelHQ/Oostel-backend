@@ -12,24 +12,25 @@ using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.Hostel.Features.Queries
 {
-    public class GetCommentsRequest : IRequest<ResultResponse<List<CommentDTO>>>
+    public class GetCommentsRequest : IRequest<APIResponse>
     {
         public string HostelId { get; set; }
 
-        public sealed class GetCommentsRequestCommand : IRequestHandler<GetCommentsRequest, ResultResponse<List<CommentDTO>>>
+        public sealed class GetCommentsRequestCommand : IRequestHandler<GetCommentsRequest, APIResponse>
         {
             private readonly IHostelService _hostelService;
             public GetCommentsRequestCommand(IHostelService hostelService) => _hostelService = hostelService;
 
-            public async Task<ResultResponse<List<CommentDTO>>> Handle(GetCommentsRequest request, CancellationToken cancellationToken)
+            public async Task<APIResponse> Handle(GetCommentsRequest request, CancellationToken cancellationToken)
             {
-                var comments = await _hostelService.GetComments(request.HostelId);
-
-                if (comments is null)
-                    return ResultResponse<List<CommentDTO>>.Failure(ResponseMessages.NotFound);
-
-                return ResultResponse<List<CommentDTO>>.Success(comments.Data);
+                var dataToReturn = await _hostelService.GetAllHostelCommentsAsync(request.HostelId);
+                if (dataToReturn is null)
+                {
+                    return APIResponse.GetSuccessMessage(HttpStatusCode.OK, null, ResponseMessages.NotFound);
+                }
+                return APIResponse.GetSuccessMessage(HttpStatusCode.OK, dataToReturn, ResponseMessages.FetchedSuccess);
             }
+
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Oostel.Application.Modules.Hostel.DTOs;
 using Oostel.Common.Helpers;
 using Oostel.Common.Types.RequestFeatures;
+using Oostel.Domain.Hostel.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,5 +28,12 @@ namespace Oostel.Application.Modules.Hostel.Services
         Task<List<string>> GetMyLikedHostels(string userId);
         Task<HostelLikesAndCount> GetHostelLikedUsersAndCount(string hostelId);
         Task<(IEnumerable<RoomCollectionsDTO> roomDTOs, string ids)> CreateRoomCollectionAsync(string landlordId, string hostelId, IEnumerable<RoomToCreate> roomsToCreates);
+        Task<Comment> CreateHostelCommentAsync(Comment createComment);
+        Task<int> DeleteHostelCommentAsync(string commentId, string hostelId);
+        Task<Comment> UpdateHostelCommentAsync(Comment comment);
+        Task<CommentResponse> GetAllHostelCommentsAsync(string hostelId);
+        Task<IEnumerable<Comment>> GetAllHostelParentCommentsAsync(string parentCommentId);
+        Task<Comment> GetHostelCommentByCommentIdAsync(string commentId);
+
     }
 }

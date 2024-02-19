@@ -16,6 +16,7 @@ using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Infrastructure.Data;
 using Oostel.Infrastructure.Media;
 using Oostel.Infrastructure.Repositories;
+using System.ComponentModel.Design;
 
 namespace Oostel.Application.Modules.Hostel.Services
 {
@@ -554,6 +555,78 @@ namespace Oostel.Application.Modules.Hostel.Services
             }
 
             return true;
+        }
+
+        public async Task<Comment> CreateHostelCommentAsync(Comment createComment)
+        {
+            var comment = await _unitOfWork.CommentRepository.Add(createComment);
+            await _unitOfWork.SaveAsync();
+            return comment;
+        }
+
+        public async Task<int> DeleteHostelCommentAsync(string commentId, string hostelId)
+        {
+            var getComment = await _unitOfWork.CommentRepository.Find(x => x.Id == commentId && x.HostelId == hostelId);
+            var deleteComment = await _unitOfWork.CommentRepository.Remove(getComment);
+            return deleteComment;
+        }
+
+        public async Task<Comment> UpdateHostelCommentAsync(Comment comment)
+        {
+            await _unitOfWork.CommentRepository.UpdateAsync(comment);
+            await _unitOfWork.SaveAsync();
+            return comment;
+        }
+
+        public async Task<CommentResponse> GetAllHostelCommentsAsync(string hostelId)
+        {
+            var comments = await _applicationDbContext.Comments
+                           .OrderByDescending(x => x.LastModifiedDate)
+                           .Where(x => x.HostelId == hostelId)
+                           .AsNoTracking()
+                           .ToListAsync();
+
+            if (comments is null)
+                return null;
+
+            CommentResponse commentResponse = new();
+            Parallel.ForEach(comments, async x =>
+            {
+                var comment = await GetHostelCommentByCommentIdAsync(x.Id);
+                if (comment is not null)
+                {
+                    var getParentComments = await GetHierarchicalComments(comment.ParentCommentId);
+                    commentResponse.Comments = getParentComments;
+                }
+            });
+
+                return commentResponse;
+         }
+
+        public async Task<List<Comment>> GetHierarchicalComments(string parentCommentId = "")
+        {
+            var comments = await GetAllHostelParentCommentsAsync(parentCommentId);
+
+            foreach (var comment in comments)
+            {
+                comment.Comments = await GetHierarchicalComments(comment.Id);
+            }
+            return comments.ToList();
+        }
+
+        public async Task<IEnumerable<Comment>> GetAllHostelParentCommentsAsync(string parentCommentId)
+        {
+            var parentComments = await _applicationDbContext.Comments
+                            .Where(x => x.ParentCommentId == parentCommentId)
+                            .AsNoTracking()
+                            .ToListAsync();
+            return parentComments;
+        }
+
+        public async Task<Comment> GetHostelCommentByCommentIdAsync(string commentId)
+        {
+            var comment = await _unitOfWork.CommentRepository.GetById(commentId);
+            return comment;
         }
 
 
