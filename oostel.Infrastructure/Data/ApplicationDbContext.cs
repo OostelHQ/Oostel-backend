@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.Notification;
 using Oostel.Domain.UserAuthentication.Entities;
+using Oostel.Domain.UserMessage;
 using Oostel.Domain.UserRoleProfiles.Entities;
 using Oostel.Domain.UserRolesProfiles.Entities;
 using Oostel.Domain.UserWallet;
@@ -47,5 +48,6 @@ namespace Oostel.Infrastructure.Data
         public DbSet<Agent> Agents { get; set; }
         public DbSet<LandlordAgent> LandlordAgents { get; set; }
         public DbSet<Notifications> Notifications { get; set; }
+        public DbSet<UserMessage> UserMessages { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.Notification;
 using Oostel.Domain.UserAuthentication.Entities;
+using Oostel.Domain.UserMessage;
 using Oostel.Domain.UserRoleProfiles.Entities;
 using Oostel.Domain.UserRolesProfiles.Entities;
 using Oostel.Domain.UserWallet;
@@ -31,15 +32,26 @@ namespace Oostel.Infrastructure.Repositories
         private GenericRepository<Comment, string> commentRepository;
         private GenericRepository<Wallet, string> walletRepository;
         private GenericRepository<PayInAndOutHistory, string> payInHistoryRepository;
-        //private GenericRepository<Message, string> messageRepository;
         private GenericRepository<Transaction, string> transactionRepository;
         private GenericRepository<ReferralAgentInfo, string> referralAgentInfoRepository;
         private GenericRepository<AgentReferred, string> agentReferredRepository;
         private GenericRepository<Agent, string> agentRepository;
         private GenericRepository<HostelPictures, string> hostelPictureRepository;
         private GenericRepository<Notifications, string> notificationRepository;
-        
+        private GenericRepository<UserMessage, string> messageRepository;
 
+        public GenericRepository<UserMessage, string> UserMessageRepository
+        {
+            get
+            {
+
+                if (messageRepository == null)
+                {
+                    messageRepository = new GenericRepository<UserMessage, string>(_context);
+                }
+                return messageRepository;
+            }
+        }
 
         public GenericRepository<Notifications, string> NotificationRepository
         {

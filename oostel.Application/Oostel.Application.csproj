@@ -24,4 +24,10 @@
     <ProjectReference Include="..\oostel.Infrastructure\Oostel.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Modules\UserMessage\Features\Commands\" />
+    <Folder Include="Modules\UserMessage\Features\Queries\" />
+    <Folder Include="Modules\UserMessage\Services\" />
+  </ItemGroup>
+
 </Project>

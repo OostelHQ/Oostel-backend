@@ -15,6 +15,7 @@ using Oostel.Infrastructure.EmailService;
 using Oostel.Infrastructure.FlutterwaveIntegration;
 using Oostel.Infrastructure.Media;
 using Oostel.Infrastructure.Repositories;
+using Oostel.Infrastructure.SignalR.Services;
 using System.Reflection;
 using System.Runtime;
 
@@ -50,6 +51,7 @@ namespace Oostel.Application
             services.AddScoped<IHostelService, HostelService>();
             services.AddScoped<IUserWalletService, UserWalletService>();
             services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IMessagingService, MessagingService>();
 
             services.AddOptions<AppSettings>().BindConfiguration("FlutterWave");
 
