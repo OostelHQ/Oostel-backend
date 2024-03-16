@@ -2,7 +2,6 @@
 using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.Notification;
 using Oostel.Domain.UserAuthentication.Entities;
-using Oostel.Domain.UserMessage;
 using Oostel.Domain.UserRoleProfiles.Entities;
 using Oostel.Domain.UserRolesProfiles.Entities;
 using Oostel.Domain.UserWallet;
@@ -40,7 +39,6 @@ namespace Oostel.Infrastructure.Repositories
         private GenericRepository<HostelPictures, string> hostelPictureRepository;
         private GenericRepository<Notifications, string> notificationRepository;
         
-        public IMessageRepository MessageRepository => new MessageRepository(_context, _mapper);
 
 
         public GenericRepository<Notifications, string> NotificationRepository

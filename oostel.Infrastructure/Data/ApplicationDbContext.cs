@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.Notification;
 using Oostel.Domain.UserAuthentication.Entities;
-using Oostel.Domain.UserMessage;
 using Oostel.Domain.UserRoleProfiles.Entities;
 using Oostel.Domain.UserRolesProfiles.Entities;
 using Oostel.Domain.UserWallet;
@@ -41,9 +40,6 @@ namespace Oostel.Infrastructure.Data
  
         public DbSet<Wallet> Wallets { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<Message> Messages { get; set; }
-        public DbSet<Group> Groups { get; set; }
-        public DbSet<Connection> Connections { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<PayInAndOutHistory> PayInHistories { get; set; }
         public DbSet<ReferralAgentInfo> ReferralAgentInfos { get; set; }

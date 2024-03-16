@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Oostel.Domain.UserAuthentication.Entities;
-using Oostel.Domain.UserMessage;
 using Oostel.Domain.UserRoleProfiles.Entities;
 using Oostel.Domain.UserRolesProfiles.Entities;
 using Oostel.Domain.UserWallet;
@@ -54,15 +53,6 @@ namespace Oostel.Infrastructure.Data.Configurations
                 .HasForeignKey<Wallet>(w => w.Id)
                 .OnDelete(DeleteBehavior.Cascade);
 
-             builder.Entity<Domain.UserMessage.Message>()
-               .HasOne(u => u.Recipient)
-               .WithMany(m => m.MessagesReceived)
-               .OnDelete(DeleteBehavior.Restrict);
-
-             builder.Entity<Domain.UserMessage.Message>()
-                 .HasOne(u => u.Sender)
-                 .WithMany(m => m.MessagesSent)
-                 .OnDelete(DeleteBehavior.Restrict);
 
            
         }

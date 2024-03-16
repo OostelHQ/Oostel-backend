@@ -5,7 +5,6 @@ using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Oostel.API.Extensions;
-using Oostel.API.SIgnalR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Oostel.API.Middlewares;
@@ -76,29 +75,6 @@ app.UseAuthorization();
 
 app.UseSwagger();
 app.MapControllers();
-
-app.MapHub<PresenceHub>("hubs/presence", options =>
-{
-    options.Transports =
-        HttpTransportType.WebSockets |
-        HttpTransportType.LongPolling;
-    options.CloseOnAuthenticationExpiration = true;
-});
-app.MapHub<MessageHub>("hubs/message", options =>
-{
-    options.Transports =
-        HttpTransportType.WebSockets |
-        HttpTransportType.LongPolling;
-    options.CloseOnAuthenticationExpiration = true;
-});
-app.MapHub<CommentHub>("hubs/comment", options =>
-{
-    options.Transports =
-        HttpTransportType.WebSockets |
-        HttpTransportType.LongPolling;
-    options.CloseOnAuthenticationExpiration = true;
-});
-
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

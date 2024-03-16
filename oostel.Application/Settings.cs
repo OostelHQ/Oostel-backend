@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Oostel.Application.Modules.Hostel.Services;
 using Oostel.Application.Modules.Notification.Service;
 using Oostel.Application.Modules.UserAuthentication.Services;
-using Oostel.Application.Modules.UserMessage.Services;
 using Oostel.Application.Modules.UserProfiles.Services;
 using Oostel.Application.Modules.UserWallet.Services;
 using Oostel.Application.UserAccessors;
@@ -49,8 +48,6 @@ namespace Oostel.Application
 
             services.AddScoped<IUserRolesProfilesService, UserRolesProfilesService>();
             services.AddScoped<IHostelService, HostelService>();
-            services.AddScoped<IMessageService, MessageService>();
-            services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IUserWalletService, UserWalletService>();
             services.AddScoped<INotificationService, NotificationService>();
 
