@@ -14,5 +14,6 @@ namespace Oostel.Common.Types.RequestFeatures
         public string? Gender { get; set; }
         public decimal? MinimumPrice { get; set; }
         public decimal? MaximumPrice { get; set; }
+        public string? SearchTerm { get; set; }
     }
 }

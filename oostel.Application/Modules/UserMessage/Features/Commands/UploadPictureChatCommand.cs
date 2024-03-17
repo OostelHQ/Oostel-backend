@@ -1,4 +1,5 @@
-﻿using Oostel.Common.Constants;
+﻿using Microsoft.AspNetCore.Http;
+using Oostel.Common.Constants;
 using Oostel.Common.Types;
 using Oostel.Infrastructure.SignalR.Services;
 using System;
@@ -10,24 +11,25 @@ using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.UserMessage.Features.Commands
 {
-    public class DeleteMyMessageWithSomeoneCommand : IRequest<APIResponse>
+    public class UploadPictureChatCommand : IRequest<APIResponse>
     {
-        public string Id { get; set; }
-        public string SenderId { get; set; }
+        public string Message { get; set; }
         public string ReceiverId { get; set; }
+        public string SenderId { get; set; }
+        public IFormFile MediaFile { get; set; }
 
-        public sealed class DeleteMyMessageWithSomeoneCommandHandler : IRequestHandler<DeleteMyMessageWithSomeoneCommand, APIResponse>
+        public sealed class UploadPictureChatCommandHandler : IRequestHandler<UploadPictureChatCommand, APIResponse>
         {
             private readonly IMessagingService _messagingService;
 
-            public DeleteMyMessageWithSomeoneCommandHandler(IMessagingService messagingService)
+            public UploadPictureChatCommandHandler(IMessagingService messagingService)
             {
                 _messagingService = messagingService;
             }
-            public async Task<APIResponse> Handle(DeleteMyMessageWithSomeoneCommand request, CancellationToken cancellationToken)
+            public async Task<APIResponse> Handle(UploadPictureChatCommand request, CancellationToken cancellationToken)
             {
-                var result = await _messagingService.DeleteMyChatWithSomeone(request.Id, request.SenderId, request.ReceiverId);
-                if (result != true)
+                var result = await _messagingService.SendMediaFile(request.MediaFile, request.SenderId, request.ReceiverId);
+                if (result == null)
                 {
                     return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, null, ResponseMessages.FailedCreation);
                 }
@@ -36,3 +38,4 @@ namespace Oostel.Application.Modules.UserMessage.Features.Commands
         }
     }
 }
+

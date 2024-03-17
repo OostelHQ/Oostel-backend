@@ -17,7 +17,7 @@ namespace Oostel.Infrastructure.SignalR.Services
         Task<PagedList<userMessage>> GetMyChatWithSomeone(string userId, string receiverId, ChatParam pagingParams);
         Task<bool> DeleteChatHistory(string userId, string receiverId);
         Task<bool> DeleteMyChatWithSomeone(string messageId, string userId, string receiverId);
-        Task<PagedList<userMessage>> GetAllReceivers(string userId, ChatParam pagingParams);
+        Task<PagedList<string>> GetAllReceivers(string userId, ChatParam pagingParams);
         Task<UserMessage> SendMediaFile(IFormFile file, string userId, string recipientId);
     }
 }

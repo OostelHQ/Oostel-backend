@@ -15,7 +15,7 @@ namespace Oostel.Application.Modules.UserMessage.Features.Commands
     public class SendMessageCommand : IRequest<APIResponse>
     {
         public string Message { get; set; }
-        public string RecipientId { get; set; }
+        public string ReceiverId { get; set; }
         public string SenderId { get; set; }
 
         public sealed class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, APIResponse>

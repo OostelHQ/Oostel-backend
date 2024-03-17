@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Oostel.API.Middlewares;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.Connections;
+using Oostel.Infrastructure.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -75,6 +76,13 @@ app.UseAuthorization();
 
 app.UseSwagger();
 app.MapControllers();
+app.MapHub<MessageHub>("/hubs/chat", options =>
+{
+    options.Transports =
+    HttpTransportType.WebSockets |
+    HttpTransportType.LongPolling;
+    options.CloseOnAuthenticationExpiration = true;
+});
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;

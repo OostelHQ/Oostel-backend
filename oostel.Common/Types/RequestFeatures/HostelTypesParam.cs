@@ -11,5 +11,6 @@ namespace Oostel.Common.Types.RequestFeatures
     {
         public HostelCategory? HostelCategory { get; set; }
         public string? PriceBudgetRange { get; set; }
+        public string? SearchTerm { get; set; }
     }
 }

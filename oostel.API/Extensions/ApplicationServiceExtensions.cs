@@ -12,6 +12,7 @@ using Marvin.Cache.Headers;
 using Microsoft.Extensions.Configuration;
 using System.Runtime;
 using Oostel.Infrastructure.FlutterwaveIntegration;
+using Microsoft.Azure.SignalR.Management;
 
 namespace Oostel.API.Extensions
 {
@@ -45,6 +46,21 @@ namespace Oostel.API.Extensions
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .WithExposedHeaders("X-Pagination"));
+            });
+
+            var serviceManager = new ServiceManagerBuilder()
+                                .WithOptions(option =>
+                                {
+                                    option.ConnectionString = _config.GetConnectionString("AzureSignalR");
+                                })
+                                .BuildServiceManager();
+
+            services.AddSingleton(serviceManager);
+
+
+            services.AddSignalR().AddAzureSignalR(c =>
+            {
+                c.ConnectionString = _config.GetConnectionString("AzureSignalR");
             });
 
             services.AddResponseCaching();

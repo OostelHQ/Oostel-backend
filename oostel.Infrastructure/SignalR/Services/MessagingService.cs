@@ -64,14 +64,16 @@ namespace Oostel.Infrastructure.SignalR.Services
             return await PagedList<UserMessage>.CreateAsync(chats, pagingParams.PageNumber, pagingParams.PageSize);
         }
 
-        public async Task<PagedList<UserMessage>> GetAllReceivers(string userId, ChatParam pagingParams)
+        public async Task<PagedList<string>> GetAllReceivers(string userId, ChatParam pagingParams)
         {
             var chats = _dbContext.UserMessages
                            .Where(x => x.SenderId == userId)
+                           .Select(x => x.ReceiverId)
+                           .Distinct()
                            .AsNoTracking()
                            .AsQueryable();
 
-            return await PagedList<UserMessage>.CreateAsync(chats, pagingParams.PageNumber, pagingParams.PageSize);
+            return await PagedList<string>.CreateAsync(chats, pagingParams.PageNumber, pagingParams.PageSize);
         }
 
         public async Task<PagedList<UserMessage>> GetMyChatWithSomeone(string userId, string receiverId, ChatParam pagingParams)
