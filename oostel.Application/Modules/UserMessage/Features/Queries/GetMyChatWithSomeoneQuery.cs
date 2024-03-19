@@ -28,7 +28,7 @@ namespace Oostel.Application.Modules.UserMessage.Features.Queries
             }
             public async Task<APIResponse> Handle(GetMyChatWithSomeoneQuery request, CancellationToken cancellationToken)
             {
-                var result = await _messagingService.GetMyChatWithSomeone(request.SenderId, request.ReceiverId, request?.ChatParam);
+                var result = await _messagingService.GetMyChatWithSomeone(request.SenderId, request.ReceiverId, request.ChatParam);
                 if (!result.Any())
                 {
                     return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, new ArrayList(), ResponseMessages.NotFound);

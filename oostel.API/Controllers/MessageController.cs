@@ -45,10 +45,10 @@ namespace Oostel.API.Controllers
 
         [HttpGet]
         [Route(MessageRoute.GetMyChatWithSomeone)]
-        public async Task<ActionResult<APIResponse>> GetMyChatWithSomeone([FromQuery] GetMyChatWithSomeoneRequest request)
+        public async Task<ActionResult<APIResponse>> GetMyChatWithSomeone([FromQuery] string SenderId, string ReceiverId, [FromQuery] ChatParam ChatParam) //GetMyChatWithSomeoneRequest request)
         {
             return HandleResult(await Mediator.Send(new GetMyChatWithSomeoneQuery
-            { SenderId = request.SenderId, ReceiverId = request.ReceiverId, ChatParam = request.ChatParam }));
+            { SenderId = SenderId, ReceiverId = ReceiverId, ChatParam = ChatParam }));
         }
 
         [HttpDelete]

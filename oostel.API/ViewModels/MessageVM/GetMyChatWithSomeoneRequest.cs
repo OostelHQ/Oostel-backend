@@ -2,7 +2,7 @@
 
 namespace Oostel.API.ViewModels.MessageVM
 {
-    public class GetMyChatWithSomeoneRequest
+    public record GetMyChatWithSomeoneRequest
     {
         public string SenderId { get; set; }
         public string ReceiverId { get; set; }
