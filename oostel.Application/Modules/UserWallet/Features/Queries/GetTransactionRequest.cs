@@ -1,19 +1,10 @@
 ﻿using MapsterMapper;
-using Oostel.Application.Modules.UserProfiles.DTOs;
-using Oostel.Application.Modules.UserProfiles.Features.Queries;
-using Oostel.Application.Modules.UserProfiles.Services;
-using Oostel.Application.Modules.UserWallet.DTOs;
 using Oostel.Application.Modules.UserWallet.Services;
 using Oostel.Common.Constants;
 using Oostel.Common.Helpers;
 using Oostel.Common.Types.RequestFeatures;
 using Oostel.Domain.UserWallet;
 using Oostel.Domain.UserWallet.Enum;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.UserWallet.Features.Queries
 {

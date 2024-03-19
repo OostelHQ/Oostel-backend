@@ -1,5 +1,7 @@
 ﻿using Oostel.Common.Types;
 using Oostel.Domain.UserAuthentication.Entities;
+using Oostel.Domain.UserRoleProfiles.Entities;
+using Oostel.Domain.UserRolesProfiles.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +15,12 @@ namespace Oostel.Domain.UserWallet
         public string UserId { get; set; }
         public decimal AvailableBalance { get; set; }
         public DateTime LastTransactionDate { get; set; } = DateTime.Now;
+        public Student Student { get; set; }
 
-        public ApplicationUser User { get; set; }
+        public Landlord Landlord { get; set; }
+        public Agent Agent { get; set; }
 
-        private Wallet(string userId, decimal availableBalance) : base(Guid.NewGuid().ToString())
+        private Wallet(string userId, decimal availableBalance) : base(userId)
         {
             UserId = userId;
             AvailableBalance = availableBalance;

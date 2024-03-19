@@ -1,6 +1,7 @@
 ﻿using Oostel.Common.Types;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserRolesProfiles.Entities;
+using Oostel.Domain.UserWallet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         public virtual OpenToRoommate OpenToRoomate { get; set; }
         public ICollection<StudentLikes> LikedUsers { get; set; }
         public virtual ApplicationUser User { get; set; }
+        public virtual Wallet Wallet { get; set; }
 
         public Student()
         {
@@ -35,8 +37,13 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
 
         public Student(string userId) : base(userId)
         {
-            LastModifiedDate = DateTime.UtcNow;
-            CreatedDate = DateTime.UtcNow;
+            SetDefaultWallet();
+        }
+
+        public void SetDefaultWallet()
+        {
+            var wallet = Wallet.CreateWalletFactory(Id);
+            this.Wallet = wallet;
         }
     }
 }

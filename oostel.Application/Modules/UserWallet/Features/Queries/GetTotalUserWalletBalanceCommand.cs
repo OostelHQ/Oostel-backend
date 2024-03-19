@@ -1,12 +1,7 @@
 ﻿using Oostel.Application.Modules.UserWallet.Services;
 using Oostel.Common.Constants;
 using Oostel.Common.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.UserWallet.Features.Queries
 {

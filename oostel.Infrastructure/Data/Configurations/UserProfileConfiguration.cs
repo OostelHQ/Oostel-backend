@@ -2,6 +2,7 @@
 using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserRoleProfiles.Entities;
 using Oostel.Domain.UserRolesProfiles.Entities;
+using Oostel.Domain.UserWallet;
 
 namespace Oostel.Infrastructure.Data.Configurations
 {
@@ -27,13 +28,32 @@ namespace Oostel.Infrastructure.Data.Configurations
                 .HasForeignKey(u => u.LandlordId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-          //  modelBuilder.Entity<StudentLikes>().HasKey(k => new { k.SourceUserId, k.LikedStudentId });
 
-           /* modelBuilder.Entity<StudentLikes>()
-                .HasOne(s => s.LikedStudent)
-                .WithMany()
-                .HasForeignKey(s => s.LikedStudentId)
-                .OnDelete(DeleteBehavior.Restrict);*/
+            modelBuilder.Entity<Landlord>()
+                .HasOne(x => x.Wallet)
+                .WithOne(s => s.Landlord)
+                .HasForeignKey<Wallet>(w => w.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Student>()
+             .HasOne(x => x.Wallet)
+             .WithOne(s => s.Student)
+             .HasForeignKey<Wallet>(w => w.UserId)
+             .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Agent>()
+                .HasOne(x => x.Wallet)
+                .WithOne(s => s.Agent)
+                .HasForeignKey<Wallet>(w => w.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //  modelBuilder.Entity<StudentLikes>().HasKey(k => new { k.SourceUserId, k.LikedStudentId });
+
+            /* modelBuilder.Entity<StudentLikes>()
+                 .HasOne(s => s.LikedStudent)
+                 .WithMany()
+                 .HasForeignKey(s => s.LikedStudentId)
+                 .OnDelete(DeleteBehavior.Restrict);*/
 
             modelBuilder.Entity<StudentLikes>()
             .HasOne(sl => sl.LikedStudent)

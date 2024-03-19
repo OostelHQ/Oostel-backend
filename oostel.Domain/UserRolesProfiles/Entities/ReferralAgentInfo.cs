@@ -16,7 +16,7 @@ namespace Oostel.Domain.UserRolesProfiles.Entities
         public ApplicationUser User { get; set; }
 
         private ReferralAgentInfo(string userId, string referralCode)
-        :base(Guid.NewGuid().ToString())
+        : base(Guid.NewGuid().ToString())
         {
             UserId = userId;
             ReferralCode = referralCode;

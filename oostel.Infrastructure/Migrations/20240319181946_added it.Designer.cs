@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oostel.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Oostel.Infrastructure.Data;
 namespace Oostel.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240319181946_added it")]
+    partial class addedit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -978,13 +981,13 @@ namespace Oostel.Infrastructure.Migrations
                     b.Property<DateTime>("LastTransactionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("StudentId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
+                    b.HasIndex("StudentId")
                         .IsUnique();
 
                     b.ToTable("Wallets");
@@ -1256,27 +1259,11 @@ namespace Oostel.Infrastructure.Migrations
 
             modelBuilder.Entity("Oostel.Domain.UserWallet.Wallet", b =>
                 {
-                    b.HasOne("Oostel.Domain.UserRoleProfiles.Entities.Landlord", "Landlord")
-                        .WithOne("Wallet")
-                        .HasForeignKey("Oostel.Domain.UserWallet.Wallet", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Oostel.Domain.UserRoleProfiles.Entities.Student", "Student")
                         .WithOne("Wallet")
-                        .HasForeignKey("Oostel.Domain.UserWallet.Wallet", "UserId")
+                        .HasForeignKey("Oostel.Domain.UserWallet.Wallet", "StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Oostel.Domain.UserRolesProfiles.Entities.Agent", "Agent")
-                        .WithOne("Wallet")
-                        .HasForeignKey("Oostel.Domain.UserWallet.Wallet", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Agent");
-
-                    b.Navigation("Landlord");
 
                     b.Navigation("Student");
                 });
@@ -1326,9 +1313,6 @@ namespace Oostel.Infrastructure.Migrations
                     b.Navigation("Hostels");
 
                     b.Navigation("LandlordAgents");
-
-                    b.Navigation("Wallet")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Student", b =>
@@ -1345,9 +1329,6 @@ namespace Oostel.Infrastructure.Migrations
             modelBuilder.Entity("Oostel.Domain.UserRolesProfiles.Entities.Agent", b =>
                 {
                     b.Navigation("LandlordAgents");
-
-                    b.Navigation("Wallet")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

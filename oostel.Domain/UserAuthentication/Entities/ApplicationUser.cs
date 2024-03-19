@@ -36,5 +36,15 @@ namespace Oostel.Domain.UserAuthentication.Entities
             CreatedDate = DateTime.UtcNow;
             LastSeenDate = DateTime.UtcNow;
         }
+
+        public ApplicationUser(string firstName, string lastName, string rolesCSV, bool isBlocked, int profileViewCount, string? profilePhotoURL, string refCode) 
+            : this()
+        {
+            RolesCSV = rolesCSV;
+            IsBlocked = isBlocked;
+            ProfileViewCount = profileViewCount;
+            ProfilePhotoURL = profilePhotoURL;
+        }
+
     }
 }

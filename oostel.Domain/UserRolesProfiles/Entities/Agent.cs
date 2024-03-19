@@ -1,6 +1,7 @@
 ﻿using Oostel.Common.Types;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserRoleProfiles.Entities;
+using Oostel.Domain.UserWallet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace Oostel.Domain.UserRolesProfiles.Entities
         public string? Denomination { get; set; }
         public ICollection<LandlordAgent> LandlordAgents { get; set; } = new List<LandlordAgent>(); 
         public ApplicationUser User { get; set; }
+        public Wallet Wallet { get; set; }
 
         public Agent()
         {
@@ -30,8 +32,12 @@ namespace Oostel.Domain.UserRolesProfiles.Entities
 
         public Agent(string userId) : base(userId)
         {
-            LastModifiedDate = DateTime.UtcNow;
-            CreatedDate = DateTime.UtcNow;
+            SetDefaultWallet();
+        }
+        public void SetDefaultWallet()
+        {
+            var wallet = Wallet.CreateWalletFactory(Id);
+            this.Wallet = wallet;
         }
     }
 }
