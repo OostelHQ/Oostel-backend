@@ -19,6 +19,7 @@ using Oostel.Domain.Hostel.Entities;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserRoleProfiles.Entities;
 using Oostel.Domain.UserRolesProfiles.Entities;
+using Oostel.Domain.UserWallet;
 using Oostel.Infrastructure.Data;
 using Oostel.Infrastructure.EmailService;
 using Oostel.Infrastructure.Media;
@@ -162,7 +163,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             GetAllStudentDetailsResponse studentDetailsResponse = new();
 
             studentDetailsResponse.UserDto = _mapper.Map<UserDto>(student.User);
-            studentDetailsResponse.UserWalletBalanceDTO = _mapper.Map<UserWalletBalanceDTO>(student.User.Wallets);
+            studentDetailsResponse.UserWalletBalanceDTO = _mapper.Map<UserWalletBalanceDTO>(student.Wallet);
             studentDetailsResponse.StudentProfile = _mapper.Map<StudentProfile>(student);
             studentDetailsResponse.LikedStudentIds = await GetMyLikedStudents(studentId);
             studentDetailsResponse.StudentLikedIds = await GetAStudentLikedUsers(studentId);
@@ -208,29 +209,21 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             };
         }
 
-        public async Task<bool> CreateStudentProfile(CreateStudentDTO updateStudentProfileDTO)
+        public async Task<bool> CreateStudentProfile(CreateStudentDTO studentProfileDTO)
         {
-            var studentProfile = _userManager.Users.Any(x => x.Id == updateStudentProfileDTO.UserId);
+            var studentProfile = _userManager.Users.Any(x => x.Id == studentProfileDTO.UserId);
             if (!studentProfile) return false;
 
 
-            var student = new Student()
-            {
-                Id = updateStudentProfileDTO.UserId,
-                Age = updateStudentProfileDTO.Age,
-                Gender = updateStudentProfileDTO.Gender,
-                Hobby = updateStudentProfileDTO.Hobby,
-                Religion = updateStudentProfileDTO.Religion,
-                SchoolLevel = updateStudentProfileDTO.SchoolLevel,
-                Denomination = updateStudentProfileDTO.Denomination,
-                StateOfOrigin = updateStudentProfileDTO.StateOfOrigin,
-                GuardianPhoneNumber = updateStudentProfileDTO.GuardianPhoneNumber,
-                Country = updateStudentProfileDTO.Country,
-                CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow,
-            };
+            var student = Student.CreateStudentProfileFactory(studentProfileDTO.UserId, studentProfileDTO.StateOfOrigin, studentProfileDTO.Gender,
+                studentProfileDTO.SchoolLevel, studentProfileDTO.Country, studentProfileDTO.Religion, studentProfileDTO.Age, null,
+                studentProfileDTO.Denomination, studentProfileDTO.Hobby, studentProfileDTO.GuardianPhoneNumber);
 
-            var checkIfUserProfileExist = await _unitOfWork.StudentRepository.Find(x => x.Id == updateStudentProfileDTO.UserId && x.User.RolesCSV == RoleString.LandLord);
+            student.CreatedDate = DateTime.UtcNow;
+            student.LastModifiedDate = DateTime.UtcNow;
+            student.Wallet = Wallet.CreateWalletFactoryForStudent(studentProfileDTO.UserId, student, null);
+
+            var checkIfUserProfileExist = await _unitOfWork.StudentRepository.Find(x => x.Id == studentProfileDTO.UserId && x.User.RolesCSV == RoleString.LandLord);
             if (checkIfUserProfileExist is null)
             {
                 await _unitOfWork.StudentRepository.Add(student);
@@ -279,7 +272,7 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             GetAllLandlordProfileDetails studentDetailsResponse = new();
 
             studentDetailsResponse.UserDto = _mapper.Map<UserDto>(landlord.User);
-            studentDetailsResponse.UserWalletBalanceDTO = _mapper.Map<UserWalletBalanceDTO>(landlord.User.Wallets);
+            studentDetailsResponse.UserWalletBalanceDTO = _mapper.Map<UserWalletBalanceDTO>(landlord.Wallet);
             studentDetailsResponse.landlordProfile = _mapper.Map<LandlordProfile>(landlord);
 
             return studentDetailsResponse;
@@ -311,19 +304,14 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             var user = await _userManager.FindByIdAsync(landlordProfileDTO.UserId);
             if (user is null) return false;
 
-            var landlord = new Landlord()
-            {
-                Id = landlordProfileDTO.UserId,
-                Religion = landlordProfileDTO.Religion,
-                DateOfBirth = landlordProfileDTO.DateOfBirth,
-                State = landlordProfileDTO.State,
-                Country = landlordProfileDTO.Country,
-                Street = landlordProfileDTO.Street,
-                Denomination = landlordProfileDTO.Denomination,
-                Gender = landlordProfileDTO.Gender,
-                CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow,
-            };
+            var landlord = Landlord.CreateLandlordProfileFactory(landlordProfileDTO.UserId, landlordProfileDTO.State, landlordProfileDTO.Religion,
+               landlordProfileDTO.Country, landlordProfileDTO.Gender, landlordProfileDTO.Denomination);
+
+            landlord.CreatedDate = DateTime.UtcNow;
+            landlord.LastModifiedDate = DateTime.UtcNow;
+
+            landlord.Wallet = Wallet.CreateWalletFactoryForStudent(landlordProfileDTO.UserId, null, landlord);
+
 
             var checkIfLandlordExist = await _unitOfWork.LandlordRepository.Find(x => x.Id == landlordProfileDTO.UserId && x.User.RolesCSV == RoleString.LandLord);
             if (checkIfLandlordExist is null)

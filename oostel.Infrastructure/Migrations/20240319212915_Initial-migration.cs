@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Oostel.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initialmigration : Migration
+    public partial class Initialmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -59,34 +59,64 @@ namespace Oostel.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Groups",
-                columns: table => new
-                {
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Groups", x => x.Name);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PayInHistories",
+                name: "Comments",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TransactionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReferenceNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProviderName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserComment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    rating = table.Column<int>(type: "int", nullable: false),
+                    HostelId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CommenterId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ParentCommentId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CommentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PayInHistories", x => x.Id);
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Comments_CommentId",
+                        column: x => x.CommentId,
+                        principalTable: "Comments",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NotificationType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserProfilePicUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsRead = table.Column<bool>(type: "bit", nullable: false),
+                    NotificationTypeValueId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserMessages",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReceiverId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SenderId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MediaUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserMessages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -272,37 +302,30 @@ namespace Oostel.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Messages",
+                name: "PayInHistories",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SenderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SenderEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RecipientId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RecipientEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateRead = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    MessengeSent = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    SenderDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    RecipientDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TransactionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReferenceNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PaymentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AmountPaid = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProviderName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.PrimaryKey("PK_PayInHistories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Messages_AspNetUsers_RecipientId",
-                        column: x => x.RecipientId,
+                        name: "FK_PayInHistories_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Messages_AspNetUsers_SenderId",
-                        column: x => x.SenderId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -366,6 +389,7 @@ namespace Oostel.Infrastructure.Migrations
                     FromLastname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TransactionType = table.Column<int>(type: "int", nullable: false),
+                    Isprocessed = table.Column<bool>(type: "bit", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -399,46 +423,6 @@ namespace Oostel.Infrastructure.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Wallets",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AvailableBalance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    LastTransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Wallets", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Wallets_AspNetUsers_Id",
-                        column: x => x.Id,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Connections",
-                columns: table => new
-                {
-                    ConnectionId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    GroupName = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Connections", x => x.ConnectionId);
-                    table.ForeignKey(
-                        name: "FK_Connections_Groups_GroupName",
-                        column: x => x.GroupName,
-                        principalTable: "Groups",
-                        principalColumn: "Name");
                 });
 
             migrationBuilder.CreateTable(
@@ -549,30 +533,28 @@ namespace Oostel.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comments",
+                name: "Wallets",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserComment = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    rating = table.Column<int>(type: "int", nullable: false),
-                    HostelId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    AvailableBalance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    LastTransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.PrimaryKey("PK_Wallets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Comments_AspNetUsers_AuthorId",
-                        column: x => x.AuthorId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_Wallets_Landlords_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Landlords",
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Comments_Hostels_HostelId",
-                        column: x => x.HostelId,
-                        principalTable: "Hostels",
+                        name: "FK_Wallets_Students_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Students",
                         principalColumn: "Id");
                 });
 
@@ -715,19 +697,9 @@ namespace Oostel.Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comments_AuthorId",
+                name: "IX_Comments_CommentId",
                 table: "Comments",
-                column: "AuthorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_HostelId",
-                table: "Comments",
-                column: "HostelId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Connections_GroupName",
-                table: "Connections",
-                column: "GroupName");
+                column: "CommentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HostelLikes_HostelId",
@@ -765,20 +737,15 @@ namespace Oostel.Infrastructure.Migrations
                 column: "AgentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Messages_RecipientId",
-                table: "Messages",
-                column: "RecipientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Messages_SenderId",
-                table: "Messages",
-                column: "SenderId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_OpenToRoommates_StudentId",
                 table: "OpenToRoommates",
                 column: "StudentId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PayInHistories_UserId",
+                table: "PayInHistories",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ReferralAgentInfos_UserId",
@@ -810,6 +777,13 @@ namespace Oostel.Infrastructure.Migrations
                 name: "IX_UserOTPs_UserId",
                 table: "UserOTPs",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Wallets_UserId",
+                table: "Wallets",
+                column: "UserId",
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
         }
 
         /// <inheritdoc />
@@ -837,9 +811,6 @@ namespace Oostel.Infrastructure.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Connections");
-
-            migrationBuilder.DropTable(
                 name: "HostelLikes");
 
             migrationBuilder.DropTable(
@@ -849,7 +820,7 @@ namespace Oostel.Infrastructure.Migrations
                 name: "LandlordAgents");
 
             migrationBuilder.DropTable(
-                name: "Messages");
+                name: "Notifications");
 
             migrationBuilder.DropTable(
                 name: "OpenToRoommates");
@@ -867,6 +838,9 @@ namespace Oostel.Infrastructure.Migrations
                 name: "Transactions");
 
             migrationBuilder.DropTable(
+                name: "UserMessages");
+
+            migrationBuilder.DropTable(
                 name: "UserOTPs");
 
             migrationBuilder.DropTable(
@@ -874,9 +848,6 @@ namespace Oostel.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Groups");
 
             migrationBuilder.DropTable(
                 name: "Rooms");

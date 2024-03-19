@@ -5,7 +5,7 @@
 namespace Oostel.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class added : Migration
+    public partial class testing : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

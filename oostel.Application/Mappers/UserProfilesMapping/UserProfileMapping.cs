@@ -39,6 +39,9 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
                 .Map(dest => dest.RoomBudgetAmount, src => src.OpenToRoomate.RoomBudgetAmount)
                 .Map(dest => dest.ProfileViewCount, src => src.User.ProfileViewCount)
                 .Map(dest => dest.FullName, src => $"{src.User.FirstName} {src.User.LastName}");
+            config.NewConfig<Student, UserWalletBalanceDTO>()
+                .Map(dest => dest.AvailableBalance, src => src.Wallet.AvailableBalance)
+                .Map(dest => dest.LastTransactionDate, src => src.Wallet.LastTransactionDate);
 
 
             config.NewConfig<Landlord, LandlordProfileDTO>();
@@ -49,6 +52,9 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
                 .Map(dest => dest.ProfilePicture, src => src.User.ProfilePhotoURL)
                 .Map(dest => dest.FullName, src => $"{src.User.FirstName} {src.User.LastName}")
                 .Map(dest => dest.RoleCVS, src => src.User.RolesCSV);
+            config.NewConfig<Landlord, UserWalletBalanceDTO>()
+                .Map(dest => dest.AvailableBalance, src => src.Wallet.AvailableBalance)
+                .Map(dest => dest.LastTransactionDate, src => src.Wallet.LastTransactionDate);
 
             config.NewConfig<Landlord, UpdateLandlordDTO>();
             config.NewConfig<Landlord, GetLandlordProfileDTO>()
@@ -80,8 +86,7 @@ namespace Oostel.Application.Mappers.UserProfilesMapping
                 .Map(dest => dest.ProfilePicture, src => src.User.ProfilePhotoURL)
                 .Map(dest => dest.RoleCVS, src => src.User.RolesCSV)
                 .Map(dest => dest.FullName, src => $"{src.User.FirstName} {src.User.LastName}");
-                
-                   
+
             config.NewConfig<Agent, GetAgentProfileDTO>()
                 .Map(dest => dest.UserId, src => src.Id)
                 .Map(dest => dest.Email, src => src.User.Email)

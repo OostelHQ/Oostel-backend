@@ -22,7 +22,6 @@ namespace Oostel.Domain.UserRolesProfiles.Entities
         public string? Denomination { get; set; }
         public ICollection<LandlordAgent> LandlordAgents { get; set; } = new List<LandlordAgent>(); 
         public ApplicationUser User { get; set; }
-        public Wallet Wallet { get; set; }
 
         public Agent()
         {
@@ -32,12 +31,7 @@ namespace Oostel.Domain.UserRolesProfiles.Entities
 
         public Agent(string userId) : base(userId)
         {
-            SetDefaultWallet();
-        }
-        public void SetDefaultWallet()
-        {
-            var wallet = Wallet.CreateWalletFactory(Id);
-            this.Wallet = wallet;
+           
         }
     }
 }

@@ -28,6 +28,23 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         public virtual ApplicationUser User { get; set; }
         public virtual Wallet Wallet { get; set; }
 
+        public Student(string userId, string stateOfOrigin, string gender, string schoolLevel, string country, string religion,
+            string age, string area, string donomination, string hobby, string guardianPhoneNumber) : this()
+        {
+            Id = userId;
+            StateOfOrigin = stateOfOrigin;
+            Gender = gender;
+            SchoolLevel = schoolLevel;
+            Country = country;
+            Religion = religion;
+            Age = age;
+            Area = area;
+            Denomination = donomination;
+            Hobby = hobby;
+            GuardianPhoneNumber = guardianPhoneNumber;
+          //  SetDefaultWallet();
+        }
+
         public Student()
         {
             LastModifiedDate = DateTime.UtcNow;
@@ -35,16 +52,17 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
             IsAvailable = false;
         }
 
-        public Student(string userId) : base(userId)
+        public static Student CreateStudentProfileFactory(string userId, string stateOfOrigin, string gender, string schoolLevel, string country, string religion,
+            string age, string area, string donomination, string hobby, string guardianPhoneNumber)
         {
-            SetDefaultWallet();
+            return new Student(userId, stateOfOrigin, gender, schoolLevel, country, religion, age, area, donomination, hobby, guardianPhoneNumber);
         }
 
-        public void SetDefaultWallet()
+       /* public void SetDefaultWallet()
         {
             var wallet = Wallet.CreateWalletFactory(Id);
             this.Wallet = wallet;
-        }
+        }*/
     }
 }
 

@@ -12,8 +12,8 @@ using Oostel.Infrastructure.Data;
 namespace Oostel.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240118171812_initial migration")]
-    partial class initialmigration
+    [Migration("20240319212915_Initial-migration")]
+    partial class Initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -134,18 +134,25 @@ namespace Oostel.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AuthorId")
-                        .IsRequired()
+                    b.Property<string>("CommentId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CommenterId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("HostelId")
-                        .HasColumnType("nvarchar(450)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ParentCommentId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserComment")
                         .IsRequired()
@@ -156,9 +163,7 @@ namespace Oostel.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("HostelId");
+                    b.HasIndex("CommentId");
 
                     b.ToTable("Comments");
                 });
@@ -350,6 +355,46 @@ namespace Oostel.Infrastructure.Migrations
                     b.ToTable("Rooms");
                 });
 
+            modelBuilder.Entity("Oostel.Domain.Notification.Notifications", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("NotificationType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NotificationTypeValueId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserProfilePicUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("Oostel.Domain.UserAuthentication.Entities.ApplicationRole", b =>
                 {
                     b.Property<string>("Id")
@@ -505,86 +550,39 @@ namespace Oostel.Infrastructure.Migrations
                     b.ToTable("UserOTPs");
                 });
 
-            modelBuilder.Entity("Oostel.Domain.UserMessage.Connection", b =>
-                {
-                    b.Property<string>("ConnectionId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("GroupName")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ConnectionId");
-
-                    b.HasIndex("GroupName");
-
-                    b.ToTable("Connections");
-                });
-
-            modelBuilder.Entity("Oostel.Domain.UserMessage.Group", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Name");
-
-                    b.ToTable("Groups");
-                });
-
-            modelBuilder.Entity("Oostel.Domain.UserMessage.Message", b =>
+            modelBuilder.Entity("Oostel.Domain.UserMessage.UserMessage", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateRead")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("MessengeSent")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("MediaUrl")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("RecipientDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("RecipientEmail")
+                    b.Property<string>("Message")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RecipientId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("SenderDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SenderEmail")
+                    b.Property<string>("ReceiverId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SenderId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RecipientId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("Messages");
+                    b.ToTable("UserMessages");
                 });
 
             modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Landlord", b =>
@@ -870,13 +868,13 @@ namespace Oostel.Infrastructure.Migrations
                     b.ToTable("StudentLikes");
                 });
 
-            modelBuilder.Entity("Oostel.Domain.UserWallet.PayInHistory", b =>
+            modelBuilder.Entity("Oostel.Domain.UserWallet.PayInAndOutHistory", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("Amount")
+                    b.Property<decimal>("AmountPaid")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("CreatedDate")
@@ -888,6 +886,10 @@ namespace Oostel.Infrastructure.Migrations
 
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProviderName")
                         .IsRequired()
@@ -907,9 +909,11 @@ namespace Oostel.Infrastructure.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("PayInHistories");
                 });
@@ -929,6 +933,9 @@ namespace Oostel.Infrastructure.Migrations
                     b.Property<string>("FromLastname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Isprocessed")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastModifiedDate")
                         .HasColumnType("datetime2");
@@ -970,10 +977,13 @@ namespace Oostel.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Wallets");
                 });
@@ -1031,19 +1041,9 @@ namespace Oostel.Infrastructure.Migrations
 
             modelBuilder.Entity("Oostel.Domain.Hostel.Entities.Comment", b =>
                 {
-                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Oostel.Domain.Hostel.Entities.Hostel", "Hostel")
+                    b.HasOne("Oostel.Domain.Hostel.Entities.Comment", null)
                         .WithMany("Comments")
-                        .HasForeignKey("HostelId");
-
-                    b.Navigation("Author");
-
-                    b.Navigation("Hostel");
+                        .HasForeignKey("CommentId");
                 });
 
             modelBuilder.Entity("Oostel.Domain.Hostel.Entities.Hostel", b =>
@@ -1115,32 +1115,6 @@ namespace Oostel.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Oostel.Domain.UserMessage.Connection", b =>
-                {
-                    b.HasOne("Oostel.Domain.UserMessage.Group", null)
-                        .WithMany("Connections")
-                        .HasForeignKey("GroupName");
-                });
-
-            modelBuilder.Entity("Oostel.Domain.UserMessage.Message", b =>
-                {
-                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "Recipient")
-                        .WithMany("MessagesReceived")
-                        .HasForeignKey("RecipientId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "Sender")
-                        .WithMany("MessagesSent")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Recipient");
-
-                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Landlord", b =>
@@ -1247,6 +1221,17 @@ namespace Oostel.Infrastructure.Migrations
                     b.Navigation("SourceUser");
                 });
 
+            modelBuilder.Entity("Oostel.Domain.UserWallet.PayInAndOutHistory", b =>
+                {
+                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Oostel.Domain.UserWallet.Transaction", b =>
                 {
                     b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "User")
@@ -1260,19 +1245,28 @@ namespace Oostel.Infrastructure.Migrations
 
             modelBuilder.Entity("Oostel.Domain.UserWallet.Wallet", b =>
                 {
-                    b.HasOne("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", "User")
-                        .WithOne("Wallets")
-                        .HasForeignKey("Oostel.Domain.UserWallet.Wallet", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Oostel.Domain.UserRoleProfiles.Entities.Landlord", "Landlord")
+                        .WithOne("Wallet")
+                        .HasForeignKey("Oostel.Domain.UserWallet.Wallet", "UserId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
-                    b.Navigation("User");
+                    b.HasOne("Oostel.Domain.UserRoleProfiles.Entities.Student", "Student")
+                        .WithOne("Wallet")
+                        .HasForeignKey("Oostel.Domain.UserWallet.Wallet", "UserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Landlord");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Oostel.Domain.Hostel.Entities.Comment", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("Oostel.Domain.Hostel.Entities.Hostel", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("HostelFrontViewPicture");
 
                     b.Navigation("HostelLikes");
@@ -1295,10 +1289,6 @@ namespace Oostel.Infrastructure.Migrations
                     b.Navigation("Landlord")
                         .IsRequired();
 
-                    b.Navigation("MessagesReceived");
-
-                    b.Navigation("MessagesSent");
-
                     b.Navigation("ReferralAgentInfo")
                         .IsRequired();
 
@@ -1308,14 +1298,6 @@ namespace Oostel.Infrastructure.Migrations
                     b.Navigation("Transactions");
 
                     b.Navigation("UserOTPs");
-
-                    b.Navigation("Wallets")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Oostel.Domain.UserMessage.Group", b =>
-                {
-                    b.Navigation("Connections");
                 });
 
             modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Landlord", b =>
@@ -1323,6 +1305,9 @@ namespace Oostel.Infrastructure.Migrations
                     b.Navigation("Hostels");
 
                     b.Navigation("LandlordAgents");
+
+                    b.Navigation("Wallet")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Student", b =>
@@ -1330,6 +1315,9 @@ namespace Oostel.Infrastructure.Migrations
                     b.Navigation("LikedUsers");
 
                     b.Navigation("OpenToRoomate")
+                        .IsRequired();
+
+                    b.Navigation("Wallet")
                         .IsRequired();
                 });
 

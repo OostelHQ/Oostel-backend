@@ -12,8 +12,8 @@ using Oostel.Infrastructure.Data;
 namespace Oostel.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240319181216_added it to")]
-    partial class addeditto
+    [Migration("20240319222438_testing")]
+    partial class testing
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -502,9 +502,6 @@ namespace Oostel.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("WalletsId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
@@ -522,8 +519,6 @@ namespace Oostel.Infrastructure.Migrations
                     b.HasIndex("PhoneNumber")
                         .IsUnique()
                         .HasFilter("[PhoneNumber] IS NOT NULL");
-
-                    b.HasIndex("WalletsId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -981,14 +976,14 @@ namespace Oostel.Infrastructure.Migrations
                     b.Property<DateTime>("LastTransactionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("StudentId")
-                        .IsRequired()
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StudentId")
-                        .IsUnique();
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Wallets");
                 });
@@ -1109,15 +1104,6 @@ namespace Oostel.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Hostel");
-                });
-
-            modelBuilder.Entity("Oostel.Domain.UserAuthentication.Entities.ApplicationUser", b =>
-                {
-                    b.HasOne("Oostel.Domain.UserWallet.Wallet", "Wallets")
-                        .WithMany()
-                        .HasForeignKey("WalletsId");
-
-                    b.Navigation("Wallets");
                 });
 
             modelBuilder.Entity("Oostel.Domain.UserAuthentication.Entities.UserOTP", b =>
@@ -1259,11 +1245,17 @@ namespace Oostel.Infrastructure.Migrations
 
             modelBuilder.Entity("Oostel.Domain.UserWallet.Wallet", b =>
                 {
+                    b.HasOne("Oostel.Domain.UserRoleProfiles.Entities.Landlord", "Landlord")
+                        .WithOne("Wallet")
+                        .HasForeignKey("Oostel.Domain.UserWallet.Wallet", "UserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.HasOne("Oostel.Domain.UserRoleProfiles.Entities.Student", "Student")
                         .WithOne("Wallet")
-                        .HasForeignKey("Oostel.Domain.UserWallet.Wallet", "StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Oostel.Domain.UserWallet.Wallet", "UserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Landlord");
 
                     b.Navigation("Student");
                 });
@@ -1313,6 +1305,9 @@ namespace Oostel.Infrastructure.Migrations
                     b.Navigation("Hostels");
 
                     b.Navigation("LandlordAgents");
+
+                    b.Navigation("Wallet")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Oostel.Domain.UserRoleProfiles.Entities.Student", b =>

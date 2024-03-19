@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserRoleProfiles.Entities;
 using Oostel.Domain.UserRolesProfiles.Entities;
+using Oostel.Domain.UserWallet;
+using System.Reflection.Emit;
 
 namespace Oostel.Infrastructure.Data.Configurations
 {
@@ -45,7 +47,11 @@ namespace Oostel.Infrastructure.Data.Configurations
             .Property(e => e.Id)
             .ValueGeneratedOnAdd();
 
-
+           /* builder.Entity<ApplicationUser>()
+             .HasOne(x => x.Wallets)
+             .WithOne(s => s.User)
+             .HasForeignKey<Wallet>(w => w.UserId)
+             .OnDelete(DeleteBehavior.Restrict); */
 
         }
     }
