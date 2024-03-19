@@ -1,5 +1,6 @@
 ﻿using MapsterMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Oostel.Application.Modules.UserProfiles.DTOs;
 using Oostel.Application.Modules.UserWallet.DTOs;
@@ -9,6 +10,7 @@ using Oostel.Common.Types.RequestFeatures;
 using Oostel.Domain.UserAuthentication.Entities;
 using Oostel.Domain.UserWallet;
 using Oostel.Domain.UserWallet.Enum;
+using Oostel.Infrastructure.Data;
 using Oostel.Infrastructure.FlutterwaveIntegration;
 using Oostel.Infrastructure.FlutterwaveIntegration.Models;
 using Oostel.Infrastructure.Repositories;
@@ -17,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using _userWallet = Oostel.Domain.UserWallet.Wallet;
 
 namespace Oostel.Application.Modules.UserWallet.Services
 {
@@ -26,14 +29,16 @@ namespace Oostel.Application.Modules.UserWallet.Services
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IFlutterwaveClient _flutterwaveClient;
+        private readonly ApplicationDbContext _context;
         private readonly AppSettings _appSettings;
-        public UserWalletService(UnitOfWork unitOfWork, IMapper mapper, UserManager<ApplicationUser> userManager,
+        public UserWalletService(UnitOfWork unitOfWork, ApplicationDbContext dbContext, IMapper mapper, UserManager<ApplicationUser> userManager,
                             IFlutterwaveClient flutterwaveClient, IOptions<AppSettings> appSettings)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
             _flutterwaveClient = flutterwaveClient;
+            _context = dbContext;
         }
 
         public async Task UpdateWalletBalance(decimal amount, string userId, TransactionType transactionType)
@@ -53,6 +58,79 @@ namespace Oostel.Application.Modules.UserWallet.Services
 
              await _unitOfWork.WalletRepository.UpdateAsync(wallet);
             await _unitOfWork.SaveAsync();
+        }
+
+        public async Task<bool> UpdateUserWalletBalanceWithTransactionHistory(string userId)
+        {
+            var transactionHistory = await GetUserUnprocessedTransactions(userId);
+
+            if (!transactionHistory.Any())
+                return false;
+
+            var totalCredit = transactionHistory.Where(x => x.TransactionType == TransactionType.Credit).Sum(x => x.Amount);
+            var totalDebit = transactionHistory.Where(x => x.TransactionType == TransactionType.Debit).Sum(x => x.Amount);
+            var difference = totalCredit - totalDebit;
+
+            //get wallet balance
+            var wallet = await GetUserWallet(userId);
+            var existingBalance = wallet.AvailableBalance;
+
+            //compute new balance
+            var newBalance = existingBalance + difference;
+
+            //update transaction status
+            foreach (var transaction in transactionHistory)
+            {
+                transaction.Isprocessed = true;
+                await UpdateTransaction(transaction);
+            }
+
+            //update wallet balance
+            var updatedWallet = new _userWallet
+            {
+                Id = wallet.Id,
+                AvailableBalance = newBalance,
+                UserId = userId
+            };
+
+            await UpdateUserWallet(updatedWallet);
+            return true;
+        }
+
+        public async Task<decimal> GetTotalUserWalletBalance()
+        {
+            var getUserWallet = await _unitOfWork.WalletRepository.GetAll(false);
+            decimal totalAvailable = getUserWallet.Sum(wallet => wallet.AvailableBalance);
+
+            return totalAvailable;
+        }
+
+        public async Task UpdateUserWallet(_userWallet transaction)
+        {
+            await _unitOfWork.WalletRepository.UpdateAsync(transaction);
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task<decimal> GetSumOfUserAvailableBalance(string userId)
+        {
+            var userWallet = await GetUserWallet(userId);
+            return userWallet.AvailableBalance;
+        }
+
+        public async Task UpdateTransaction(Transaction transaction)
+        {
+            await _unitOfWork.TransactionRepository.UpdateAsync(transaction);
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task<IEnumerable<Transaction>> GetUserUnprocessedTransactions(string userId)
+        {
+            var getTransaction = await _context.Transactions
+                                .Where(x => x.UserId == userId && x.Isprocessed == false)
+                                .OrderBy(x => x.CreatedDate)
+                                .ToListAsync();
+
+            return getTransaction;
         }
 
         public async Task<Wallet> GetUserWallet(string userId)

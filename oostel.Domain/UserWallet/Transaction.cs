@@ -16,7 +16,8 @@ namespace Oostel.Domain.UserWallet
         public string FromLastname { get; set; }
         public decimal Amount { get; set; }
         public TransactionType TransactionType { get; set; }
-        public ApplicationUser User { get; set; }
+        public bool Isprocessed { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public Transaction():base(Guid.NewGuid().ToString())
         {

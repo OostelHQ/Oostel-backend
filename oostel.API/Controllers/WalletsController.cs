@@ -1,16 +1,11 @@
 ﻿using MapsterMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Oostel.API.APIRoutes;
-using Oostel.Application.Modules.Hostel.Features.Queries;
-using Oostel.Common.Types.RequestFeatures;
 using Oostel.Common.Types;
-using Oostel.Infrastructure.Repositories;
 using Oostel.API.ViewModels.WalletVM;
 using Oostel.Application.Modules.UserWallet.Features.Queries;
-using Oostel.Application.Modules.UserProfiles.Features.Queries;
-using Oostel.Domain.UserRoleProfiles.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Oostel.Application.Modules.UserWallet.Features.Commands;
 
 namespace Oostel.API.Controllers
 {
@@ -41,6 +36,20 @@ namespace Oostel.API.Controllers
         public async Task<ActionResult<APIResponse>> GetPayInHistoryById(string transactionId)
         {
             return HandleResult(await Mediator.Send(new GetPayInHistoryByIdRequest { TransactionId = transactionId }));
+        }
+
+        [HttpPut]
+        [Route(WalletRoute.UpdateUserWallet)] 
+        public async Task<ActionResult<APIResponse>> UpdateUserWallet(string userId)
+        {
+            return HandleResult(await Mediator.Send(new UpdateUserWalletCommand { UserId = userId }));
+        }
+
+        [HttpGet]
+        [Route(WalletRoute.GetSumOfUserAvailableBalance)] 
+        public async Task<ActionResult<APIResponse>> GetSumOfUserAvailableBalance(string userId)
+        {
+            return HandleResult(await Mediator.Send(new GetSumOfUserAvailableBalanceCommand { UserId = userId }));
         }
     }
 }
