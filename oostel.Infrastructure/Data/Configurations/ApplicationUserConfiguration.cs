@@ -40,18 +40,18 @@ namespace Oostel.Infrastructure.Data.Configurations
             builder.Entity<ApplicationUser>()
                 .HasOne(u => u.Student)
                 .WithOne(a => a.User)
-                .HasForeignKey<Student>(k => k.Id);
-                //.OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey<Student>(k => k.Id)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<ApplicationRole>()
             .Property(e => e.Id)
             .ValueGeneratedOnAdd();
 
-           /* builder.Entity<ApplicationUser>()
+            builder.Entity<ApplicationUser>()
              .HasOne(x => x.Wallets)
              .WithOne(s => s.User)
              .HasForeignKey<Wallet>(w => w.UserId)
-             .OnDelete(DeleteBehavior.Restrict); */
+             .OnDelete(DeleteBehavior.Restrict); 
 
         }
     }

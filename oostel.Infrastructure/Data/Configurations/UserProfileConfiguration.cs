@@ -29,7 +29,7 @@ namespace Oostel.Infrastructure.Data.Configurations
                 .OnDelete(DeleteBehavior.NoAction);
 
 
-           modelBuilder.Entity<Landlord>()
+         /*  modelBuilder.Entity<Landlord>()
                 .HasOne(x => x.Wallet)
                 .WithOne(s => s.Landlord)
                 .HasForeignKey<Wallet>(w => w.UserId)
@@ -39,7 +39,7 @@ namespace Oostel.Infrastructure.Data.Configurations
              .HasOne(x => x.Wallet)
              .WithOne(s => s.Student)
              .HasForeignKey<Wallet>(w => w.UserId)
-             .OnDelete(DeleteBehavior.NoAction);
+             .OnDelete(DeleteBehavior.NoAction);*/
 
             //  modelBuilder.Entity<StudentLikes>().HasKey(k => new { k.SourceUserId, k.LikedStudentId });
 

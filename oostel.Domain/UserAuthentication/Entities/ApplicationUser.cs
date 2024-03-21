@@ -21,7 +21,7 @@ namespace Oostel.Domain.UserAuthentication.Entities
         public virtual Landlord Landlord { get; set; }
         public virtual Student Student { get; set; }
         public virtual Agent Agent { get; set; }
-      //  public virtual Wallet Wallets { get; set; }
+        public virtual Wallet Wallets { get; set; }
 
         public virtual ReferralAgentInfo ReferralAgentInfo { get; set; }
 
@@ -37,13 +37,20 @@ namespace Oostel.Domain.UserAuthentication.Entities
             LastSeenDate = DateTime.UtcNow;
         }
 
-        public ApplicationUser(string firstName, string lastName, string rolesCSV, bool isBlocked, int profileViewCount, string? profilePhotoURL, string refCode) 
+        public ApplicationUser(string firstName, string lastName, string rolesCSV, bool isBlocked, int profileViewCount, string? profilePhotoURL) 
             : this()
         {
             RolesCSV = rolesCSV;
             IsBlocked = isBlocked;
             ProfileViewCount = profileViewCount;
             ProfilePhotoURL = profilePhotoURL;
+            SetDefaultWallet();
+        }
+
+        public void SetDefaultWallet()
+        {
+            var wallet = Wallet.CreateWalletFactory(Id);
+            this.Wallets = wallet;
         }
 
     }

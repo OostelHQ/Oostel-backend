@@ -33,6 +33,7 @@ namespace Oostel.API.Extensions
             services.AddDbContext<ApplicationDbContext>(Options =>
             {
                 Options.UseSqlServer(_config.GetConnectionString("DefaultConnection"));
+
             });
           
             services.Configure<EmailConfiguration>(_config.GetSection("EmailConfiguration"));

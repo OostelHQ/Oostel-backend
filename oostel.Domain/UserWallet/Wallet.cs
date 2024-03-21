@@ -15,19 +15,10 @@ namespace Oostel.Domain.UserWallet
         public string? UserId { get; set; }
         public decimal AvailableBalance { get; set; }
         public DateTime LastTransactionDate { get; set; } = DateTime.Now;
-        public Student? Student { get; set; } = null;
+      //  public Student? Student { get; set; } = null;
 
-        public Landlord? Landlord { get; set; } = null;
-       // public ApplicationUser User { get; set; }
-
-        private Wallet(string userId, decimal availableBalance, Student student, Landlord landlord) : base(userId)
-        {
-            UserId = userId;
-            AvailableBalance = availableBalance;
-            LastTransactionDate = DateTime.UtcNow;
-            Student = student;
-            Landlord= landlord;
-        }
+      //  public Landlord? Landlord { get; set; } = null;
+        public ApplicationUser User { get; set; }
 
         private Wallet(string userId, decimal availableBalance) : base(userId)
         {
@@ -47,7 +38,7 @@ namespace Oostel.Domain.UserWallet
             return wallet;
         }
 
-        public static Wallet CreateWalletFactoryForStudent(string UserId, Student student, Landlord landlord)
+       /* public static Wallet CreateWalletFactoryForStudent(string UserId, Student student, Landlord landlord)
         {
             var wallet = new Wallet(UserId, 0.0M, student, null);
             return wallet;
@@ -57,6 +48,6 @@ namespace Oostel.Domain.UserWallet
         {
             var wallet = new Wallet(UserId, 0.0M, null, landlord);
             return wallet;
-        }
+        }*/
     }
 }

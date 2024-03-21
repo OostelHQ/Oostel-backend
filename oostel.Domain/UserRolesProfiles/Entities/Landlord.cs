@@ -22,7 +22,7 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         public string? Denomination { get; set; }
         public virtual ApplicationUser User { get; set; }
         public ICollection<Domain.Hostel.Entities.Hostel> Hostels { get; set; }
-        public Wallet Wallet { get; set; }
+       // public Wallet Wallet { get; set; }
         public ICollection<LandlordAgent> LandlordAgents { get; set; } = new List<LandlordAgent>();
 
         public Landlord(string userId, string state, string religion, string country, string gender, string denomination)
@@ -47,10 +47,5 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
             CreatedDate = DateTime.UtcNow;
         }
 
-       /* public void SetDefaultWallet()
-        {
-            var wallet = Wallet.CreateWalletFactory(Id);
-            this.Wallet = wallet;
-        }*/
     }
 }

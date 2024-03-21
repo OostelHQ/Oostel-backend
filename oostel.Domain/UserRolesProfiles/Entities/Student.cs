@@ -26,7 +26,7 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         public virtual OpenToRoommate OpenToRoomate { get; set; }
         public ICollection<StudentLikes> LikedUsers { get; set; }
         public virtual ApplicationUser User { get; set; }
-        public virtual Wallet Wallet { get; set; }
+      //  public virtual Wallet Wallet { get; set; }
 
         public Student(string userId, string stateOfOrigin, string gender, string schoolLevel, string country, string religion,
             string age, string area, string donomination, string hobby, string guardianPhoneNumber) : this()
@@ -52,7 +52,7 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
             IsAvailable = false;
         }
 
-        public static Student CreateStudentProfileFactory(string userId, string stateOfOrigin, string gender, string schoolLevel, string country, string religion,
+       public static Student CreateStudentProfileFactory(string userId, string stateOfOrigin, string gender, string schoolLevel, string country, string religion,
             string age, string area, string donomination, string hobby, string guardianPhoneNumber)
         {
             return new Student(userId, stateOfOrigin, gender, schoolLevel, country, religion, age, area, donomination, hobby, guardianPhoneNumber);
