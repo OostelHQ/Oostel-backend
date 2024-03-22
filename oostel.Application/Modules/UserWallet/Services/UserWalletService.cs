@@ -39,6 +39,7 @@ namespace Oostel.Application.Modules.UserWallet.Services
             _userManager = userManager;
             _flutterwaveClient = flutterwaveClient;
             _context = dbContext;
+            _appSettings = appSettings.Value;
         }
 
         public async Task UpdateWalletBalance(decimal amount, string userId, TransactionType transactionType)
@@ -225,14 +226,14 @@ namespace Oostel.Application.Modules.UserWallet.Services
 
         public async Task<BasePaymentResponse> GeneratePaymentDetails(CustomerPaymentInfo customerPaymentInfo)
         {
-            //var paymentRedirectUrl = _appSettings.WebhookUrl;
+            var paymentRedirectUrl = _appSettings.WebhookUrl;
 
             var payload = new GeneratePaymentRequest
             {
                 TransactionReference = customerPaymentInfo.PaymentData.ReferenceNumber,
                 Amount = customerPaymentInfo.PaymentData.Amount,
                 Currency = customerPaymentInfo.PaymentData.Currency,
-                //RedirectURL = paymentRedirectUrl,
+                RedirectURL = paymentRedirectUrl,
                 Customer = new PaymentRequestCustomer()
                 {
                     Email = customerPaymentInfo.Email,

@@ -53,7 +53,7 @@ namespace Oostel.API.Controllers
 
         [HttpPost]
         [Route(PaymentRoute.GeneratePaymentLink)]
-        public async Task<ActionResult<APIResponse>> GeneratePaymentLink(PayInRequest payInRequest)
+        public async Task<ActionResult<APIResponse>> GeneratePaymentLink([FromForm]PayInRequest payInRequest)
         {
             var payInHistoryRequest = (new PayInCommand
             {
