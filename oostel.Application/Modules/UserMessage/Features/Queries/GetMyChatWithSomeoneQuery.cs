@@ -2,13 +2,8 @@
 using Oostel.Common.Types;
 using Oostel.Common.Types.RequestFeatures;
 using Oostel.Infrastructure.SignalR.Services;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oostel.Application.Modules.UserMessage.Features.Queries
 {
@@ -18,7 +13,7 @@ namespace Oostel.Application.Modules.UserMessage.Features.Queries
         public string ReceiverId { get; set; }
         public ChatParam? ChatParam { get; set; }
 
-        public class GetMyChatWithSomeoneQueryRequest : IRequestHandler<GetMyChatWithSomeoneQuery, APIResponse>
+        public sealed class GetMyChatWithSomeoneQueryRequest : IRequestHandler<GetMyChatWithSomeoneQuery, APIResponse>
         {
             private readonly IMessagingService _messagingService;
 

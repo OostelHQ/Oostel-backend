@@ -19,7 +19,7 @@ namespace Oostel.Application.Modules.UserMessage.Features.Queries
         public string SenderId { get; set; }
         public ChatParam? ChatParam { get; set; }
 
-        public class GetAllChatHistoryQueryRequest : IRequestHandler<GetAllChatHistoryQuery, APIResponse>
+        public sealed class GetAllChatHistoryQueryRequest : IRequestHandler<GetAllChatHistoryQuery, APIResponse>
         {
             private readonly IMessagingService _messagingService;
 
