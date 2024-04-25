@@ -14,7 +14,7 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
     {
         public string StateOfOrigin { get; set; }
         public string Gender { get; set; }
-        public string SchoolLevel { get; set; }
+        public int SchoolLevel { get; set; }
         public string Country { get; set; }
         public string Religion { get; set; }
         public bool IsAvailable { get; set; } = false;
@@ -28,7 +28,7 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
         public virtual ApplicationUser User { get; set; }
       //  public virtual Wallet Wallet { get; set; }
 
-        public Student(string userId, string stateOfOrigin, string gender, string schoolLevel, string country, string religion,
+        public Student(string userId, string stateOfOrigin, string gender, int schoolLevel, string country, string religion,
             string age, string area, string donomination, string hobby, string guardianPhoneNumber) : this()
         {
             Id = userId;
@@ -52,7 +52,7 @@ namespace Oostel.Domain.UserRoleProfiles.Entities
             IsAvailable = false;
         }
 
-       public static Student CreateStudentProfileFactory(string userId, string stateOfOrigin, string gender, string schoolLevel, string country, string religion,
+       public static Student CreateStudentProfileFactory(string userId, string stateOfOrigin, string gender, int schoolLevel, string country, string religion,
             string age, string area, string donomination, string hobby, string guardianPhoneNumber)
         {
             return new Student(userId, stateOfOrigin, gender, schoolLevel, country, religion, age, area, donomination, hobby, guardianPhoneNumber);

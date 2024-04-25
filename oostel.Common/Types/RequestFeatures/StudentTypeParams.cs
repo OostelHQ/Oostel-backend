@@ -10,7 +10,7 @@ namespace Oostel.Common.Types.RequestFeatures
     public class StudentTypeParams : PagingParams
     {
        // public bool? GottenHostel { get; set; }
-        public string? Level { get; set; }
+        public int? Level { get; set; }
         public string? Gender { get; set; }
         public decimal? MinimumPrice { get; set; }
         public decimal? MaximumPrice { get; set; }

@@ -22,7 +22,7 @@ namespace Oostel.Application.Modules.UserProfiles.DTOs
         public string Country { get; set; }
         public List<string> LikedStudentIds { get; set; }
         public List<string> StudentLikedIds { get; set; }
-        public string SchoolLevel { get; set; }
+        public int SchoolLevel { get; set; }
         public string Religion { get; set; }
         public string Denomination { get; set; }
        // public int RentedHostels { get; set; }
