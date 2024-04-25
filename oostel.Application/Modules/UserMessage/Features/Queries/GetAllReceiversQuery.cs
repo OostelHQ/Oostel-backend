@@ -30,7 +30,7 @@ namespace Oostel.Application.Modules.UserMessage.Features.Queries
                 var result = await _messagingService.GetAllReceivers(request.SenderId, request.ChatParam);
                 if (!result.Any())
                 {
-                    return APIResponse.GetFailureMessage(HttpStatusCode.BadRequest, new ArrayList(), ResponseMessages.NotFound);
+                    return APIResponse.GetFailureMessage(HttpStatusCode.OK, new ArrayList(), ResponseMessages.NotFound);
                 }
                 return APIResponse.GetSuccessMessage(HttpStatusCode.OK, data: result, ResponseMessages.FetchedSuccess);
             }
