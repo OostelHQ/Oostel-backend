@@ -64,6 +64,38 @@ namespace Oostel.Infrastructure.SignalR.Services
             return await PagedList<UserMessage>.CreateAsync(chats, pagingParams.PageNumber, pagingParams.PageSize);
         }
 
+        public async Task<IEnumerable<UserMessage>> GetAllReceiversWithLastChat(string userId)
+        {
+            // Group messages by receiver and get the latest message for each group
+            var messages = await _dbContext.UserMessages
+                .Where(x => x.SenderId == userId)
+                .GroupBy(x => x.ReceiverId)
+                .Select(group => group.OrderByDescending(m => m.Timestamp).FirstOrDefault())
+                .ToListAsync();
+
+            // Optionally, include user information from User table (assuming a User model)
+            var userMessages = messages.Select(message =>
+            {
+                var userMessage = new UserMessage // Consider using a dedicated model class
+                {
+                    ReceiverId = message.ReceiverId,
+                    Message = message.Message,
+                    Timestamp = message.Timestamp,
+                    SenderId = message.SenderId,
+                    CreatedDate = message.CreatedDate,
+                    LastModifiedDate = message.LastModifiedDate,
+                    Id = message.Id,
+                    MediaUrl = message.MediaUrl
+                };
+                // Add user information if needed (assuming a separate User model)
+                // userMessage.User = _dbContext.Users.FirstOrDefault(u => u.Id == message.ReceiverId);
+                return userMessage;
+            });
+
+            return userMessages;
+        }
+
+
         public async Task<PagedList<string>> GetAllReceivers(string userId, ChatParam pagingParams)
         {
             var chats = _dbContext.UserMessages

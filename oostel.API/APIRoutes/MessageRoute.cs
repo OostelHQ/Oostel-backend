@@ -9,5 +9,6 @@
         public const string UploadPictureChat = "message/upload-picture-chat";
         public const string GetMyChatWithSomeone = "message/get-my-chat-with-someone";
         public const string GetAllReceivers = "message/get-all-receivers";
+        public const string GetAllReceiversWithLastChat = "message/get-all-receivers-with-lastChat";
     }
 }
