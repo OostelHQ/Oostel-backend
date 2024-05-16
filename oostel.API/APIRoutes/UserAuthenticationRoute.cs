@@ -9,6 +9,7 @@
         public const string ResetPassword = "authenticateuser/reset-password";
         public const string RegisterAgent = "authenticateuser/register-agent";
         public const string GetCurrentUser = "authenticateuser/get-current-user";
+        public const string GetAnyUserDetails = "authenticateuser/get-any-user-details";
         public const string DeleteUserAccount = "user-delete/delete-user-account";
     }
 }

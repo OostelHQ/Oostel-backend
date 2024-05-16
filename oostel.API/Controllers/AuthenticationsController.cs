@@ -8,6 +8,7 @@ using Oostel.Application.Modules.UserAuthentication.Features.Commands;
 using Oostel.Application.Modules.UserAuthentication.Features.Queries;
 using Oostel.Application.Modules.UserRolesProfiles.DTOs;
 using Oostel.Application.Modules.UserRolesProfiles.Features.Commands;
+using Oostel.Application.Modules.UserRolesProfiles.Features.Queries;
 using Oostel.Common.Types;
 
 namespace Oostel.API.Controllers
@@ -68,12 +69,20 @@ namespace Oostel.API.Controllers
             return HandleResult(await Mediator.Send(resetPasswordOTP));
         }
 
-        [Authorize]
+        
         [HttpGet]
         [Route(UserAuthenticationRoute.GetCurrentUser)]
         public async Task<ActionResult<APIResponse>> GetCurrentUser()
         {
             return HandleResult(await Mediator.Send(new GetCurrentUserRequest { }));
+        } //GetAnyUserDetailsCommand
+
+        [Authorize]
+        [HttpGet]
+        [Route(UserAuthenticationRoute.GetAnyUserDetails)]
+        public async Task<ActionResult<APIResponse>> GetAnyUserDetails(string userId)
+        {
+            return HandleResult(await Mediator.Send(new GetAnyUserDetailsCommand { UserId = userId }));
         }
 
         [HttpDelete()]

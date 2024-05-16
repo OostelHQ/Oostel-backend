@@ -42,5 +42,6 @@ namespace Oostel.Application.Modules.UserProfiles.Services
         Task<bool> CreateReferralCode(string landlordId);
         //Task<bool> SendAgentInvitationCode(string agentEmail, string referralCode, string landlordName, string shortNote);
         Task<string> GetLandlordReferralCode(string landlordId);
+        Task<GetUserDetailsWithId> GetAnyUserProfile(string userId);
     }
 }

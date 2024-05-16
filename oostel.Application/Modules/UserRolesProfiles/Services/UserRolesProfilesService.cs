@@ -672,5 +672,20 @@ namespace Oostel.Application.Modules.UserProfiles.Services
             return user;          
         }
 
+        public async Task<GetUserDetailsWithId> GetAnyUserProfile(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user is null) return null;
+
+            var profile = new GetUserDetailsWithId
+            {
+                UserId = user.Id,
+                Fullname = user.FirstName + user.LastName,
+                ProfilePictureUrl = user.ProfilePhotoURL,
+                Role = user.RolesCSV
+            };
+
+            return profile;
+        }
     }
 }
